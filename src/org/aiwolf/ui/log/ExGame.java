@@ -5,6 +5,11 @@ import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.server.AIWolfGame;
 import org.aiwolf.server.GameData;
 
+/**
+ * AIWolfGame for Log Viewer
+ * @author tori
+ *
+ */
 class ExGame extends AIWolfGame{
 
 	public ExGame(GameSetting gameSeting, GameData gameData) {

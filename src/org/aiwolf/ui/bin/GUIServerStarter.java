@@ -47,7 +47,7 @@ import org.aiwolf.server.net.TcpipServer;
 import org.aiwolf.server.util.FileGameLogger;
 import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.server.util.MultiGameLogger;
-import org.aiwolf.ui.GameFrame;
+import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.res.JapaneseResource;
 
 
@@ -84,7 +84,11 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 	boolean isStart = false;
 	protected TcpipServer gameServer;
 	private JScrollPane logScrollPane;
-	private GameFrame gameLogViewerFrame;
+	
+	/**
+	 * Game Viewer if exists
+	 */
+	private GameViewer gameLogViewer;
 
 	static public void main(String[] args){
 		
@@ -360,10 +364,11 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 				}
 			}
 			if(isViewLog()){
-				gameLogViewerFrame = new GameFrame(new JapaneseResource(), game);
-				gameLogViewerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+				
+				gameLogViewer = new GameViewer(new JapaneseResource(), game);
+				gameLogViewer.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 //				gameFrame.setFocusable(true);
-				gameLogger.add(gameLogViewerFrame);
+				gameLogger.add(gameLogViewer);
 			}
 			gameLogger.add(this);
 			game.setGameLogger(gameLogger);
@@ -393,12 +398,12 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 	
 	public void stopGame(){
 		startButton.setEnabled(true);
-		if(gameLogViewerFrame != null){
+		if(gameLogViewer != null){
 
-			JOptionPane.showMessageDialog(gameLogViewerFrame, "Game Finished", "Game Finished", JOptionPane.INFORMATION_MESSAGE);
-			gameLogViewerFrame.setVisible(false);
-			gameLogViewerFrame.close();
-			gameLogViewerFrame = null;
+			JOptionPane.showMessageDialog(gameLogViewer, "Game Finished", "Game Finished", JOptionPane.INFORMATION_MESSAGE);
+			gameLogViewer.setVisible(false);
+			gameLogViewer.close();
+			gameLogViewer = null;
 		}
 	}
 	

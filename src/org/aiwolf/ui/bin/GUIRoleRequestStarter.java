@@ -19,7 +19,7 @@ import org.aiwolf.server.net.DirectConnectServer;
 import org.aiwolf.server.util.FileGameLogger;
 import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.server.util.MultiGameLogger;
-import org.aiwolf.ui.GameFrame;
+import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.DefaultResource;
 import org.aiwolf.ui.res.JapaneseResource;
@@ -143,7 +143,7 @@ public class GUIRoleRequestStarter {
 		DirectConnectServer gameServer = new DirectConnectServer(playerMap);
 		GameSetting gameSetting = GameSetting.getDefaultGame(playerMap.size());
 		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
-		GameFrame gameFrame = new GameFrame(resource, game);
+		GameViewer gameFrame = new GameViewer(resource, game);
 		gameFrame.setResource(new JapaneseResource());
 		GameLogger logger = new MultiGameLogger(gameFrame, new FileGameLogger(logDir));
 		game.setGameLogger(logger);

@@ -17,6 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.TransferHandler;
 
+/**
+ * Open window to drop AIWolf game logs to start GUILogViewer
+ * @author tori
+ *
+ */
 public class GUILogViewerStarter extends JFrame{
 	
 	

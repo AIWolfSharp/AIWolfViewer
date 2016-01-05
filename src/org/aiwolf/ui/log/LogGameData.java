@@ -9,6 +9,11 @@ import org.aiwolf.common.data.Status;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.server.GameData;
 
+/**
+ * Game data for GUILogViewer
+ * @author tori
+ *
+ */
 class LogGameData extends GameData {
 
 	public LogGameData(GameSetting gameSetting, Map<Agent, Role> agentRoleMap) {

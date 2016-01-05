@@ -41,7 +41,7 @@ import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
-public class GameFrame extends JFrame implements GameLogger, ActionListener{
+public class GameViewer extends JFrame implements GameLogger, ActionListener{
 
 	private static final int ACTION_PANEL_HEIGHT = 30;
 	/**
@@ -75,7 +75,7 @@ public class GameFrame extends JFrame implements GameLogger, ActionListener{
 //		game.setShowConsoleLog(false);
 //		game.start();
 
-		GameFrame gf = new GameFrame(new JapaneseResource(), game);
+		GameViewer gf = new GameViewer(new JapaneseResource(), game);
 		game.setGameLogger(gf);
 	
 		game.start();
@@ -165,12 +165,16 @@ public class GameFrame extends JFrame implements GameLogger, ActionListener{
 	protected NextButtonPanel stepActionPanel;
 
 	
+	public GameViewer(){
+		
+	}
+	
 	/**
 	 * 
 	 * @param resource
 	 * @game 
 	 */
-	public GameFrame(AIWolfResource resource, AIWolfGame game){
+	public GameViewer(AIWolfResource resource, AIWolfGame game){
 //		this(resource, game.getGameData(), game.getGameSetting());
 //	}
 //

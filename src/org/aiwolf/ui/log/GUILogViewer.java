@@ -1,6 +1,10 @@
 package org.aiwolf.ui.log;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -13,7 +17,7 @@ import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.net.GameSetting;
-import org.aiwolf.ui.GameFrame;
+import org.aiwolf.ui.GameViewer;
 
 
 
@@ -23,7 +27,7 @@ public class GUILogViewer {
 	LogGameData gameData;
 	ExGame game;
 
-	GameFrame gameLogger;
+	GameViewer gameLogger;
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -58,7 +62,11 @@ public class GUILogViewer {
 		Map<Agent, Role> agentRoleMap = new LinkedHashMap<Agent, Role>();
 		ContestResource resource = new ContestResource();
 		
-		for(String line:LineReader.read(logFile, "UTF-8")){
+		FileInputStream is = new FileInputStream(logFile);
+		InputStreamReader in = new InputStreamReader(is, "UTF-8");
+		BufferedReader br = new BufferedReader(in);
+		String line;
+		while((line = br.readLine()) != null){
 			String[] data = line.split(",");
 			if(!data[1].equals("status")){
 				break;
@@ -69,16 +77,19 @@ public class GUILogViewer {
 			agentRoleMap.put(agent, role);
 			resource.setName(agent.getAgentIdx(), name);
 		}
+		br.close();
 		
 		GameSetting gameSetting = GameSetting.getDefaultGame(agentRoleMap.size());
 		gameData = new LogGameData(gameSetting, agentRoleMap);
 		game = new ExGame(gameSetting, gameData);
-		gameLogger = new GameFrame(resource, game);
+		gameLogger = new GameViewer(resource, game);
 	}
 
 	public void start() throws NumberFormatException, IOException{
 
-		for(String line:LineReader.read(logFile)){
+		BufferedReader br = new BufferedReader(new FileReader(logFile));
+		String line;
+		while((line = br.readLine()) != null){
 			gameLogger.log(line);
 			String[] data = line.split(",");
 
@@ -129,9 +140,8 @@ public class GUILogViewer {
 				break;
 			}
 
-			//TODO
 		}
-		
+		br.close();
 	}
 
 	protected Vote toVote(String[] data) {
@@ -171,7 +181,7 @@ public class GUILogViewer {
 	/**
 	 * @return gameLogger
 	 */
-	public GameFrame getGameLogger() {
+	public GameViewer getGameLogger() {
 		return gameLogger;
 	}
 
