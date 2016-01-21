@@ -17,7 +17,9 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -51,6 +53,7 @@ import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.res.JapaneseResource;
 
 
+
 /**
  * GUI server starter
  * @author tori
@@ -78,6 +81,7 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 	private JButton startButton;
 	
 	protected List<JTextField> agentFieldList;
+	protected Map<Agent, JTextField> agentFieldMap;
 	
 	protected JTextArea logArea;
 	
@@ -200,6 +204,7 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 			
 			agentFieldList.add(agentField);
 		}
+		agentFieldMap = new HashMap();
 
 		logArea = new JTextArea();
 		logArea.setEditable(false);
@@ -447,14 +452,23 @@ public class GUIServerStarter extends JFrame implements ActionListener, ServerLi
 
 	@Override
 	public void connected(Socket socket, Agent agent, String name) {
-		agentFieldList.get(agent.getAgentIdx()).setText(name);
-		log("Here comes "+agent+" "+name);
+		for(int i = 0; i < agentFieldList.size(); i++){
+			if(agentFieldList.get(i).getText().isEmpty()){
+				agentFieldMap.put(agent, agentFieldList.get(i));
+				agentFieldList.get(i).setText(name);
+				log("Here comes "+agent+" "+name);
+				break;
+			}
+		}
 		
 	}
 
 	@Override
 	public void unconnected(Socket socket, Agent agent, String name) {
-		agentFieldList.get(agent.getAgentIdx()).setText("");
+		if(agentFieldMap.containsKey(agent)){
+			agentFieldMap.get(agent).setText("");
+			agentFieldMap.remove(agent);
+		}
 	}
 
 	/**
