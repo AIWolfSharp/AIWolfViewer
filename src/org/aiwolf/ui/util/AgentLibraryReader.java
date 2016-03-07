@@ -15,16 +15,12 @@ import java.util.jar.JarFile;
 
 import org.aiwolf.common.data.Player;
 
+/**
+ * Read Agent Library from File
+ * @author tori
+ *
+ */
 public class AgentLibraryReader {
-
-	/**
-	 * Library
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
 
 	/**
 	 * Find all jar files from target directory (or file)
