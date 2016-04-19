@@ -2,9 +2,11 @@ package org.aiwolf.ui.log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.ui.GameViewer;
+import org.aiwolf.ui.res.AIWolfResource;
 
 
 
@@ -28,6 +31,7 @@ public class GUILogViewer {
 	ExGame game;
 
 	GameViewer gameLogger;
+	private ContestResource contestResource;
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -59,8 +63,12 @@ public class GUILogViewer {
 		this.logFile = logFile;
 
 	
+		init();
+	}
+
+	private void init() throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Map<Agent, Role> agentRoleMap = new LinkedHashMap<Agent, Role>();
-		ContestResource resource = new ContestResource();
+		contestResource = new ContestResource();
 		
 		FileInputStream is = new FileInputStream(logFile);
 		InputStreamReader in = new InputStreamReader(is, "UTF-8");
@@ -75,16 +83,24 @@ public class GUILogViewer {
 			Role role = Role.valueOf(data[3]);
 			String name = data[5];
 			agentRoleMap.put(agent, role);
-			resource.setName(agent.getAgentIdx(), name);
+			contestResource.setName(agent.getAgentIdx(), name);
 		}
 		br.close();
 		
 		GameSetting gameSetting = GameSetting.getDefaultGame(agentRoleMap.size());
 		gameData = new LogGameData(gameSetting, agentRoleMap);
 		game = new ExGame(gameSetting, gameData);
-		gameLogger = new GameViewer(resource, game);
+		gameLogger = new GameViewer(contestResource, game);
 	}
 
+	public void setResource(AIWolfResource resource){
+		gameLogger = new GameViewer(resource, game);
+	}
+	
+	public AIWolfResource getResource(){
+		return gameLogger.getResource();
+	}
+	
 	public void start() throws NumberFormatException, IOException{
 
 		BufferedReader br = new BufferedReader(new FileReader(logFile));
