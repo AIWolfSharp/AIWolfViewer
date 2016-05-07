@@ -35,7 +35,7 @@ import javafx.util.Pair;
 
 
 /**
- * クライアントを指定して直接シミュレーションを実行する
+ * Start Server and Client from init file
  * @author tori
  *
  */
@@ -82,6 +82,11 @@ public class AutoStarter {
 		System.exit(1);
 	}
 	
+	/**
+	 * 
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public AutoStarter(String fileName) throws IOException{
 
 		libraryDir = new File("./");
@@ -141,6 +146,14 @@ public class AutoStarter {
 		
 	}
 	
+	/**
+	 * Start server and client
+	 * @throws SocketTimeoutException
+	 * @throws IOException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
 	public void start() throws SocketTimeoutException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		startServer();
 		startClient();
@@ -154,7 +167,12 @@ public class AutoStarter {
 		}
 	}
 	
-
+	/**
+	 * Start client from init files
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
 	private void startClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		for(String playerName:roleAgentMap.keySet()){
 			String clsName = roleAgentMap.get(playerName).getKey();
@@ -175,6 +193,11 @@ public class AutoStarter {
 		
 	}
 
+	/**
+	 * start server
+	 * @throws SocketTimeoutException
+	 * @throws IOException
+	 */
 	private void startServer() throws SocketTimeoutException, IOException {
 		
 		gameSetting = GameSetting.getDefaultGame(agentNum);
@@ -276,6 +299,9 @@ public class AutoStarter {
 
 	}
 
+	/**
+	 * show results
+	 */
 	private void result() {
 		for(Role role:Role.values()){
 			if(role == Role.FREEMASON){
