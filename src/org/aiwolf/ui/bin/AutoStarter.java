@@ -59,6 +59,7 @@ public class AutoStarter {
 	
 	Map<String, Counter<Role>> winCounterMap;
 	Map<String, Counter<Role>> roleCounterMap;
+	private Map<String, Class> playerClassMap;
 	
 	
 	/**
@@ -134,8 +135,7 @@ public class AutoStarter {
 			agentNum = roleAgentMap.size();
 		}
 
-		Map<String, Class> playerClassMap = getPlayerClassMap(libraryDir);
-//		System.out.println(playerClassMap);
+		playerClassMap = getPlayerClassMap(libraryDir);
 
 		for(String name:roleAgentMap.keySet()){
 			String clsName = roleAgentMap.get(name).getKey();
@@ -178,7 +178,7 @@ public class AutoStarter {
 			String clsName = roleAgentMap.get(playerName).getKey();
 			Role role = roleAgentMap.get(playerName).getValue();
 			
-			Player player = (Player)Class.forName(clsName).newInstance();
+			Player player = (Player)playerClassMap.get(clsName).newInstance();
 			//引数にRoleRequestを追加
 			TcpipClient client = new TcpipClient("localhost", port, role);
 			if(playerName != null){
