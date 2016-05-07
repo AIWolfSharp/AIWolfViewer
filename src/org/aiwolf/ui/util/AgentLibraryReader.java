@@ -77,6 +77,8 @@ public class AgentLibraryReader {
 //						e.printStackTrace();
 				} catch(NoClassDefFoundError e){
 //					e.printStackTrace();
+				} catch(IllegalAccessError e){
+//					e.printStackTrace();
 				}
 			}
 		}

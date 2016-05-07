@@ -23,6 +23,7 @@ import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.util.BidiMap;
+import org.aiwolf.server.AIWolfGame;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
@@ -111,6 +112,12 @@ public class ContestResource extends JapaneseResource implements Serializable{
 	};
 
 	
+	AIWolfGame game;
+
+	public ContestResource(AIWolfGame game){
+		this();
+		this.game = game;
+	}
 	
 	public ContestResource() {
 		agentResourceList = Arrays.asList(agentResourceAry);
@@ -120,6 +127,10 @@ public class ContestResource extends JapaneseResource implements Serializable{
 		bidiMap = new BidiMap<>();
 	}
 	
+	public void setAIWolfGame(AIWolfGame game){
+		this.game = game;
+	}
+	
 	public void setName(int i, String name){
 		agentResourceList.get(i)[0] = name;
 	}
@@ -127,6 +138,12 @@ public class ContestResource extends JapaneseResource implements Serializable{
 
 	@Override
 	public String convert(Agent agent) {
+		if(game != null){
+			for(Agent a:game.getGameData().getAgentList()){
+				setName(a.getAgentIdx(), game.getAgentName(a));
+			}
+			game = null;
+		}
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
 		bidiMap.put(agent, name);
 		System.out.println(agent+"\t"+name);

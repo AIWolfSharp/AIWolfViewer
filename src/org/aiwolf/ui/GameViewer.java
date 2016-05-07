@@ -164,6 +164,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //	protected JButton skipAllButton;
 	protected NextButtonPanel stepActionPanel;
 
+	protected boolean isAutoClose;
 	
 	public GameViewer(){
 		
@@ -181,7 +182,6 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //	public GameFrame(AIWolfResource resource, GameData gameData, GameSetting gameSetting){
 		setGame(game);
 //		this.gameData = gameData;
-		this.gameSetting = gameSetting;
 		this.resource = resource;
 		
 		isInitialized = false;
@@ -401,6 +401,9 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		stepActionPanel.waitSecond();
 		infoPanel.scrollToTail();
 
+		if(isAutoClose){
+			setVisible(false);
+		}
 	}
 
 	@Override
@@ -466,6 +469,14 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	public void setAlwaysAuto(boolean b) {
 		stepActionPanel.setAlwaysAuto(b);
 		
+	}
+
+	public void setAutoClose(boolean b) {
+		isAutoClose = b;
+	}
+	
+	public boolean isAutoClose(){
+		return isAutoClose;
 	}
 
 }
