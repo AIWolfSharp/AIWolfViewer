@@ -19,6 +19,7 @@ import org.aiwolf.common.data.Team;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.common.net.TcpipClient;
 import org.aiwolf.common.util.Counter;
+import org.aiwolf.common.util.Pair;
 import org.aiwolf.server.AIWolfGame;
 import org.aiwolf.server.GameData;
 import org.aiwolf.server.LostClientException;
@@ -30,8 +31,6 @@ import org.aiwolf.server.util.MultiGameLogger;
 import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.log.ContestResource;
 import org.aiwolf.ui.util.AgentLibraryReader;
-
-import javafx.util.Pair;
 
 
 /**
@@ -118,6 +117,9 @@ public class AutoStarter {
 			}
 			else{
 				String[] data = line.split(",");
+				if(data.length < 2 || line.startsWith("#")){
+					continue;
+				}
 				String name = data[0];
 				String classPath = data[1];
 				Role role = null;
@@ -137,12 +139,12 @@ public class AutoStarter {
 
 		playerClassMap = getPlayerClassMap(libraryDir);
 
-		for(String name:roleAgentMap.keySet()){
-			String clsName = roleAgentMap.get(name).getKey();
-			if(!playerClassMap.containsKey(clsName)){
-				throw new IllegalArgumentException("No such agent as "+clsName);
-			}
-		}
+//		for(String name:roleAgentMap.keySet()){
+//			String clsName = roleAgentMap.get(name).getKey();
+//			if(!playerClassMap.containsKey(clsName)){
+//				throw new IllegalArgumentException("No such agent as "+clsName);
+//			}
+//		}
 		
 	}
 	
@@ -174,11 +176,19 @@ public class AutoStarter {
 	 * @throws ClassNotFoundException
 	 */
 	private void startClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+//		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
+//		Collections.shuffle(nameList);
 		for(String playerName:roleAgentMap.keySet()){
 			String clsName = roleAgentMap.get(playerName).getKey();
 			Role role = roleAgentMap.get(playerName).getValue();
 			
-			Player player = (Player)playerClassMap.get(clsName).newInstance();
+			Player player = null;
+			if(playerClassMap.containsKey(clsName)){
+				player = (Player)playerClassMap.get(clsName).newInstance();
+			}
+			else{
+				player = (Player)Class.forName(clsName).newInstance();
+			}
 			//引数にRoleRequestを追加
 			TcpipClient client = new TcpipClient("localhost", port, role);
 			if(playerName != null){
@@ -297,6 +307,13 @@ public class AutoStarter {
 		serverThread = new Thread(r);
 		serverThread.start();
 
+		while(!gameServer.isWaitForClient() && initServer){
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -311,6 +328,9 @@ public class AutoStarter {
 		}
 		System.out.println("\tTotal");
 		for(String name:new TreeSet<>(roleAgentMap.keySet())){
+			if(!winCounterMap.containsKey(name) || !roleCounterMap.containsKey(name)){
+				continue;
+			}
 			System.out.print(name+"\t");
 			double win = 0;
 			double cnt = 0;
