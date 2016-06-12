@@ -317,6 +317,7 @@ public class AutoStarter {
 	}
 
 	/**
+	 * TODO 外部接続エージェントの成績が表示されない
 	 * show results
 	 */
 	private void result() {

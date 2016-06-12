@@ -186,13 +186,13 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		
 		isInitialized = false;
 //		samplePlayer = new SampleRoleAssignPlayer();
-		try{
-			  UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-			  SwingUtilities.updateComponentTreeUI(this);
-			}catch(Exception e){
-			  e.printStackTrace();
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+			SwingUtilities.updateComponentTreeUI(this);
+		} catch (Exception e) {
+//			e.printStackTrace();
 		}
-		
+
 		setBounds(10, 10, PANEL_WIDTH, PANEL_HEIGHT);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

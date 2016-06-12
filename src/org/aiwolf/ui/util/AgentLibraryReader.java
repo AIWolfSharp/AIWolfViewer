@@ -70,6 +70,7 @@ public class AgentLibraryReader {
 								classList.add(cls);
 							} catch (InstantiationException e) {
 							} catch (IllegalAccessException e) {
+							} catch (Exception e) {
 							}
 						}
 					}
