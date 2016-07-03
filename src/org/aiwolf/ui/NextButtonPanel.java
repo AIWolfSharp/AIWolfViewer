@@ -4,8 +4,11 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.annotation.Resource;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import org.aiwolf.ui.res.AIWolfResource;
 
 class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 	private static final long DEFAULT_WAIT_TIME = 500;
@@ -20,15 +23,15 @@ class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 	protected JPanel stepActionPanel;
 	protected boolean isAlwaysAuto = false;
 	
-	public NextButtonPanel(){
+	public NextButtonPanel(AIWolfResource resource){
 
-		nextButton = new JButton("NEXT");
+		nextButton = new JButton(resource.convert("NEXT"));
 		nextButton.addActionListener(this);
 		
-		autoButton = new JButton("Auto");
+		autoButton = new JButton(resource.convert("Auto"));
 		autoButton.addActionListener(this);
 
-		skipAllButton = new JButton("SKIP ALL");
+		skipAllButton = new JButton(resource.convert("SKIP ALL"));
 		skipAllButton.addActionListener(this);
 //		stepActionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 //		stepActionPanel.add(nextButton);

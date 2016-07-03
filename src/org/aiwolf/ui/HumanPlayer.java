@@ -142,7 +142,7 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 		userActionPanel = new UserActionPanel(resource);
 		userActionPanel.setPreferredSize(new Dimension(HumanPlayer.PANEL_WIDTH, 50));
 
-		nextButtonPanel = new NextButtonPanel();
+		nextButtonPanel = new NextButtonPanel(resource);
 		nextButtonPanel.setPreferredSize(new Dimension(HumanPlayer.PANEL_WIDTH, 50));
 
 		userActionAreaPanel.setPreferredSize(new Dimension(HumanPlayer.PANEL_WIDTH, 50));

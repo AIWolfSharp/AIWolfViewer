@@ -236,7 +236,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		autoButton = new JButton("Auto");
 //		autoButton.addActionListener(this);
 
-		stepActionPanel = new NextButtonPanel();
+		stepActionPanel = new NextButtonPanel(resource);
 		stepActionPanel.setPreferredSize(new Dimension(HumanPlayer.PANEL_WIDTH, ACTION_PANEL_HEIGHT));
 		this.mainPanel.add(stepActionPanel, BorderLayout.SOUTH);
 		
