@@ -320,6 +320,8 @@ public class DefaultResource implements AIWolfResource {
 		}
 	}
 
+	
+	
 	@Override
 	public ImageIcon getImageIcon(Agent agent) {
 		String imageUrl = agentResourceList.get(agent.getAgentIdx())[1];
@@ -371,6 +373,11 @@ public class DefaultResource implements AIWolfResource {
 	@Override
 	public String dayStart(int day) {
 		return "Day "+day+" start";
+	}
+
+	@Override
+	public String convert(String text) {
+		return text;
 	}
 
 }

@@ -3,6 +3,7 @@ package org.aiwolf.ui.res;
 import java.awt.Image;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
@@ -198,6 +199,13 @@ public interface AIWolfResource {
 	 * @return
 	 */
 	String convert(Status status);
+
+	/**
+	 * 
+	 * @param text
+	 * @return
+	 */
+	String convert(String text);
 
 	
 }

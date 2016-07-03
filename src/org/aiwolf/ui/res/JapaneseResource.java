@@ -428,5 +428,10 @@ public class JapaneseResource implements AIWolfResource {
 		return day+"日目の朝が来た";
 	}
 
+	@Override
+	public String convert(String text) {
+		return text;
+	}
+
 
 }
