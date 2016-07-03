@@ -18,6 +18,7 @@ import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
+import org.aiwolf.common.data.Status;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
@@ -171,6 +172,20 @@ public class JapaneseResource implements AIWolfResource {
 		}
 	}
 
+	@Override
+	public String convert(Status status) {
+		if(status == null){
+			return null;
+		}
+		switch(status){
+		case ALIVE:
+			return "生存";
+		case DEAD:
+			return "死亡";
+		default:
+			return null;
+		}
+	}
 
 	@Override
 	public String convert(Topic topic) {
@@ -412,4 +427,6 @@ public class JapaneseResource implements AIWolfResource {
 		}
 		return day+"日目の朝が来た";
 	}
+
+
 }

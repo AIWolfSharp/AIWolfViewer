@@ -19,6 +19,7 @@ import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
+import org.aiwolf.common.data.Status;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
@@ -295,6 +296,16 @@ public class DefaultResource implements AIWolfResource {
 		}
 	}
 
+
+	@Override
+	public String convert(Status status) {
+		if(status != null){
+			return status.toString();
+		}else{
+			return null;
+		}
+	}
+	
 	@Override
 	public String aliveRemain(int agents) {
 		return String.format("%d agents alive", agents);
@@ -361,4 +372,5 @@ public class DefaultResource implements AIWolfResource {
 	public String dayStart(int day) {
 		return "Day "+day+" start";
 	}
+
 }

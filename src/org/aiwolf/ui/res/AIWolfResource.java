@@ -11,6 +11,7 @@ import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
+import org.aiwolf.common.data.Status;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
@@ -190,6 +191,13 @@ public interface AIWolfResource {
 	 * @return 
 	 */
 	String dayStart(int day);
+
+	/**
+	 * 
+	 * @param status
+	 * @return
+	 */
+	String convert(Status status);
 
 	
 }

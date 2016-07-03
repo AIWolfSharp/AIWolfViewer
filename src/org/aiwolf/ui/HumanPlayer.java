@@ -172,6 +172,11 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 //		stepActionPanel.add(skipAllButton);
 		
 	}
+	
+	@Override
+	public String getName(){
+		return "Player";
+	}
 
 	@Override
 	public void initialize(GameInfo gameInfo, GameSetting gameSetting){
