@@ -136,7 +136,7 @@ public class AgentPanel extends JPanel {
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
-		statusLabel.setText(status.toString());
+		statusLabel.setText(resource.convert(status));
 		if(status == Status.DEAD){
 			if(isPlayer){
 				setBackground(PLAYER_DEAD);

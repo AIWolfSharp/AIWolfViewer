@@ -22,8 +22,10 @@ class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 	protected JButton skipAllButton;
 	protected JPanel stepActionPanel;
 	protected boolean isAlwaysAuto = false;
+	protected AIWolfResource resource;
 	
 	public NextButtonPanel(AIWolfResource resource){
+		this.resource = resource;
 
 		nextButton = new JButton(resource.convert("NEXT"));
 		nextButton.addActionListener(this);
@@ -82,12 +84,12 @@ class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 			skip = false;
 			step = false;
 			waitTime = DEFAULT_WAIT_TIME;
-			autoButton.setText("Auto");
+			autoButton.setText(resource.convert("Auto"));
 		}
 		else{
 			step = true;
 			skip = true;
-			autoButton.setText("Stop");
+			autoButton.setText(resource.convert("Stop"));
 		}
 	}
 	

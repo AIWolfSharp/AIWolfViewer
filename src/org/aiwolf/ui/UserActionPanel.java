@@ -134,11 +134,11 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		talkButton = new JButton("Talk");
 		talkButton.setEnabled(false);
 		talkButton.addActionListener(this);
-		skipButton = new JButton(Talk.SKIP);
+		skipButton = new JButton(resource.convert(Talk.SKIP));
 		skipButton.addActionListener(this);
-		overButton = new JButton(Talk.OVER);
+		overButton = new JButton(resource.convert(Talk.OVER));
 		overButton.addActionListener(this);
-		finishButton = new JButton("finish");
+		finishButton = new JButton(resource.convert("finish"));
 		finishButton.addActionListener(this);
 		
 		whisperUtteranceBox = new JComboBox<Item<Topic>>();
@@ -183,6 +183,9 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		}
 		roleBox = new JComboBox<Item<Role>>();
 		for(Role role:Role.values()){
+			if(role == Role.FREEMASON){
+				continue;
+			}
 			roleBox.addItem(new Item<Role>(resource.convert(role), role));
 		}
 		targetBox = new JComboBox<String>();
@@ -314,7 +317,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 			utteranceBox.setVisible(true);
 			whisperUtteranceBox.setVisible(false);
 			actionPanel.setVisible(false);
-			talkButton.setText("Talk("+remainTalk+")");
+			talkButton.setText(resource.convert("Talk")+"("+remainTalk+")");
 			finishButton.setVisible(true);
 	//		remainTalkLabel.setVisible(true);
 	//		remainWhisperLabel.setVisible(false);
@@ -341,7 +344,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		utteranceBox.setVisible(false);
 		whisperUtteranceBox.setVisible(true);
 		actionPanel.setVisible(false);
-		talkButton.setText("Whisper("+remainWhisper+")");
+		talkButton.setText(resource.convert("Whisper")+"("+remainWhisper+")");
 		finishButton.setVisible(false);
 
 //		remainTalkLabel.setVisible(false);
