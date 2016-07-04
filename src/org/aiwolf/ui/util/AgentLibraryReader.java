@@ -61,7 +61,7 @@ public class AgentLibraryReader {
 			if(entry.getName().endsWith("class")){
 				try {
 //						System.out.println(entry.getComment());
-					Class cls = Class.forName(entry.toString().replaceAll("/", ".").replaceAll("\\.class", ""), true, classLoader);
+					Class cls = Class.forName(entry.toString().replaceAll("/", ".").replaceAll("\\.class$", ""), true, classLoader);
 //					System.out.println(cls);
 					if(Player.class.isAssignableFrom(cls)){
 						if((cls.getModifiers() & Modifier.ABSTRACT) == 0){
