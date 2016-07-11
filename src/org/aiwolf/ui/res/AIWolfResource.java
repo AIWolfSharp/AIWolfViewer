@@ -152,6 +152,14 @@ public interface AIWolfResource {
 	String convertWinner(Team winner);
 
 	/**
+	 * get win text
+	 * @param winner
+	 * @return
+	 */
+	String convertWinner(Team winner, Team yourTeam);
+
+
+	/**
 	 * 
 	 * @param agent
 	 * @param role

@@ -453,7 +453,12 @@ public class InformationPanel extends JPanel {
 				color = HumanPlayer.TALK_COLOR;
 			}
 		}
-		inform(resource.convertWinner(winner), color);
+		if(gameInfo != null && gameInfo.getRole() != null){
+			inform(resource.convertWinner(winner, gameInfo.getRole().getTeam()), color);
+		}
+		else{
+			inform(resource.convertWinner(winner), color);
+		}
 		scrollToTail();
 //		dailyTalkPane.setSelectedIndex(dailyTalkPane.getComponentCount()-1);
 //		

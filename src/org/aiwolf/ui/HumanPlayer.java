@@ -363,6 +363,8 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 			winner = Team.WEREWOLF;
 		}
 		infoPanel.setWinner(gameInfo.getDay(), winner);
+//		infoPanel.inform(resource.convertWinner(winner, gameInfo.getRole().getTeam()), HumanPlayer.TALK_COLOR);
+		
 	}
 
 	/**

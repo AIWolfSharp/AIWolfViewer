@@ -336,6 +336,16 @@ public class DefaultResource implements AIWolfResource {
 	public String convertWinner(Team winner){
 		return "Winner:"+convert(winner);
 	}
+	
+	public String convertWinner(Team winner, Team yourTeam){
+		String result = convertWinner(winner)+"\n";
+		if(winner == yourTeam){
+			return result+"You win";
+		}
+		else{
+			return result+"You lose";
+		}
+	}
 
 	@Override
 	public String getFirstText(Agent agent, Role role) {
