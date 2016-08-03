@@ -282,6 +282,7 @@ public class AutoStarter {
 							Agent agent = e.getAgent();
 							String teamName = gameServer.getName(agent);
 							System.out.println("Lost:"+teamName);
+							logger.flush();
 							throw e;
 						}
 						
@@ -293,6 +294,7 @@ public class AutoStarter {
 					if(teamName != null){
 						System.out.println("Lost connection "+teamName);
 					}
+					e.printStackTrace();
 				} catch(SocketTimeoutException e){
 					e.printStackTrace();
 				} catch (IOException e) {

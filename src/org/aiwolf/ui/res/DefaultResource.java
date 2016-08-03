@@ -34,30 +34,30 @@ import org.aiwolf.common.util.Counter;
 public class DefaultResource implements AIWolfResource {
 
 	String[][] agentResourceAry = {
-			{"Oliver", "img/Male_01.png"}, 
+			{"Tatton", "img/Male_01.png"}, 
 			{"Deicle", "img/Male_02.png"}, 
-			{"Lenox", "img/Male_03.png"}, 
-			{"Traise", "img/Male_04.png"}, 
-			{"Traise", "img/Male_05.png"}, 
-			{"Traise", "img/Male_06.png"}, 
-			{"Traise", "img/Male_07.png"}, 
-			{"Traise", "img/Male_08.png"}, 
-			{"Traise", "img/Male_09.png"}, 
-			{"Traise", "img/Male_10.png"}, 
-			{"Traise", "img/Male_11.png"}, 
-			{"Traise", "img/Male_12.png"}, 
-			{"Traise", "img/Female_01.png"}, 
-			{"Traise", "img/Female_02.png"}, 
-			{"Traise", "img/Female_03.png"}, 
-			{"Traise", "img/Female_04.png"}, 
-			{"Traise", "img/Female_05.png"}, 
-			{"Traise", "img/Female_06.png"}, 
-			{"Traise", "img/Female_07.png"}, 
-			{"Traise", "img/Female_08.png"}, 
-			{"Traise", "img/Female_09.png"}, 
-			{"Traise", "img/Female_10.png"}, 
-			{"Traise", "img/Female_11.png"}, 
-			{"Traise", "img/Female_12.png"}, 
+			{"Randal", "img/Male_03.png"}, 
+			{"Dacota", "img/Male_04.png"}, 
+			{"Peace", "img/Male_05.png"}, 
+			{"Joakim", "img/Male_06.png"}, 
+			{"Rodelic", "img/Male_07.png"}, 
+			{"Ivan", "img/Male_08.png"}, 
+			{"Jack", "img/Male_09.png"}, 
+			{"Qu", "img/Male_10.png"}, 
+			{"Tory", "img/Male_11.png"}, 
+			{"Chrif", "img/Male_12.png"}, 
+			{"Norah", "img/Female_01.png"}, 
+			{"Clare", "img/Female_02.png"}, 
+			{"Kino", "img/Female_03.png"}, 
+			{"Mary", "img/Female_04.png"}, 
+			{"Casalina", "img/Female_05.png"}, 
+			{"Denis", "img/Female_06.png"}, 
+			{"Catherine", "img/Female_07.png"}, 
+			{"Eimy", "img/Female_08.png"}, 
+			{"Barbara", "img/Female_09.png"}, 
+			{"Brenda", "img/Female_10.png"}, 
+			{"Meries", "img/Female_11.png"}, 
+			{"Marinda", "img/Female_12.png"}, 
 		};
 	
 //	String[][] agentResourceAry = {
@@ -137,7 +137,7 @@ public class DefaultResource implements AIWolfResource {
 //	};
 	
 	BidiMap<Agent, String> bidiMap = new BidiMap<>();
-	List<String[]> agentResourceList;
+	final List<String[]> agentResourceList;
 		
 	public DefaultResource(){
 		agentResourceList = Arrays.asList(agentResourceAry);

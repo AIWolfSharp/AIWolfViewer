@@ -1,6 +1,5 @@
 package org.aiwolf.ui.res;
 
-import java.awt.Image;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,11 +22,10 @@ import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.util.BidiMap;
-import org.aiwolf.common.util.CalendarTools;
 
 public class JapaneseResource implements AIWolfResource {
 
-	String[][] agentResourceAry = {
+	protected String[][] agentResourceAry = {
 			{"不幸なタットン", "img/Male_01.png"}, 
 			{"学生デイクル", "img/Male_02.png"}, 
 			{"御曹司ランダル", "img/Male_03.png"}, 
@@ -132,7 +130,7 @@ public class JapaneseResource implements AIWolfResource {
 //
 //	
 	
-	protected List<String[]> agentResourceList;
+	final protected List<String[]> agentResourceList;
 	
 	protected BidiMap<Agent, String> bidiMap;
 	
