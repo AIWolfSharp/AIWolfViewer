@@ -5,10 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import javax.swing.JFrame;
 
@@ -37,7 +39,7 @@ public class GUILogViewer {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		GUILogViewer lta = new GUILogViewer("./log/shortshort/aiwolfGame0605836368.log");
+		GUILogViewer lta = new GUILogViewer("../CEDEC2016/game/000.log.gz");
 		lta.start();
 	}
 	
@@ -69,10 +71,7 @@ public class GUILogViewer {
 	private void init() throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Map<Agent, Role> agentRoleMap = new LinkedHashMap<Agent, Role>();
 		contestResource = new ContestResource();
-		
-		FileInputStream is = new FileInputStream(logFile);
-		InputStreamReader in = new InputStreamReader(is, "UTF-8");
-		BufferedReader br = new BufferedReader(in);
+		BufferedReader br = getBufferedReader();
 		String line;
 		while((line = br.readLine()) != null){
 			String[] data = line.split(",");
@@ -93,6 +92,19 @@ public class GUILogViewer {
 		gameLogger = new GameViewer(contestResource, game);
 	}
 
+	private BufferedReader getBufferedReader() throws IOException, FileNotFoundException, UnsupportedEncodingException {
+		InputStream is;
+		if(logFile.getName().endsWith("gz")){
+			is = new GZIPInputStream(new FileInputStream(logFile)); 
+		}
+		else{
+			is = new FileInputStream(logFile);
+		}
+		InputStreamReader in = new InputStreamReader(is, "UTF-8");
+		BufferedReader br = new BufferedReader(in);
+		return br;
+	}
+
 	public void setResource(AIWolfResource resource){
 		gameLogger = new GameViewer(resource, game);
 	}
@@ -103,7 +115,8 @@ public class GUILogViewer {
 	
 	public void start() throws NumberFormatException, IOException{
 
-		BufferedReader br = new BufferedReader(new FileReader(logFile));
+//		BufferedReader br = new BufferedReader(new FileReader(logFile));
+		BufferedReader br = getBufferedReader();
 		String line;
 		while((line = br.readLine()) != null){
 			gameLogger.log(line);
