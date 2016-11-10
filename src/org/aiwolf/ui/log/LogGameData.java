@@ -34,6 +34,11 @@ class LogGameData extends GameData {
 		if(executed != null){
 			gameData.agentStatusMap.put(executed, Status.DEAD);
 		}
+		for (Agent a : deadAgentList) {
+			gameData.agentStatusMap.put(a, Status.DEAD);
+		}
+		
+		// TODO attackedの仕様変更により以下は無くなる予定
 		if(attacked != null){
 			gameData.agentStatusMap.put(attacked, Status.DEAD);
 		}
