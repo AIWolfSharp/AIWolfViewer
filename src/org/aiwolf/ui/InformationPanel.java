@@ -148,9 +148,8 @@ public class InformationPanel extends JPanel {
 			agentPanelMap.get(agent).setRole(gameInfo.getRoleMap().get(agent));
 		}
 
-		if(gameInfo.getAttackedAgent() != null){
-//			agentPanelMap.get(gameInfo.getAttackedAgent()).setInformation("Attacked(day"+gameInfo.getDay()+")");
-			agentPanelMap.get(gameInfo.getAttackedAgent()).setAttacked(gameInfo.getDay());
+		for (Agent a : gameInfo.getLastDeadAgentList()) {
+			agentPanelMap.get(a).setAttacked(gameInfo.getDay());
 		}
 		if(gameInfo.getExecutedAgent() != null){
 			agentPanelMap.get(gameInfo.getExecutedAgent()).setExecuted(gameInfo.getDay());
@@ -376,11 +375,13 @@ public class InformationPanel extends JPanel {
 //			talkPanel.addAgentInformation(day, gameInfo.getGuardedAgent(), resource.convertGuarded(gameInfo.getGuardedAgent()));
 		}
 
-		if(gameInfo.getAttackedAgent() != null){
-			inform(resource.convertAttacked(gameInfo.getAttackedAgent()), WHISPER_COLOR, gameInfo.getAttackedAgent());
+		if (!gameInfo.getLastDeadAgentList().isEmpty()) {
+			for (Agent a : gameInfo.getLastDeadAgentList()) {
+				inform(resource.convertAttacked(a), WHISPER_COLOR, a);
+			}
 		}
 		else if(gameInfo.getDay() > 1){
-			inform(resource.convertAttacked(gameInfo.getAttackedAgent()), PLAYER_COLOR);
+			inform(resource.convertAttacked(null), PLAYER_COLOR);
 		}
 //		addText(day, attackText.toString(), HumanPlayer.FRIEND_COLOR);
 		
