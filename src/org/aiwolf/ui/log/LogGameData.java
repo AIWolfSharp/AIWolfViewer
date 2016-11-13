@@ -38,10 +38,6 @@ class LogGameData extends GameData {
 			gameData.agentStatusMap.put(a, Status.DEAD);
 		}
 		
-		// TODO attackedの仕様変更により以下は無くなる予定
-		if(attacked != null){
-			gameData.agentStatusMap.put(attacked, Status.DEAD);
-		}
 		gameData.agentRoleMap = new HashMap<Agent, Role>(agentRoleMap);
 		
 		gameData.dayBefore = this;

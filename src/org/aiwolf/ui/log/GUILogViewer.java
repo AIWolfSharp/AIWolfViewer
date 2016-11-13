@@ -3,7 +3,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -161,9 +160,6 @@ public class GUILogViewer {
 				if(data[3].equals("true")){
 					Agent target = Agent.getAgent(Integer.parseInt(data[2]));
 					gameData.addLastDeadAgent(target);
-
-					// TODO GameData.attackedの仕様変更のため以下はなくなる予定
-					gameData.setAttackedTarget(target);
 				}
 			}
 			else if(data[1].equals("result")){
