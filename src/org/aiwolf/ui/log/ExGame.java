@@ -26,7 +26,7 @@ class ExGame extends AIWolfGame{
 	}
 
 	public void setAttacked(Agent agent){
-		gameData.addDeadAgent(agent);
+		gameData.addLastDeadAgent(agent);
 
 		// TODO GameData.attackedの仕様変更のため以下はなくなる予定
 		this.gameData.setAttackedTarget(agent);

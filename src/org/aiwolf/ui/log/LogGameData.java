@@ -34,7 +34,7 @@ class LogGameData extends GameData {
 		if(executed != null){
 			gameData.agentStatusMap.put(executed, Status.DEAD);
 		}
-		for (Agent a : deadAgentList) {
+		for (Agent a : lastDeadAgentList) {
 			gameData.agentStatusMap.put(a, Status.DEAD);
 		}
 		

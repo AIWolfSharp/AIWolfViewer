@@ -160,7 +160,7 @@ public class GUILogViewer {
 			else if(data[1].equals("attack")){
 				if(data[3].equals("true")){
 					Agent target = Agent.getAgent(Integer.parseInt(data[2]));
-					gameData.addDeadAgent(target);
+					gameData.addLastDeadAgent(target);
 
 					// TODO GameData.attackedの仕様変更のため以下はなくなる予定
 					gameData.setAttackedTarget(target);
