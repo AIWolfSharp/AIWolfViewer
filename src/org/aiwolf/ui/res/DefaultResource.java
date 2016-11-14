@@ -289,11 +289,11 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertExecuted(Agent executedAgent) {
-		if(executedAgent == null){
-			return "No one executed";
+	public String convertBanished(Agent banishedAgent) {
+		if(banishedAgent == null){
+			return "No one banished";
 		}
-		return String.format("%s was executed", convert(executedAgent));
+		return String.format("%s was banished", convert(banishedAgent));
 	}
 
 	@Override
@@ -403,8 +403,8 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertExecutedDay(int day) {
-		return "Executed@"+day;
+	public String convertBanishedDay(int day) {
+		return "Banished@" + day;
 	}
 
 	@Override

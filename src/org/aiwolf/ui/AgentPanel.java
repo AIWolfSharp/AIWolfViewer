@@ -200,7 +200,7 @@ public class AgentPanel extends JPanel {
 	}
 
 
-	public void setExecuted(int day) {
-		setInformation(resource.convertExecutedDay(day));
+	public void setBanished(int day) {
+		setInformation(resource.convertBanishedDay(day));
 	}
 }

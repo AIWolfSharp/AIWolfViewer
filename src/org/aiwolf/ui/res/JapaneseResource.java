@@ -374,8 +374,8 @@ public class JapaneseResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertExecuted(Agent executedAgent) {
-		return String.format("%sを処刑した", convert(executedAgent));
+	public String convertBanished(Agent banishedAgent) {
+		return String.format("%sを追放した", convert(banishedAgent));
 	}
 
 	@Override
@@ -450,14 +450,14 @@ public class JapaneseResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertExecutedDay(int day) {
-		return day+"日目に処刑";
+	public String convertBanishedDay(int day) {
+		return day + "日目に追放";
 	}
 	
 	@Override
 	public String dayStart(int day) {
 		if(day == 0){
-			return "村人による人狼対策会議が始まった．\n今日は，処刑の投票及び襲撃は行われない．\n占い師は占うことができる．";
+			return "村人による人狼対策会議が始まった．\n今日は，追放の投票及び襲撃は行われない．\n占い師は占うことができる．";
 		}
 		return day+"日目の朝が来た";
 	}

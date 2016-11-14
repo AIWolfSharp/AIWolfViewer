@@ -21,8 +21,8 @@ class ExGame extends AIWolfGame{
 		this.gameData = gameData;
 	}
 
-	public void setExecuted(Agent agent){
-		this.gameData.setExecuteTarget(agent);
+	public void setBanished(Agent agent) {
+		this.gameData.setBanishedTarget(agent);
 	}
 
 	public void setAttacked(Agent agent){

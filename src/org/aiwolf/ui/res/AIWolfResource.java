@@ -98,10 +98,10 @@ public interface AIWolfResource {
 
 	/**
 	 * 
-	 * @param executedAgent
+	 * @param banishedAgent
 	 * @return
 	 */
-	String convertExecuted(Agent executedAgent);
+	String convertBanished(Agent banishedAgent);
 
 	/**
 	 * 
@@ -193,7 +193,7 @@ public interface AIWolfResource {
 	 * @param day
 	 * @return
 	 */
-	String convertExecutedDay(int day);
+	String convertBanishedDay(int day);
 
 	/**
 	 * @param 
