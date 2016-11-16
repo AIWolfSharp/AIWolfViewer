@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Utterance;
@@ -33,7 +34,6 @@ import org.aiwolf.common.data.Team;
 import org.aiwolf.common.net.GameInfo;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.common.util.CalendarTools;
-import org.aiwolf.kajiClient.player.KajiRoleAssignPlayer;
 import org.aiwolf.server.AIWolfGame;
 import org.aiwolf.server.GameData;
 import org.aiwolf.server.net.DirectConnectServer;
@@ -60,7 +60,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		
 		List<Player> list = new ArrayList<Player>();
 		for(int i = 0; i < 13; i++){
-			list.add(new KajiRoleAssignPlayer());
+			list.add(new SampleRoleAssignPlayer());
 		}
 		String logDir = "./log";
 		

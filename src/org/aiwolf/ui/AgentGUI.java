@@ -17,7 +17,6 @@ import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.net.GameInfo;
 import org.aiwolf.common.net.GameSetting;
-import org.aiwolf.kajiClient.player.KajiRoleAssignPlayer;
 import org.aiwolf.server.bin.RoleRequestStarter;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.DefaultResource;
@@ -42,7 +41,7 @@ class AgentGUI extends HumanPlayer implements ActionListener{
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		Role role = null;
 //		Role role = Role.WEREWOLF;
-		Player player = new KajiRoleAssignPlayer();
+		Player player = new SampleRoleAssignPlayer();
 		AgentGUI gui = new AgentGUI(new JapaneseResource(), player);
 //		gui.setVisible(true);
 		String defaultClassName = SampleRoleAssignPlayer.class.getName();
