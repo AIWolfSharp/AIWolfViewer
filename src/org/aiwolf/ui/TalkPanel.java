@@ -31,7 +31,7 @@ import javax.swing.border.TitledBorder;
 import javax.xml.ws.handler.MessageContext.Scope;
 
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Utterance;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
@@ -291,7 +291,7 @@ public class TalkPanel extends JPanel {
 	 * @return
 	 */
 	public JPanel createTalkPanel(Talk talk, TalkType talkType) {
-		Utterance utterance = new Utterance(talk.getText());
+		Content utterance = new Content(talk.getText());
 
 		JPanel talkPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();

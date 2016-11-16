@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Utterance;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
@@ -260,7 +260,7 @@ public class JapaneseResource implements AIWolfResource {
 	
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Utterance utterance = new Utterance(whisper.getText());
+		Content utterance = new Content(whisper.getText());
 		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
 			return String.format("%d日の%s(%03d)に賛成する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
@@ -301,7 +301,7 @@ public class JapaneseResource implements AIWolfResource {
 			return "特に話すことはない";
 		}
 		try{
-			Utterance utterance = new Utterance(talk.getText());
+			Content utterance = new Content(talk.getText());
 			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
 				return String.format("%sを襲撃する", convert(utterance.getTarget()));

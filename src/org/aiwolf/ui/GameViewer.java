@@ -23,7 +23,7 @@ import javax.swing.UIManager;
 import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Utterance;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Player;
 import org.aiwolf.common.data.Role;
@@ -270,7 +270,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		infoPanel.talkPanel.scrollToTail();
 		
 		for(Talk talk:gameInfo.getTalkList()){
-			Utterance u = new Utterance(talk.getText());
+			Content u = new Content(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
 				infoPanel.setComingOut(talk.getAgent(), u.getRole());
 			}

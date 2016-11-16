@@ -24,7 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Utterance;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
@@ -209,7 +209,7 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Utterance u = new Utterance(talk.getText());
+			Content u = new Content(talk.getText());
 			
 			eventPanel.clearArrow();
 			if(talkType == TalkType.TALK){

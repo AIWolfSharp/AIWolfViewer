@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 
 import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Utterance;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
