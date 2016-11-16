@@ -195,7 +195,7 @@ public class InformationPanel extends JPanel {
 	 * @return
 	 */
 	public boolean updateTalk(int day, Talk talk, TalkType talkType) {
-		if(!talk.getContent().equals(Talk.OVER) && !talk.getContent().equals(Talk.SKIP)){
+		if(!talk.getText().equals(Talk.OVER) && !talk.getText().equals(Talk.SKIP)){
 //		if(true){
 			talkPanel.addTalk(day, talk, talkType);
 			if(talkType == TalkType.TALK){
@@ -209,7 +209,7 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Utterance u = new Utterance(talk.getContent());
+			Utterance u = new Utterance(talk.getText());
 			
 			eventPanel.clearArrow();
 			if(talkType == TalkType.TALK){

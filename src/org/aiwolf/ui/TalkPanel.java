@@ -291,7 +291,7 @@ public class TalkPanel extends JPanel {
 	 * @return
 	 */
 	public JPanel createTalkPanel(Talk talk, TalkType talkType) {
-		Utterance utterance = new Utterance(talk.getContent());
+		Utterance utterance = new Utterance(talk.getText());
 
 		JPanel talkPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();
@@ -421,7 +421,7 @@ public class TalkPanel extends JPanel {
 		for(int i = lastTalkIdx; i < talkList.size(); i++){
 			Talk talk = talkList.get(i);
 //			if(!talk.getContent().equals(Talk.OVER)){
-			if(!talk.getContent().equals(Talk.OVER) && !talk.getContent().equals(Talk.SKIP)){
+			if(!talk.getText().equals(Talk.OVER) && !talk.getText().equals(Talk.SKIP)){
 				addTalk(day, talk, TalkType.TALK);
 //				addText(day, text);
 //				talkArea.append(text);
@@ -448,7 +448,7 @@ public class TalkPanel extends JPanel {
 		boolean isUpdated = false;
 		for(int i = lastWhisperIdx; i < whisperList.size(); i++){
 			Talk whisper = whisperList.get(i);
-			if(!whisper.getContent().equals(Talk.OVER) && !whisper.getContent().equals(Talk.SKIP)){
+			if(!whisper.getText().equals(Talk.OVER) && !whisper.getText().equals(Talk.SKIP)){
 				addTalk(day, whisper, TalkType.WHISPER);
 				isUpdated = true;
 			}

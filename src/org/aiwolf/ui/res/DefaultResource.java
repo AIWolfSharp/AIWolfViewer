@@ -174,7 +174,7 @@ public class DefaultResource implements AIWolfResource {
 			return "Over";
 		}
 		try{
-			Utterance utterance = new Utterance(talk.getContent());
+			Utterance utterance = new Utterance(talk.getText());
 			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
 				return String.format("Attack %s", convert(utterance.getTarget()));
@@ -203,16 +203,16 @@ public class DefaultResource implements AIWolfResource {
 			else if(topic == Topic.VOTE){
 				return String.format("I vote to %s", convert(utterance.getTarget()));
 			}
-			return talk.getContent();
+			return talk.getText();
 		}catch(Exception e){
-			return talk.getContent();
+			return talk.getText();
 		}
 //		return talk.getContent();
 	}
 
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Utterance utterance = new Utterance(whisper.getContent());
+		Utterance utterance = new Utterance(whisper.getText());
 		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
 			return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
@@ -241,7 +241,7 @@ public class DefaultResource implements AIWolfResource {
 		else if(topic == Topic.ATTACK){
 			return String.format("I want to attack %s", convert(utterance.getTarget()));
 		}
-		return whisper.getContent();
+		return whisper.getText();
 //		return whisper.getContent();
 	}
 

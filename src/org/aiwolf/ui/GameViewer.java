@@ -270,7 +270,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		infoPanel.talkPanel.scrollToTail();
 		
 		for(Talk talk:gameInfo.getTalkList()){
-			Utterance u = new Utterance(talk.getContent());
+			Utterance u = new Utterance(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
 				infoPanel.setComingOut(talk.getAgent(), u.getRole());
 			}
@@ -299,7 +299,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		for(int i = infoPanel.getLastTalkIdx(); i < gameInfo.getTalkList().size(); i++){
 			Talk talk = gameInfo.getTalkList().get(i);
 			
-			if(lastTalk != null && lastTalk.getAgent() == talk.getAgent() && lastTalk.getContent().equals(talk.getContent()) && lastTalk.getDay() == talk.getDay()){
+			if(lastTalk != null && lastTalk.getAgent() == talk.getAgent() && lastTalk.getText().equals(talk.getText()) && lastTalk.getDay() == talk.getDay()){
 				continue;
 			}
 			boolean isUpdated = infoPanel.updateTalk(gameInfo.getDay(), talk, TalkType.TALK);
@@ -316,7 +316,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 			Talk whisper = gameInfo.getWhisperList().get(i);
 
 			if(lastWhisper != null){
-				if(lastWhisper.getAgent() == whisper.getAgent() && lastWhisper.getContent().equals(whisper.getContent()) && lastWhisper.getDay() == whisper.getDay()){
+				if(lastWhisper.getAgent() == whisper.getAgent() && lastWhisper.getText().equals(whisper.getText()) && lastWhisper.getDay() == whisper.getDay()){
 					continue;
 				}
 			}
