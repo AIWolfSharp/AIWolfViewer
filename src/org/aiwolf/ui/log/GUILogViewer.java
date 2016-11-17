@@ -134,7 +134,7 @@ public class GUILogViewer {
 			}
 			else if(data[1].equals("whisper")){
 				Talk talk = toTalk(data);
-				gameData.addWisper(talk.getAgent(), talk);
+				gameData.addWhisper(talk.getAgent(), talk);
 			}
 			else if(data[1].equals("divine")){
 				Judge divine = toJudge(data);
