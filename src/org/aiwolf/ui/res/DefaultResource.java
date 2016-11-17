@@ -174,34 +174,34 @@ public class DefaultResource implements AIWolfResource {
 			return "Over";
 		}
 		try{
-			Content content = Content.parse(talk.getText());
-			Topic topic = content.getTopic();
+			Content utterance = new Content(talk.getText());
+			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
-				return String.format("Attack %s", convert(content.getTarget()));
+				return String.format("Attack %s", convert(utterance.getTarget()));
 			}
 			else if(topic == Topic.AGREE){
-				return String.format("I agree to %03d at day %d", content.getTalkID(), content.getTalkDay());
+				return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
 			}
 			else if(topic == Topic.COMINGOUT){
-				return String.format("I am %s", convert(content.getRole()));
+				return String.format("I am %s", convert(utterance.getRole()));
 			}
 			else if(topic == Topic.DISAGREE){
-				return String.format("I disagree to %03d at day %d", content.getTalkID(), content.getTalkDay());
+				return String.format("I disagree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
 			}
 			else if(topic == Topic.DIVINED){
-				return String.format("Result of Devine:%s is %s", convert(content.getTarget()), convert(content.getResult()));
+				return String.format("Result of Devine:%s is %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 			}
 			else if(topic == Topic.ESTIMATE){
-				return String.format("I estimate that %s is %s", convert(content.getTarget()), convert(content.getRole()));
+				return String.format("I estimate that %s is %s", convert(utterance.getTarget()), convert(utterance.getRole()));
 			}
 			else if(topic == Topic.GUARDED){
-				return String.format("I guarded %s", convert(content.getTarget()));
+				return String.format("I guarded %s", convert(utterance.getTarget()));
 			}
 			else if(topic == Topic.INQUESTED){
-				return String.format("Result of Inquest:%s is %s", convert(content.getTarget()), convert(content.getResult()));
+				return String.format("Result of Inquest:%s is %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 			}
 			else if(topic == Topic.VOTE){
-				return String.format("I vote to %s", convert(content.getTarget()));
+				return String.format("I vote to %s", convert(utterance.getTarget()));
 			}
 			return talk.getText();
 		}catch(Exception e){
@@ -212,34 +212,34 @@ public class DefaultResource implements AIWolfResource {
 
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Content content = Content.parse(whisper.getText());
-		Topic topic = content.getTopic();
+		Content utterance = new Content(whisper.getText());
+		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
-			return String.format("I agree to %03d at day %d", content.getTalkID(), content.getTalkDay());
+			return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
 		}
 		else if(topic == Topic.COMINGOUT){
-			return String.format("I will comingout as %s", convert(content.getRole()));
+			return String.format("I will comingout as %s", convert(utterance.getRole()));
 		}
 		else if(topic == Topic.DISAGREE){
-			return String.format("I disagree to %03d at day %d", content.getTalkID(), content.getTalkDay());
+			return String.format("I disagree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
 		}
 		else if(topic == Topic.DIVINED){
-			return String.format("I will lie that I divine %s as %s", convert(content.getTarget()), convert(content.getResult()));
+			return String.format("I will lie that I divine %s as %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 		}
 		else if(topic == Topic.ESTIMATE){
-			return String.format("I estimate %s is %s", convert(content.getTarget()), convert(content.getRole()));
+			return String.format("I estimate %s is %s", convert(utterance.getTarget()), convert(utterance.getRole()));
 		}
 		else if(topic == Topic.GUARDED){
-			return String.format("I will lie that I guarded %s", convert(content.getTarget()));
+			return String.format("I will lie that I guarded %s", convert(utterance.getTarget()));
 		}
 		else if(topic == Topic.INQUESTED){
-			return String.format("I will lie that %s is inquested as %s", convert(content.getTarget()), convert(content.getResult()));
+			return String.format("I will lie that %s is inquested as %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 		}
 		else if(topic == Topic.VOTE){
-			return String.format("I vote %s", convert(content.getTarget()));
+			return String.format("I vote %s", convert(utterance.getTarget()));
 		}
 		else if(topic == Topic.ATTACK){
-			return String.format("I want to attack %s", convert(content.getTarget()));
+			return String.format("I want to attack %s", convert(utterance.getTarget()));
 		}
 		return whisper.getText();
 //		return whisper.getContent();

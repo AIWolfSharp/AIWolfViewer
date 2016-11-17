@@ -270,7 +270,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		infoPanel.talkPanel.scrollToTail();
 		
 		for(Talk talk:gameInfo.getTalkList()){
-			Content u = Content.parse(talk.getText());
+			Content u = new Content(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
 				infoPanel.setComingOut(talk.getAgent(), u.getRole());
 			}

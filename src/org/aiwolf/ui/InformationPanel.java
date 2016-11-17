@@ -209,7 +209,7 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Content u = Content.parse(talk.getText());
+			Content u = new Content(talk.getText());
 			
 			eventPanel.clearArrow();
 			if(talkType == TalkType.TALK){
