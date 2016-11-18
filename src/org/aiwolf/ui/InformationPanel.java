@@ -25,7 +25,7 @@ import javax.swing.border.LineBorder;
 
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
-import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
+import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Status;

@@ -21,7 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
-import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
+import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;

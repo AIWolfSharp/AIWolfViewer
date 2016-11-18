@@ -10,7 +10,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
+import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
