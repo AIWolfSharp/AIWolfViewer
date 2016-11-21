@@ -19,7 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.aiwolf.client.lib.TemplateTalkFactory;
-import org.aiwolf.client.lib.TalkType;
+import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
 import org.aiwolf.client.lib.TemplateWhisperFactory;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.common.data.Agent;
