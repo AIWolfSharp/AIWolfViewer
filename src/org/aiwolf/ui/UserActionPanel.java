@@ -18,10 +18,18 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.aiwolf.client.lib.TemplateTalkFactory;
-import org.aiwolf.client.lib.TemplateTalkFactory.TalkType;
-import org.aiwolf.client.lib.TemplateWhisperFactory;
+import org.aiwolf.client.lib.AgreeContentBuilder;
+import org.aiwolf.client.lib.AttackContentBuilder;
+import org.aiwolf.client.lib.ComingoutContentBuilder;
+import org.aiwolf.client.lib.Content;
+import org.aiwolf.client.lib.DisagreeContentBuilder;
+import org.aiwolf.client.lib.DivineContentBuilder;
+import org.aiwolf.client.lib.EstimateContentBuilder;
+import org.aiwolf.client.lib.GuardContentBuilder;
+import org.aiwolf.client.lib.InquestContentBuilder;
+import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
+import org.aiwolf.client.lib.VoteContentBuilder;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
@@ -310,7 +318,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 
 	public void talk(){
 		if(dailyFinishMap.containsKey(gameInfo.getDay()) && dailyFinishMap.get(gameInfo.getDay())){
-			talk = TemplateTalkFactory.over();
+			talk = Talk.OVER;
 		}
 		else{
 			talk = null;
@@ -530,13 +538,13 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 			}
 		}
 		else if(e.getSource() == skipButton){
-			talk = TemplateTalkFactory.skip();
+			talk = Talk.SKIP;
 		}
 		else if(e.getSource() == overButton){
-			talk = TemplateTalkFactory.over();
+			talk = Talk.OVER;
 		}
 		else if(e.getSource() == finishButton){
-			talk = TemplateTalkFactory.over();
+			talk = Talk.OVER;
 			dailyFinishMap.put(gameInfo.getDay(), true);
 		}
 		else if(e.getSource() == actionButton){
@@ -553,28 +561,28 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 	protected void createTalk() {
 		Topic item = ((Item<Topic>)utteranceBox.getSelectedItem()).getValue();
 		if(item == Topic.AGREE){
-			talk = TemplateTalkFactory.agree(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>)talkIdBox.getSelectedItem()).getValue());
+			talk = new Content(new AgreeContentBuilder(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.DISAGREE){
-			talk = TemplateTalkFactory.disagree(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>)talkIdBox.getSelectedItem()).getValue());
+			talk = new Content(new DisagreeContentBuilder(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.COMINGOUT){
-			talk = TemplateTalkFactory.comingout(resource.convertToAgent((String)targetBox.getSelectedItem()), (Role)((Item)(roleBox.getSelectedItem())).getValue());
+			talk = new Content(new ComingoutContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.ESTIMATE){
-			talk = TemplateTalkFactory.estimate(resource.convertToAgent((String)targetBox.getSelectedItem()), (Role)((Item)(roleBox.getSelectedItem())).getValue());
+			talk = new Content(new EstimateContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.GUARDED){
-			talk = TemplateTalkFactory.guarded(resource.convertToAgent((String)targetBox.getSelectedItem()));
+			talk = new Content(new GuardContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.DIVINED){
-			talk = TemplateTalkFactory.divined(resource.convertToAgent((String)targetBox.getSelectedItem()), (Species)((Item)speciesBox.getSelectedItem()).getValue());
+			talk = new Content(new DivineContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.INQUESTED){
-			talk = TemplateTalkFactory.inquested(resource.convertToAgent((String)targetBox.getSelectedItem()), (Species)((Item)speciesBox.getSelectedItem()).getValue());
+			talk = new Content(new InquestContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.VOTE){
-			talk = TemplateTalkFactory.vote(resource.convertToAgent((String)targetBox.getSelectedItem()));
+			talk = new Content(new VoteContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 	}
 
@@ -582,47 +590,46 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 	 * 
 	 */
 	protected void createWhisper() {
-		TemplateWhisperFactory whisperFactory = new TemplateWhisperFactory();
 //		String item = (String) whisperUtteranceBox.getSelectedItem();
 		Topic item = ((Item<Topic>)whisperUtteranceBox.getSelectedItem()).getValue();
 		if(item == Topic.AGREE){
 			TalkType talkType = (TalkType) agreeTargetBox.getSelectedItem();
 			if(talkType == TalkType.TALK){
-				talk = TemplateWhisperFactory.agree(talkType, dayBox.getSelectedIndex(), ((Item<Integer>)talkIdBox.getSelectedItem()).getValue());
+				talk = new Content(new AgreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 			}
 			else{
-				talk = TemplateWhisperFactory.agree(talkType, dayBox.getSelectedIndex(), ((Item<Integer>)whisperIdBox.getSelectedItem()).getValue());
+				talk = new Content(new AgreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
 			}
 		}
 		else if(item == Topic.DISAGREE){
 			TalkType talkType = (TalkType) agreeTargetBox.getSelectedItem();
 			if(talkType == TalkType.TALK){
-				talk = TemplateWhisperFactory.disagree(talkType, dayBox.getSelectedIndex(), ((Item<Integer>)talkIdBox.getSelectedItem()).getValue());
+				talk = new Content(new DisagreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 			}
 			else{
-				talk = TemplateWhisperFactory.disagree(talkType, dayBox.getSelectedIndex(), ((Item<Integer>)whisperIdBox.getSelectedItem()).getValue());
+				talk = new Content(new DisagreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
 			}
 		}
 		else if(item == Topic.COMINGOUT){
-			talk = TemplateWhisperFactory.comingout(resource.convertToAgent((String)targetBox.getSelectedItem()), (Role)((Item)(roleBox.getSelectedItem())).getValue());
+			talk = new Content(new ComingoutContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.ESTIMATE){
-			talk = TemplateWhisperFactory.estimate(resource.convertToAgent((String)targetBox.getSelectedItem()), (Role)((Item)(roleBox.getSelectedItem())).getValue());
+			talk = new Content(new EstimateContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.GUARDED){
-			talk = TemplateWhisperFactory.guarded(resource.convertToAgent((String)targetBox.getSelectedItem()));
+			talk = new Content(new GuardContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.DIVINED){
-			talk = TemplateWhisperFactory.divined(resource.convertToAgent((String)targetBox.getSelectedItem()), (Species)((Item)speciesBox.getSelectedItem()).getValue());
+			talk = new Content(new DivineContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.INQUESTED){
-			talk = TemplateWhisperFactory.inquested(resource.convertToAgent((String)targetBox.getSelectedItem()), (Species)((Item)speciesBox.getSelectedItem()).getValue());
+			talk = new Content(new InquestContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.VOTE){
-			talk = TemplateWhisperFactory.vote(resource.convertToAgent((String)targetBox.getSelectedItem()));
+			talk = new Content(new VoteContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.ATTACK){
-			talk = TemplateWhisperFactory.attack(resource.convertToAgent((String)targetBox.getSelectedItem()));
+			talk = new Content(new AttackContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 //		
 //		
