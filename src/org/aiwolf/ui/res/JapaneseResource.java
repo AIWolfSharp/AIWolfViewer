@@ -374,8 +374,8 @@ public class JapaneseResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertBanished(Agent banishedAgent) {
-		return String.format("%sを追放した", convert(banishedAgent));
+	public String convertExecuted(Agent exectedAgent) {
+		return String.format("%sを追放した", convert(exectedAgent));
 	}
 
 	@Override
@@ -450,7 +450,7 @@ public class JapaneseResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convertBanishedDay(int day) {
+	public String convertExecutedDay(int day) {
 		return day + "日目に追放";
 	}
 	

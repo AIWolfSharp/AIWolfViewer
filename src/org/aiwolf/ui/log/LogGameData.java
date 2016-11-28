@@ -31,8 +31,8 @@ class LogGameData extends GameData {
 		
 		gameData.day = this.day+1;
 		gameData.agentStatusMap = new HashMap<Agent, Status>(agentStatusMap);
-		if(banished != null){
-			gameData.agentStatusMap.put(banished, Status.DEAD);
+		if(executed != null){
+			gameData.agentStatusMap.put(executed, Status.DEAD);
 		}
 		for (Agent a : lastDeadAgentList) {
 			gameData.agentStatusMap.put(a, Status.DEAD);
