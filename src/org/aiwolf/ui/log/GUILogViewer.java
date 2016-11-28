@@ -152,9 +152,9 @@ public class GUILogViewer {
 				Vote vote = toVote(data);
 				gameData.addAttack(vote);
 			}
-			else if (data[1].equals("banish")) {
+			else if (data[1].equals("execute")) {
 				Agent target = Agent.getAgent(Integer.parseInt(data[2]));
-				gameData.setBanishedTarget(target);
+				gameData.setExecutedTarget(target);
 			}
 			else if(data[1].equals("attack")){
 				if(data[3].equals("true")){

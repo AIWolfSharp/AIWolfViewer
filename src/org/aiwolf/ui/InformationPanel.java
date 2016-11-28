@@ -151,8 +151,8 @@ public class InformationPanel extends JPanel {
 		for (Agent a : gameInfo.getLastDeadAgentList()) {
 			agentPanelMap.get(a).setAttacked(gameInfo.getDay());
 		}
-		if (gameInfo.getBanishedAgent() != null) {
-			agentPanelMap.get(gameInfo.getBanishedAgent()).setBanished(gameInfo.getDay());
+		if (gameInfo.getExecutedAgent() != null) {
+			agentPanelMap.get(gameInfo.getExecutedAgent()).setExecuted(gameInfo.getDay());
 		}
 	
 		talkPanel.update(gameInfo);
@@ -317,8 +317,8 @@ public class InformationPanel extends JPanel {
 				waitListener.waitForNext();
 			}
 		}
-		if (gameInfo.getBanishedAgent() != null) {
-			inform(resource.convertBanished(gameInfo.getBanishedAgent()), ACTION_COLOR, gameInfo.getBanishedAgent());
+		if (gameInfo.getExecutedAgent() != null) {
+			inform(resource.convertExecuted(gameInfo.getExecutedAgent()), ACTION_COLOR, gameInfo.getExecutedAgent());
 		}
 		eventPanel.clearArrow();
 		
