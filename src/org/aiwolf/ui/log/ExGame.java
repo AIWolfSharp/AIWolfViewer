@@ -27,6 +27,7 @@ class ExGame extends AIWolfGame{
 
 	public void setAttacked(Agent agent){
 		gameData.addLastDeadAgent(agent);
+		gameData.setAttackedDead(agent);
 	}
 
 }

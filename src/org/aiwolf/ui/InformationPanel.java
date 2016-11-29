@@ -148,9 +148,10 @@ public class InformationPanel extends JPanel {
 			agentPanelMap.get(agent).setRole(gameInfo.getRoleMap().get(agent));
 		}
 
-		for (Agent a : gameInfo.getLastDeadAgentList()) {
-			agentPanelMap.get(a).setAttacked(gameInfo.getDay());
+		if (gameInfo.getAttackedDead() != null) {
+			agentPanelMap.get(gameInfo.getAttackedDead()).setAttacked(gameInfo.getDay());
 		}
+		// TODO 呪殺された」エージェントも必要？
 		if (gameInfo.getExecutedAgent() != null) {
 			agentPanelMap.get(gameInfo.getExecutedAgent()).setExecuted(gameInfo.getDay());
 		}
@@ -375,10 +376,8 @@ public class InformationPanel extends JPanel {
 //			talkPanel.addAgentInformation(day, gameInfo.getGuardedAgent(), resource.convertGuarded(gameInfo.getGuardedAgent()));
 		}
 
-		if (!gameInfo.getLastDeadAgentList().isEmpty()) {
-			for (Agent a : gameInfo.getLastDeadAgentList()) {
-				inform(resource.convertAttacked(a), WHISPER_COLOR, a);
-			}
+		if (gameInfo.getAttackedDead() != null) {
+			inform(resource.convertAttacked(gameInfo.getAttackedDead()), WHISPER_COLOR, gameInfo.getAttackedDead());
 		}
 		else if(gameInfo.getDay() > 1){
 			inform(resource.convertAttacked(null), PLAYER_COLOR);
