@@ -376,11 +376,8 @@ public class InformationPanel extends JPanel {
 //			talkPanel.addAgentInformation(day, gameInfo.getGuardedAgent(), resource.convertGuarded(gameInfo.getGuardedAgent()));
 		}
 
-		// TODO 妖狐導入されたので修正必要
-		if (!gameInfo.getLastDeadAgentList().isEmpty()) {
-			for (Agent a : gameInfo.getLastDeadAgentList()) {
-				inform(resource.convertAttacked(a), WHISPER_COLOR, a);
-			}
+		if (gameInfo.getAttackedDead() != null) {
+			inform(resource.convertAttacked(gameInfo.getAttackedDead()), WHISPER_COLOR, gameInfo.getAttackedDead());
 		}
 		else if(gameInfo.getDay() > 1){
 			inform(resource.convertAttacked(null), PLAYER_COLOR);
