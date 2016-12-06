@@ -148,10 +148,11 @@ public class InformationPanel extends JPanel {
 			agentPanelMap.get(agent).setRole(gameInfo.getRoleMap().get(agent));
 		}
 
-		if (gameInfo.getAttackedDead() != null) {
-			agentPanelMap.get(gameInfo.getAttackedDead()).setAttacked(gameInfo.getDay());
+		for (Agent agent : gameInfo.getLastDeadAgentList()) {
+			if (agent != gameInfo.getExecutedAgent()) {
+				agentPanelMap.get(agent).setAttacked(gameInfo.getDay()); // TODO 妖狐考慮
+			}
 		}
-		// TODO 呪殺された」エージェントも必要？
 		if (gameInfo.getExecutedAgent() != null) {
 			agentPanelMap.get(gameInfo.getExecutedAgent()).setExecuted(gameInfo.getDay());
 		}
