@@ -15,6 +15,11 @@ import org.aiwolf.common.data.Status;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.ui.res.AIWolfResource;
 
+/**
+ * Panel to show the Agent Status
+ * @author tori
+ *
+ */
 public class AgentPanel extends JPanel {
 	
 	private static final Color FRIEND_ALIVE = HumanPlayer.FRIEND_COLOR;
@@ -55,7 +60,13 @@ public class AgentPanel extends JPanel {
 	protected JLabel infoLabel;
 
 
+	/**
+	 * Known Role Label
+	 */
 	protected JLabel roleLabel;
+	/**
+	 * Coming Out Label
+	 */
 	protected JLabel coLabel;
 
 

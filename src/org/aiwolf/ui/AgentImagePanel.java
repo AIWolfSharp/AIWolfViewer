@@ -1,22 +1,21 @@
 package org.aiwolf.ui;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.image.BufferedImage;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SpringLayout;
 
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.ui.res.AIWolfResource;
-import org.aiwolf.ui.util.ResourceReader;
 
+/**
+ * Show Agent Images
+ * @author tori
+ *
+ */
 public class AgentImagePanel extends AgentPanel {
 
 
@@ -30,6 +29,7 @@ public class AgentImagePanel extends AgentPanel {
 	JLabel iconLabel;
 	
 	static public final int IMG_WIDTH = 40;
+	static public final int IMG_HEIGHT = 60;
 	
 	public AgentImagePanel(Agent agent, Role role, boolean isPlayer, AIWolfResource resource) {
 		init(agent, role, isPlayer, resource);
@@ -42,7 +42,13 @@ public class AgentImagePanel extends AgentPanel {
 			h = IMG_WIDTH*h/w;
 			w = IMG_WIDTH;
 		}
-		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(w, h, Image. SCALE_SMOOTH));
+		imageIcon = new ImageIcon(imageIcon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH));
+		if(imageIcon.getIconHeight() > IMG_HEIGHT){
+			BufferedImage bi = new BufferedImage(w, IMG_HEIGHT, BufferedImage.TYPE_INT_ARGB_PRE);
+			bi.getGraphics().drawImage(imageIcon.getImage(), 0, 0, this);
+			imageIcon = new ImageIcon(bi.getSubimage(0, 0, w, IMG_HEIGHT));
+		
+		}
 		
 		iconLabel = new JLabel(imageIcon);
 		addLabel();
