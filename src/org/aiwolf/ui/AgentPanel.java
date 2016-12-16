@@ -206,6 +206,11 @@ public class AgentPanel extends JPanel {
 	}
 
 
+	public void setDead(int day) {
+		setInformation(resource.convertDeadDay(day));
+	}
+
+	
 	public void setAttacked(int day) {
 		setInformation(resource.convertAttackedDay(day));
 	}
@@ -214,4 +219,10 @@ public class AgentPanel extends JPanel {
 	public void setExecuted(int day) {
 		setInformation(resource.convertExecutedDay(day));
 	}
+	
+	public void setCursed(int day){
+		setInformation(resource.convertCursedDay(day));
+	}
+	
+	
 }

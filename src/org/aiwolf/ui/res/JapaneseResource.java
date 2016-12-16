@@ -377,6 +377,16 @@ public class JapaneseResource implements AIWolfResource {
 	public String convertExecuted(Agent exectedAgent) {
 		return String.format("%sを追放した", convert(exectedAgent));
 	}
+	
+	@Override
+	public String convertDead(Agent agent) {
+		if(agent == null){
+			return "誰も死ななかった";
+		}
+		return String.format("%sが死んでいた", convert(agent));
+	}
+
+
 
 	@Override
 	public String aliveRemain(int agents) {
@@ -465,6 +475,16 @@ public class JapaneseResource implements AIWolfResource {
 	@Override
 	public String convert(String text) {
 		return text;
+	}
+
+	@Override
+	public String convertDeadDay(int day) {
+		return day + "日目に死亡";
+	}
+
+	@Override
+	public String convertCursedDay(int day) {
+		return day + "日目に呪殺";	
 	}
 
 

@@ -295,6 +295,16 @@ public class DefaultResource implements AIWolfResource {
 		}
 		return String.format("%s was executed", convert(executedAgent));
 	}
+	
+	@Override
+	public String convertDead(Agent agent) {
+		if(agent == null){
+			return "No one dead";
+		}
+		return String.format("%s was dead", convert(agent));
+	}
+
+
 
 	@Override
 	public String convert(Role role) {
@@ -415,6 +425,16 @@ public class DefaultResource implements AIWolfResource {
 	@Override
 	public String convert(String text) {
 		return text;
+	}
+
+	@Override
+	public String convertDeadDay(int day) {
+		return "Dead@"+day;
+	}
+
+	@Override
+	public String convertCursedDay(int day) {
+		return "Cursed@"+day;
 	}
 
 }

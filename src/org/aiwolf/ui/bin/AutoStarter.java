@@ -2,6 +2,7 @@ package org.aiwolf.ui.bin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
@@ -29,7 +30,10 @@ import org.aiwolf.server.util.FileGameLogger;
 import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.server.util.MultiGameLogger;
 import org.aiwolf.ui.GameViewer;
+import org.aiwolf.ui.HumanPlayer;
 import org.aiwolf.ui.log.ContestResource;
+import org.aiwolf.ui.res.AIWolfResource;
+import org.aiwolf.ui.res.DefaultResource;
 import org.aiwolf.ui.util.AgentLibraryReader;
 
 
@@ -47,7 +51,10 @@ public class AutoStarter {
 	int port = 10000;
 	int gameNum = 100;
 	String logDirName ="./log/";
+	
 	private TcpipServer gameServer;
+	
+	private String settingFileName; 
 	private GameSetting gameSetting;
 	boolean isRunning;
 	boolean isSuccessToFinish;
@@ -59,6 +66,7 @@ public class AutoStarter {
 	Map<String, Counter<Role>> winCounterMap;
 	Map<String, Counter<Role>> roleCounterMap;
 	private Map<String, Class> playerClassMap;
+	AIWolfResource resource;
 	
 	
 	/**
@@ -93,6 +101,7 @@ public class AutoStarter {
 		roleAgentMap = new HashMap<>();
 		File initFile = new File(fileName);
 		Path src = initFile.toPath();
+		resource = new DefaultResource();
 		for(String line:Files.readAllLines(src, Charset.forName("UTF8"))){
 			if(line.contains("=")){
 				String[] data = line.split("=");
@@ -113,6 +122,20 @@ public class AutoStarter {
 				}
 				else if(data[0].trim().equals("view")){
 					isVisualize = "true".equals(data[1].trim().toLowerCase());
+				}
+				else if(data[0].trim().equals("setting")){
+					settingFileName = data[1].trim();
+				}
+				else if(data[0].trim().equals("resource")){
+					try {
+						resource = (AIWolfResource) Class.forName(data[1].trim()).newInstance();
+					} catch (InstantiationException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			else{
@@ -183,12 +206,22 @@ public class AutoStarter {
 			Role role = roleAgentMap.get(playerName).getValue();
 			
 			Player player = null;
+			Class<? extends Player> playerClass = null;
 			if(playerClassMap.containsKey(clsName)){
-				player = (Player)playerClassMap.get(clsName).newInstance();
+				playerClass = playerClassMap.get(clsName);
+//				player = (Player)playerClassMap.get(clsName).newInstance();
 			}
 			else{
-				player = (Player)Class.forName(clsName).newInstance();
+				playerClass = (Class<Player>) Class.forName(clsName);
+//				player = (Player)Class.forName(clsName).newInstance();
 			}
+			if(playerClass == HumanPlayer.class){
+				player = new HumanPlayer(resource);
+			}
+			else{
+				player = (Player)playerClass.newInstance();
+			}
+			
 			//引数にRoleRequestを追加
 			TcpipClient client = new TcpipClient("localhost", port, role);
 			if(playerName != null){
@@ -210,8 +243,13 @@ public class AutoStarter {
 	 */
 	private void startServer() throws SocketTimeoutException, IOException {
 		
-		gameSetting = GameSetting.getDefaultGame(agentNum);
-		
+		if(settingFileName == null){
+			gameSetting = GameSetting.getDefaultGame(agentNum);
+		}
+		else{
+			File file = new File(settingFileName);
+			gameSetting = GameSetting.getCustomGame(settingFileName, agentNum);
+		}
 		gameServer = new TcpipServer(port, agentNum, gameSetting);
 		gameServer.addServerListener(new ServerListener() {
 			
@@ -252,7 +290,7 @@ public class AutoStarter {
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i)); 
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
-							ContestResource resource = new ContestResource(game);
+//							ContestResource resource = new ContestResource(game);
 							GameViewer gameViewer = new GameViewer(resource, game);
 							gameViewer.setAutoClose(true);
 							logger = new MultiGameLogger(logger, gameViewer);

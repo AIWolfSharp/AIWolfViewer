@@ -103,6 +103,15 @@ public interface AIWolfResource {
 	 */
 	String convertExecuted(Agent executedAgent);
 
+
+
+	/**
+	 * 
+	 * @param agent
+	 * @return
+	 */
+	String convertDead(Agent agent);
+
 	/**
 	 * 
 	 * @param role
@@ -194,6 +203,20 @@ public interface AIWolfResource {
 	 * @return
 	 */
 	String convertExecutedDay(int day);
+
+	/**
+	 * 
+	 * @param day
+	 * @return
+	 */
+	String convertDeadDay(int day);
+
+	/**
+	 * 
+	 * @param day
+	 * @return
+	 */
+	String convertCursedDay(int day);
 
 	/**
 	 * @param 
