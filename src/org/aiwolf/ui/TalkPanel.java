@@ -107,7 +107,8 @@ public class TalkPanel extends JPanel {
 	
 	private int lastTalkIdx = 0;
 	private int lastWhisperIdx = 0;
-
+	private int lastTurn;
+	
 	AIWolfResource resource;
 	Map<Agent, ImageIcon> imageIconMap;
 
@@ -155,6 +156,8 @@ public class TalkPanel extends JPanel {
 		
 //		String information = getDailyInformation(gameInfo);
 //		addText(gameInfo.getDay(), information);
+		this.lastTurn = -1;
+
 	}
 
 	/**
@@ -165,7 +168,7 @@ public class TalkPanel extends JPanel {
 		this.gameInfo = gameInfo;
 		gameInfoMap.put(gameInfo.getDay(), gameInfo);
 
-		
+		this.lastTurn = -1;
 	}
 	
 	/**
@@ -205,6 +208,11 @@ public class TalkPanel extends JPanel {
 			textArea.setBackground(color);
 			addItem(day, textArea);
 		}
+	}
+	
+
+	protected void addTurn(int day, int turn) {
+		addText(day, resource.convertTurn(turn));
 	}
 
 	/**
@@ -278,6 +286,12 @@ public class TalkPanel extends JPanel {
 	 * @param talk
 	 */
 	public void addTalk(int day, Talk talk, TalkType talkType) {
+//		System.out.printf("Add Talk %d->%d\n", lastTurn, talk.getTurn());
+		if(talk.getTurn() != lastTurn){
+			lastTurn = talk.getTurn();
+			addTurn(day, talk.getTurn());
+		}
+		
 		JPanel talkPanel = createTalkPanel(talk, talkType);
 		
 		addItem(day, talkPanel);

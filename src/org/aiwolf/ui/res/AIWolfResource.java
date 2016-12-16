@@ -167,7 +167,14 @@ public interface AIWolfResource {
 	 */
 	String convertWinner(Team winner, Team yourTeam);
 
+	/**
+	 * 
+	 * @param turn
+	 * @return
+	 */
+	String convertTurn(int turn);
 
+	
 	/**
 	 * 
 	 * @param agent

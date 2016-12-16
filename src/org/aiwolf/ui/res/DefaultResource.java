@@ -437,4 +437,9 @@ public class DefaultResource implements AIWolfResource {
 		return "Cursed@"+day;
 	}
 
+	@Override
+	public String convertTurn(int turn) {
+		return "Turn "+turn;
+	}
+
 }

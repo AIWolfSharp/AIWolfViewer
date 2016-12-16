@@ -386,6 +386,10 @@ public class JapaneseResource implements AIWolfResource {
 		return String.format("%sが死んでいた", convert(agent));
 	}
 
+	@Override
+	public String convertTurn(int turn) {
+		return "第"+turn+"ターン";
+	}
 
 
 	@Override

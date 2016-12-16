@@ -127,6 +127,7 @@ public class InformationPanel extends JPanel {
 		talkPanel.initialize(gameInfo, gameSetting);
 //		inform(String.format("%s\n",resource.getFirstText(gameInfo.getAgent(), gameInfo.getRole())), HumanPlayer.PLAYER_COLOR);
 
+
 	}
 	
 	public void firstInformation(GameInfo gameInfo, GameSetting gameSetting){
@@ -203,7 +204,6 @@ public class InformationPanel extends JPanel {
 	 */
 	public boolean updateTalk(int day, Talk talk, TalkType talkType) {
 		if(!talk.getText().equals(Talk.OVER) && !talk.getText().equals(Talk.SKIP)){
-//		if(true){
 			talkPanel.addTalk(day, talk, talkType);
 			if(talkType == TalkType.TALK){
 				talkPanel.setLastTalkIdx(talk.getIdx()+1);
