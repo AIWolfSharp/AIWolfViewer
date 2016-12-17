@@ -25,6 +25,8 @@ class LogGameData extends GameData {
 
 	GameData today;
 	
+	Map<Agent, String> agentNameMap;
+	
 	public LogGameData(GameSetting gameSetting, Map<Agent, Role> agentRoleMap) {
 		super(gameSetting);
 
@@ -34,12 +36,91 @@ class LogGameData extends GameData {
 			today.addAgent(agent, Status.ALIVE, agentRoleMap.get(agent));
 		}
 		
-//		today.agentRoleMap = new HashMap<Agent, Role>(agentRoleMap);
-//		today.agentStatusMap = new HashMap<Agent, Status>();
-//		for(Agent agent:agentRoleMap.keySet()){
-//			agentStatusMap.put(agent, Status.ALIVE);
-//		}
+		agentNameMap = new HashMap<>();
 	}
+	
+	/**
+	 * Add Message to GameData
+	 * @param line
+	 */
+	public void addMessage(String line){
+		String[] data = line.split(",");
+
+		if(Integer.parseInt(data[0]) != today.getDay()){
+			nextDay();
+		}
+		if(data[1].equals("status")){
+//			Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
+//			Role role = Role.valueOf(data[3]);
+//			String name = data[5];
+////			agentRoleMap.put(agent, role);
+//			agentNameMap.put(agent, name);
+//			
+//			today.addAgent(agent, Status.ALIVE, role);
+		}
+		else if(data[1].equals("talk")){
+			Talk talk = toTalk(data);
+			today.addTalk(talk.getAgent(), talk);
+		}
+		else if(data[1].equals("whisper")){
+			Talk talk = toTalk(data);
+			today.addWhisper(talk.getAgent(), talk);
+		}
+		else if(data[1].equals("divine")){
+			Judge divine = toJudge(data);
+			today.addDivine(divine);
+		}
+		else if(data[1].equals("guard")){
+			Guard guard = toGuard(data);
+			today.addGuard(guard);
+		}
+		else if(data[1].equals("vote")){
+			Vote vote = toVote(data);
+			today.addVote(vote);
+		}
+		else if(data[1].equals("attackVote")){
+			Vote vote = toVote(data);
+			today.addAttack(vote);
+		}
+		else if (data[1].equals("execute")) {
+			Agent target = Agent.getAgent(Integer.parseInt(data[2]));
+			today.setExecutedTarget(target);
+		}
+		else if(data[1].equals("attack")){
+			if(data[3].equals("true")){
+				Agent target = Agent.getAgent(Integer.parseInt(data[2]));
+				today.addLastDeadAgent(target);
+				today.setAttackedDead(target);
+			}
+		}
+	}
+	
+
+	protected Vote toVote(String[] data) {
+		Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
+		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
+		Vote vote = new Vote(Integer.parseInt(data[2]), agent, target);
+		return vote;
+	}
+
+	protected Talk toTalk(String[] data) {
+		Talk talk = new Talk(Integer.parseInt(data[2]), Integer.parseInt(data[0]), Integer.parseInt(data[3]), Agent.getAgent(Integer.parseInt(data[4])), data[5]);
+		return talk;
+	}
+
+	protected Judge toJudge(String[] data) {
+		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
+		Judge judge = new Judge(Integer.parseInt(data[0]), Agent.getAgent(Integer.parseInt(data[2])), target, today.getRole(target).getSpecies());
+		return judge;
+	}
+	
+	protected Guard toGuard(String[] data) {
+		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
+		Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
+		Guard guard = new Guard(Integer.parseInt(data[0]), agent, target);
+		return guard;
+	}
+
 
 	public GameData nextDay(){
 		today = today.nextDay();

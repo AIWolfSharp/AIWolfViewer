@@ -73,6 +73,7 @@ public class GUILogViewer {
 		BufferedReader br = getBufferedReader();
 		String line;
 		while((line = br.readLine()) != null){
+			
 			String[] data = line.split(",");
 			if(!data[1].equals("status")){
 				break;
@@ -118,84 +119,17 @@ public class GUILogViewer {
 		BufferedReader br = getBufferedReader();
 		String line;
 		while((line = br.readLine()) != null){
-			gameLogger.log(line);
+			gameData.addMessage(line);
 			String[] data = line.split(",");
-
-			if(Integer.parseInt(data[0]) != gameData.getDay()){
-				gameData = (LogGameData)gameData.nextDay();
-				game.setGameData(gameData);
-			}
-			if(data[1].equals("status")){
-				continue;
-			}
-			else if(data[1].equals("talk")){
-				Talk talk = toTalk(data);
-				gameData.addTalk(talk.getAgent(), talk);
-			}
-			else if(data[1].equals("whisper")){
-				Talk talk = toTalk(data);
-				gameData.addWhisper(talk.getAgent(), talk);
-			}
-			else if(data[1].equals("divine")){
-				Judge divine = toJudge(data);
-				gameData.addDivine(divine);
-			}
-			else if(data[1].equals("guard")){
-				Guard guard = toGuard(data);
-				gameData.addGuard(guard);
-			}
-			else if(data[1].equals("vote")){
-				Vote vote = toVote(data);
-				gameData.addVote(vote);
-			}
-			else if(data[1].equals("attackVote")){
-				Vote vote = toVote(data);
-				gameData.addAttack(vote);
-			}
-			else if (data[1].equals("execute")) {
-				Agent target = Agent.getAgent(Integer.parseInt(data[2]));
-				gameData.setExecutedTarget(target);
-			}
-			else if(data[1].equals("attack")){
-				if(data[3].equals("true")){
-					Agent target = Agent.getAgent(Integer.parseInt(data[2]));
-					gameData.addLastDeadAgent(target);
-					gameData.setAttackedDead(target);
-				}
-			}
-			else if(data[1].equals("result")){
-				gameLogger.log(line);
+			if(data[1].equals("result")){
+//				gameLogger.log(line);
 				gameLogger.close();
 				break;
 			}
+			gameLogger.log(line);
 
 		}
 		br.close();
-	}
-
-	protected Vote toVote(String[] data) {
-		Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
-		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
-		Vote vote = new Vote(Integer.parseInt(data[2]), agent, target);
-		return vote;
-	}
-
-	protected Talk toTalk(String[] data) {
-		Talk talk = new Talk(Integer.parseInt(data[2]), Integer.parseInt(data[0]), Integer.parseInt(data[3]), Agent.getAgent(Integer.parseInt(data[4])), data[5]);
-		return talk;
-	}
-
-	protected Judge toJudge(String[] data) {
-		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
-		Judge judge = new Judge(Integer.parseInt(data[0]), Agent.getAgent(Integer.parseInt(data[2])), target, gameData.getRole(target).getSpecies());
-		return judge;
-	}
-	
-	protected Guard toGuard(String[] data) {
-		Agent target = Agent.getAgent(Integer.parseInt(data[3]));
-		Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
-		Guard guard = new Guard(Integer.parseInt(data[0]), agent, target);
-		return guard;
 	}
 
 	public void setCloseOnExist(boolean b) {

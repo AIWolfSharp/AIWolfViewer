@@ -26,6 +26,14 @@ import org.aiwolf.common.util.Counter;
 public interface AIWolfResource {
 
 	/**
+	 * Add agent's name
+	 * @param i
+	 * @param name
+	 */
+	public void setName(int i, String name);
+
+	
+	/**
 	 * convert agent to name
 	 * @param agent
 	 * @return

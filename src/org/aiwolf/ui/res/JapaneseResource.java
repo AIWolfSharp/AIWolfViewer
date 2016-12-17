@@ -142,6 +142,12 @@ public class JapaneseResource implements AIWolfResource {
 		bidiMap = new BidiMap<>();
 	}
 	
+	
+	@Override
+	public void setName(int i, String name){
+		agentResourceList.get(i)[0] = name;
+	}
+	
 	@Override
 	public String convert(Agent agent) {
 //		return agent.toString();
