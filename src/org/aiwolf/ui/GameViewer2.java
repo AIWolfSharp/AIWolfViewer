@@ -208,17 +208,12 @@ public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 		this.gameSetting = gameSetting;
 
 		infoPanel.initialize(gameInfo, gameSetting);
-//		userActionPanel.initialize(gameInfo, gameSetting);
-//		infoPanel.talkPanel.initialize(gameInfo, gameSetting);
 		update(gameInfo);
 		
 		setVisible(true);
-//		infoPanel.setWaitListener(this);
 		infoPanel.setWaitListener(stepActionPanel);
 		
 		infoPanel.firstInformation(gameInfo, gameSetting);
-		
-//		samplePlayer.initialize(gameInfo, gameSetting);
 	}
 	
 	public void update(GameInfo gameInfo){
