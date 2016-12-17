@@ -41,7 +41,7 @@ import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
-public class GameViewer extends JFrame implements GameLogger, ActionListener{
+public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 
 	private static final int ACTION_PANEL_HEIGHT = 30;
 	/**
@@ -49,41 +49,6 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException{
-
-		String timeString = CalendarTools.toDateTime(System.currentTimeMillis()).replaceAll("[\\s-/:]", "");
-		
-		List<Player> list = new ArrayList<Player>();
-		for(int i = 0; i < 13; i++){
-			list.add(new SampleRoleAssignPlayer());
-		}
-		String logDir = "./log";
-		
-		DirectConnectServer gameServer = new DirectConnectServer(list);
-		GameSetting gameSetting = GameSetting.getDefaultGame(list.size());
-		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
-//		if(logDir != null){
-//			File logFile = new File(String.format("%s/contest%s.log", logDir, timeString));
-//			game.setLogFile(logFile);
-//		}
-		game.setRand(new Random(0));
-//		game.setShowConsoleLog(false);
-//		game.start();
-
-		GameViewer gf = new GameViewer(new JapaneseResource(), game);
-		game.setGameLogger(gf);
-	
-		game.start();
-//		gf.initialize(gameInfo, gameSetting);
-//		gf.setVisible(true);
-
-	
-	}
 
 	
 	public static final int DEFAULT_WAIT_TIME = 500;
@@ -127,17 +92,15 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 */
 	public static final Color IMPORTANT_COLOR = new Color(240, 240, 255);
 
+	GameData gameData;
+	
 	/**
 	 *  
 	 */
 	protected boolean isInitialized;
 	
-	protected AIWolfGame game;
-//	protected GameData gameData;
 	protected InformationPanel infoPanel;
-//	protected JPanel agentPanel;
 	protected UserActionPanel userActionPanel;
-//	protected TalkPanel talkPanel;
 
 	/**
 	 * Resource
@@ -166,7 +129,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 
 	protected boolean isAutoClose;
 	
-	public GameViewer(){
+	public GameViewer2(){
 		
 	}
 	
@@ -175,11 +138,10 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 * @param resource
 	 * @game 
 	 */
-	public GameViewer(AIWolfResource resource, AIWolfGame game){
+	public GameViewer2(AIWolfResource resource, GameData gameData, GameSetting gameSetting){
 
-		setGame(game);
-//		this.gameData = gameData;
 		this.resource = resource;
+		this.gameSetting = gameSetting;
 		
 		isInitialized = false;
 //		samplePlayer = new SampleRoleAssignPlayer();
@@ -366,9 +328,8 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	int lastDay = -1;
 	@Override
 	public void log(String log) {
-		GameInfo gameInfo = game.getGameData().getGameInfo();
-		GameSetting gameSetting = game.getGameSetting();
-//		GameInfo gameInfo = gameData.getGameInfo();
+		GameInfo gameInfo = gameData.getGameInfo();
+
 		if(!isInitialized){
 			initialize(gameInfo, gameSetting);
 			isInitialized = true;
@@ -444,28 +405,6 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //			stepActionPanel.auto(true);
 //		}
 //		
-	}
-
-	
-	/**
-	 * @return game
-	 */
-	public AIWolfGame getGame() {
-		return game;
-	}
-
-	/**
-	 * @param game セットする game
-	 */
-	public void setGame(AIWolfGame game) {
-		this.game = game;
-//		this.gameData = game.getGameData();
-//		if(game.getGameLogger() != null){
-//			game.setGameLogger(new MultiGameLogger(game.getGameLogger(), this));
-//		}
-//		else{
-//			game.setGameLogger(this);
-//		}
 	}
 
 	/**
