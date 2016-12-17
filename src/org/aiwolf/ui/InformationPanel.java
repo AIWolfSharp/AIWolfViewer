@@ -382,11 +382,15 @@ public class InformationPanel extends JPanel {
 //			talkPanel.addAgentInformation(day, gameInfo.getGuardedAgent(), resource.convertGuarded(gameInfo.getGuardedAgent()));
 		}
 
+		if(gameInfo.getAttackedAgent() != null){
+			inform(resource.convertAttacked(gameInfo.getAttackedAgent()), ACTION_COLOR, gameInfo.getAttackedAgent()); // TODO 妖狐考慮
+		}
+
 		Agent deadAgent = null;
 		for (Agent agent : gameInfo.getLastDeadAgentList()) {
 			if (agent != gameInfo.getExecutedAgent()) {
 				if(agent == gameInfo.getAttackedAgent()){
-					inform(resource.convertAttacked(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
+					inform(resource.convertDead(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
 				}
 				else{
 					inform(resource.convertDead(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
@@ -396,7 +400,7 @@ public class InformationPanel extends JPanel {
 		}
 
 		if (deadAgent == null && gameInfo.getDay() > 1) {
-			inform(resource.convertAttacked(null), PLAYER_COLOR);
+			inform(resource.convertDead(null), PLAYER_COLOR);
 		}
 //		addText(day, attackText.toString(), HumanPlayer.FRIEND_COLOR);
 		

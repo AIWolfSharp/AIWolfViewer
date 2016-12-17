@@ -366,10 +366,10 @@ public class JapaneseResource implements AIWolfResource {
 	@Override
 	public String convertAttacked(Agent attackedAgent) {
 		if(attackedAgent != null){
-			return String.format("%sが遺体となって発見された", convert(attackedAgent));
+			return String.format("%sが襲撃された", convert(attackedAgent));
 		}
 		else{
-			return String.format("誰も死ななかった");
+			return String.format("誰も襲撃されなかった");
 		}
 	}
 

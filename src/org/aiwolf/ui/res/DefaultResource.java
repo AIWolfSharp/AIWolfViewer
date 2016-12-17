@@ -301,7 +301,7 @@ public class DefaultResource implements AIWolfResource {
 		if(agent == null){
 			return "No one dead";
 		}
-		return String.format("%s was dead", convert(agent));
+		return String.format("%s dead", convert(agent));
 	}
 
 

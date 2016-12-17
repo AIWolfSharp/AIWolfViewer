@@ -291,27 +291,46 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	
 	Talk lastTalk;
 	Talk lastWhisper;
+
+	int lastTurn = -1;
+
 	/**
 	 * update Talk
 	 * @param gameInfo
 	 */
 	protected void updateTalk(GameInfo gameInfo) {
+		boolean waitBeforeTalk = false;
 		for(int i = infoPanel.getLastTalkIdx(); i < gameInfo.getTalkList().size(); i++){
 			Talk talk = gameInfo.getTalkList().get(i);
+			if(lastTurn == -1){
+				lastTurn = talk.getTurn();
+			}
 			
 			if(lastTalk != null && lastTalk.getAgent() == talk.getAgent() && lastTalk.getText().equals(talk.getText()) && lastTalk.getDay() == talk.getDay()){
 				continue;
+			}
+
+			if(lastTurn != talk.getTurn()){
+//				stepActionPanel.waitForNext();
+				lastTurn = talk.getTurn();
+				waitBeforeTalk = true;
+//				waitSecond();
+			}
+
+			if(waitBeforeTalk && !talk.isSkip() && !talk.isOver()){
+				stepActionPanel.waitForNext();
+				waitBeforeTalk = false;
 			}
 			boolean isUpdated = infoPanel.updateTalk(gameInfo.getDay(), talk, TalkType.TALK);
 			if(isUpdated){
 				infoPanel.update(gameInfo);
 				lastTalk = talk;
-				stepActionPanel.waitForNext();
-//				waitSecond();
 			}
 		}
-
-
+//		if(waitAfterTalk){
+//			stepActionPanel.waitForNext();
+//		}
+		
 		for(int i = infoPanel.getLastWhisperIdx(); i < gameInfo.getWhisperList().size(); i++){
 			Talk whisper = gameInfo.getWhisperList().get(i);
 
@@ -344,6 +363,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		}
 		
 //		userActionPanel.dayStart(gameInfo);
+		lastTurn = -1;
 	}
 //
 	int lastDay = -1;
