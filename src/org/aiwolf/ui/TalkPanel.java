@@ -176,6 +176,7 @@ public class TalkPanel extends JPanel {
 	 * @param day
 	 * @param component
 	 */
+	@SuppressWarnings("rawtypes")
 	public void addItem(int day, JComponent component) {
 		JList talkList = getTalkArea(day);
 		DefaultListModel<JComponent> listModel = (DefaultListModel<JComponent>) talkList.getModel();

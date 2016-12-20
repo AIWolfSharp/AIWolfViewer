@@ -261,11 +261,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	
 	public void update(GameInfo gameInfo){
 		infoPanel.update(gameInfo);
-//		infoPanel.talkPanel.update(gameInfo);
-//		updateTalk(gameInfo);
-//		userActionPanel.update(gameInfo);
-//		infoPanel.talkPanel.scrollToTail();
-		
+
 		for(Talk talk:gameInfo.getTalkList()){
 			Content u = new Content(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
@@ -280,8 +276,6 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		}
 		
 		this.gameInfo = gameInfo;
-
-//		repaint();
 	}
 
 	
@@ -296,33 +290,23 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 * @param gameInfo
 	 */
 	protected void updateTalk(GameInfo gameInfo) {
-		boolean waitBeforeTalk = false;
 		for(int i = infoPanel.getLastTalkIdx(); i < gameInfo.getTalkList().size(); i++){
 			Talk talk = gameInfo.getTalkList().get(i);
-			if(lastTurn == -1){
-				lastTurn = talk.getTurn();
-			}
 			
 			if(lastTalk != null && lastTalk.getAgent() == talk.getAgent() && lastTalk.getText().equals(talk.getText()) && lastTalk.getDay() == talk.getDay()){
 				continue;
 			}
 
-			if(lastTurn != talk.getTurn()){
-//				stepActionPanel.waitForNext();
-				lastTurn = talk.getTurn();
-				waitBeforeTalk = true;
-//				waitSecond();
+			if(!talk.isSkip() && !talk.isOver()){
+				waitForNext();
+//				System.out.println("Talk:"+talk);
+				boolean isUpdated = infoPanel.updateTalk(gameInfo.getDay(), talk, TalkType.TALK);
+				if(isUpdated){
+					infoPanel.update(gameInfo);
+					lastTalk = talk;
+				}
 			}
-
-			if(waitBeforeTalk && !talk.isSkip() && !talk.isOver()){
-				stepActionPanel.waitForNext();
-				waitBeforeTalk = false;
-			}
-			boolean isUpdated = infoPanel.updateTalk(gameInfo.getDay(), talk, TalkType.TALK);
-			if(isUpdated){
-				infoPanel.update(gameInfo);
-				lastTalk = talk;
-			}
+		
 		}
 //		if(waitAfterTalk){
 //			stepActionPanel.waitForNext();
@@ -341,25 +325,28 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 			if(isUpdated){
 				infoPanel.scrollToTail();
 				lastWhisper = whisper;
-//				waitSecond();
-				stepActionPanel.waitForNext();
+				waitForNext();
 			}
 		}
 //		talkPanel.updateWhisper(gameInfo.getDay(), gameInfo.getWhisperList());
 	}
 
+	/**
+	 * Wait for next button clicked
+	 */
+	private void waitForNext() {
+		stepActionPanel.waitForNext();
+//		throw new RuntimeException();
+	}
+
 	
 	public void dayStart() {
 		if(gameInfo.getDay() != 0){
+			waitForNext();
 			stepActionPanel.auto(false);
 		}
-//		userActionPanel.clear();
 		infoPanel.dayStart(gameInfo);
-//		if(infoPanel.voteResult(gameInfo)){
-//			waitForNext();
-//		}
-		
-//		userActionPanel.dayStart(gameInfo);
+
 		lastTurn = -1;
 	}
 //
@@ -374,11 +361,12 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 			isInitialized = true;
 		}
 
-		update(gameInfo);
 		if(gameInfo.getDay() != lastDay){
+			this.gameInfo = gameInfo;
 			dayStart();
 			lastDay = gameInfo.getDay();
 		}
+		update(gameInfo);
 
 		
 		updateTalk(gameInfo);

@@ -294,7 +294,7 @@ public class InformationPanel extends JPanel {
 	public void dayStart(GameInfo gameInfo) {
 //		talkPanel.dayStart(gameInfo);
 		
-		
+		this.gameInfo = gameInfo;
 		int day = gameInfo.getDay();
 
 		eventPanel.clearArrow();
