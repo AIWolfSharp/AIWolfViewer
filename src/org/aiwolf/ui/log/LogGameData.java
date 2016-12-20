@@ -21,7 +21,7 @@ import org.aiwolf.server.GameData;
  * @author tori
  *
  */
-class LogGameData extends GameData {
+public class LogGameData extends GameData {
 
 	GameData today;
 	
@@ -104,8 +104,15 @@ class LogGameData extends GameData {
 	}
 
 	protected Talk toTalk(String[] data) {
-		Talk talk = new Talk(Integer.parseInt(data[2]), Integer.parseInt(data[0]), Integer.parseInt(data[3]), Agent.getAgent(Integer.parseInt(data[4])), data[5]);
-		return talk;
+		if(data.length == 6){
+			Talk talk = new Talk(Integer.parseInt(data[2]), Integer.parseInt(data[0]), Integer.parseInt(data[3]), Agent.getAgent(Integer.parseInt(data[4])), data[5]);
+			return talk;
+		}
+		else{
+			Talk talk = new Talk(Integer.parseInt(data[2]), Integer.parseInt(data[0]), 0, Agent.getAgent(Integer.parseInt(data[3])), data[4]);
+			return talk;
+			
+		}
 	}
 
 	protected Judge toJudge(String[] data) {

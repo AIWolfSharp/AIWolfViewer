@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.BoxLayout;
@@ -38,6 +39,7 @@ import org.aiwolf.server.AIWolfGame;
 import org.aiwolf.server.GameData;
 import org.aiwolf.server.net.DirectConnectServer;
 import org.aiwolf.server.util.GameLogger;
+import org.aiwolf.ui.log.LogGameData;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
@@ -92,7 +94,7 @@ public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 	 */
 	public static final Color IMPORTANT_COLOR = new Color(240, 240, 255);
 
-	GameData gameData;
+	LogGameData gameData;
 	
 	/**
 	 *  
@@ -129,16 +131,13 @@ public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 
 	protected boolean isAutoClose;
 	
-	public GameViewer2(){
-		
-	}
 	
 	/**
 	 * 
 	 * @param resource
 	 * @game 
 	 */
-	public GameViewer2(AIWolfResource resource, GameData gameData, GameSetting gameSetting){
+	public GameViewer2(AIWolfResource resource, GameSetting gameSetting, Map<Agent, Role> agentRoleMap){
 
 		this.resource = resource;
 		this.gameSetting = gameSetting;
@@ -201,7 +200,7 @@ public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 		
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 		
-
+		gameData = new LogGameData(gameSetting, agentRoleMap);
 	}
 	
 	public void initialize(GameInfo gameInfo, GameSetting gameSetting){
@@ -218,11 +217,7 @@ public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 	
 	public void update(GameInfo gameInfo){
 		infoPanel.update(gameInfo);
-//		infoPanel.talkPanel.update(gameInfo);
-//		updateTalk(gameInfo);
-//		userActionPanel.update(gameInfo);
-//		infoPanel.talkPanel.scrollToTail();
-		
+
 		for(Talk talk:gameInfo.getTalkList()){
 			Content u = new Content(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){

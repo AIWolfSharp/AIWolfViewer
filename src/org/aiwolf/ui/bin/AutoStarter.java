@@ -290,8 +290,13 @@ public class AutoStarter {
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i)); 
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
-//							ContestResource resource = new ContestResource(game);
+							ContestResource resource = new ContestResource(game);
 							GameViewer gameViewer = new GameViewer(resource, game);
+//							Map<Agent, Role> agentRoleMap = new HashMap<>();
+//							for(Agent agent:game.getGameData().getAgentList()){
+//								agentRoleMap.put(agent, game.getGameData().getRole(agent));
+//							}
+//							GameViewer2 gameViewer = new GameViewer2(resource, gameSetting, agentRoleMap);
 							gameViewer.setAutoClose(true);
 							logger = new MultiGameLogger(logger, gameViewer);
 						}
