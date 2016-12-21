@@ -253,5 +253,11 @@ public interface AIWolfResource {
 	 */
 	String convert(String text);
 
+	/**
+	 * 
+	 * @return
+	 */
+	String convertVote();
+
 	
 }

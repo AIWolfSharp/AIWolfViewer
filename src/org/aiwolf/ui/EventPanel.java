@@ -15,6 +15,8 @@ import java.awt.geom.QuadCurve2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -234,8 +236,9 @@ public class EventPanel extends JPanel{
 //		g.setColor(Color.white);
 //		g.fillRect(0, 0, getWidth(), getHeight());
 
+		//Draw Allow
 		synchronized (arrowMap) {
-			for(Pair<Agent, Agent> agentPair:arrowMap.keySet()){
+			for(Pair<Agent, Agent> agentPair:new HashSet<>(arrowMap.keySet())){
 				g.setColor(arrowMap.get(agentPair));
 
 				AgentPanel fromPanel = agentMap.get(agentPair.getKey());
@@ -255,17 +258,24 @@ public class EventPanel extends JPanel{
 				double tcx = toPanel.getBounds().getCenterX();
 				double tcy = toPanel.getBounds().getCenterY();
 				if(tcy < getHeight()/3){
+					//上側の場合
 					tcy = toPanel.getBounds().getMaxY();
+					tcx += agentPair.getValue().getAgentIdx();
 				}
 				else if(tcy > getHeight()*2/3){
+					//下側の場合
 					tcy = toPanel.getBounds().getMinY();
+					tcx += agentPair.getValue().getAgentIdx();
 				}
 				else{
+					//横の場合
 					if(tcx < getWidth()/2){
 						tcx = toPanel.getBounds().getMaxX();
+						tcy += agentPair.getValue().getAgentIdx();
 					}
 					else{
 						tcx = toPanel.getBounds().getMinX();
+						tcy += agentPair.getValue().getAgentIdx();
 					}
 				}
 				

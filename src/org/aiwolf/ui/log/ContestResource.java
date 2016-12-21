@@ -97,7 +97,7 @@ public class ContestResource extends JapaneseResource implements Serializable{
 		}
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
 		bidiMap.put(agent, name);
-		System.out.println(agent+"\t"+name);
+//		System.out.println(agent+"\t"+name);
 		return name;
 	}
 

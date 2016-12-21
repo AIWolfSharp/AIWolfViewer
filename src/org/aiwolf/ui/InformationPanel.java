@@ -9,10 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
@@ -184,7 +186,24 @@ public class InformationPanel extends JPanel {
 		agentPanelMap.get(agent).setComingOut(role);
 	}
 	
+	/**
+	 * 
+	 * @param voteList
+	 * @return
+	 */
+	public boolean updateLatestVote(List<Vote> voteList) {
+		if(voteList.isEmpty()){
+			return false;
+		}
+		JTextArea textArea = talkPanel.createTextPanel(gameInfo.getDay(), resource.convertVote(), ACTION_COLOR);
+		talkPanel.addItem(gameInfo.getDay(), textArea);
 
+		updateVote(voteList, false);
+		
+		return true;
+		
+	}
+	
 	/**
 	 * @param day
 	 * @param talkList
@@ -305,29 +324,7 @@ public class InformationPanel extends JPanel {
 		//Vote
 		TreeSet<Vote> voteSet = new TreeSet<>(voteComparator);
 		voteSet.addAll(gameInfo.getVoteList());
-//		eventPanel.clearArrow();
-		if(!voteSet.isEmpty()){
-			eventPanel.clearCenterPanel();
-			for(Vote vote:voteSet){
-				eventPanel.addArrow(vote.getAgent(), vote.getTarget(), Color.RED);
-				Color color = HumanPlayer.TALK_COLOR;
-				if(vote.getAgent() == gameInfo.getAgent()){
-					color = PLAYER_COLOR;
-				}
-				else if(gameInfo.getRoleMap().get(vote.getAgent()) == gameInfo.getRole()){
-					color = FRIEND_COLOR;
-				}
-				
-				talkPanel.addText(day, resource.convertVote(vote), color);
-			}
-			if(waitListener != null){
-				waitListener.waitForNext();
-			}
-		}
-		if (gameInfo.getExecutedAgent() != null) {
-			inform(resource.convertExecuted(gameInfo.getExecutedAgent()), ACTION_COLOR, gameInfo.getExecutedAgent());
-		}
-		eventPanel.clearArrow();
+		updateVote(voteSet, true);
 		
 		///////////////////////////////////////////////////////
 		//Divine Medium
@@ -406,7 +403,38 @@ public class InformationPanel extends JPanel {
 		
 
 		talkPanel.addText(day, resource.aliveRemain(gameInfo.getAliveAgentList().size()));
+		clearArrow();
+	}
 
+	/**
+	 * Show Vote Result
+	 * @param voteSet
+	 * @param isFinalVote
+	 */
+	public void updateVote(Collection<Vote> voteSet, boolean isFinalVote) {
+		int day = gameInfo.getDay();
+		if(!voteSet.isEmpty()){
+			eventPanel.clearCenterPanel();
+			for(Vote vote:voteSet){
+				eventPanel.addArrow(vote.getAgent(), vote.getTarget(), Color.RED);
+				Color color = HumanPlayer.TALK_COLOR;
+				if(vote.getAgent() == gameInfo.getAgent()){
+					color = PLAYER_COLOR;
+				}
+				else if(gameInfo.getRoleMap().get(vote.getAgent()) == gameInfo.getRole()){
+					color = FRIEND_COLOR;
+				}
+				
+				talkPanel.addText(day, resource.convertVote(vote), color);
+			}
+			if(waitListener != null){
+				waitListener.waitForNext();
+			}
+		}
+		if (isFinalVote && gameInfo.getExecutedAgent() != null) {
+			inform(resource.convertExecuted(gameInfo.getExecutedAgent()), ACTION_COLOR, gameInfo.getExecutedAgent());
+		}
+		eventPanel.clearArrow();
 	}
 
 
@@ -455,7 +483,6 @@ public class InformationPanel extends JPanel {
 		
 	}
 
-	
 	public void setWinner(int day, Team winner) {
 		
 		try {

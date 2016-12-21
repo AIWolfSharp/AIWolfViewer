@@ -6,11 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,26 +17,21 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
-import org.aiwolf.common.data.Player;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
 import org.aiwolf.common.data.Status;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
+import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.net.GameInfo;
 import org.aiwolf.common.net.GameSetting;
-import org.aiwolf.common.util.CalendarTools;
 import org.aiwolf.server.AIWolfGame;
-import org.aiwolf.server.GameData;
-import org.aiwolf.server.net.DirectConnectServer;
 import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.ui.res.AIWolfResource;
-import org.aiwolf.ui.res.JapaneseResource;
 
 public class GameViewer extends JFrame implements GameLogger, ActionListener{
 
@@ -54,36 +46,36 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 * @param args
 	 * @throws IOException 
 	 */
-	public static void main(String[] args) throws IOException{
-
-		String timeString = CalendarTools.toDateTime(System.currentTimeMillis()).replaceAll("[\\s-/:]", "");
-		
-		List<Player> list = new ArrayList<Player>();
-		for(int i = 0; i < 13; i++){
-			list.add(new SampleRoleAssignPlayer());
-		}
-		String logDir = "./log";
-		
-		DirectConnectServer gameServer = new DirectConnectServer(list);
-		GameSetting gameSetting = GameSetting.getDefaultGame(list.size());
-		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
-//		if(logDir != null){
-//			File logFile = new File(String.format("%s/contest%s.log", logDir, timeString));
-//			game.setLogFile(logFile);
+//	public static void main(String[] args) throws IOException{
+//
+//		String timeString = CalendarTools.toDateTime(System.currentTimeMillis()).replaceAll("[\\s-/:]", "");
+//		
+//		List<Player> list = new ArrayList<Player>();
+//		for(int i = 0; i < 13; i++){
+//			list.add(new SampleRoleAssignPlayer());
 //		}
-		game.setRand(new Random(0));
-//		game.setShowConsoleLog(false);
+//		String logDir = "./log";
+//		
+//		DirectConnectServer gameServer = new DirectConnectServer(list);
+//		GameSetting gameSetting = GameSetting.getDefaultGame(list.size());
+//		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
+////		if(logDir != null){
+////			File logFile = new File(String.format("%s/contest%s.log", logDir, timeString));
+////			game.setLogFile(logFile);
+////		}
+//		game.setRand(new Random(0));
+////		game.setShowConsoleLog(false);
+////		game.start();
+//
+//		GameViewer gf = new GameViewer(new JapaneseResource(), game);
+//		game.setGameLogger(gf);
+//	
 //		game.start();
-
-		GameViewer gf = new GameViewer(new JapaneseResource(), game);
-		game.setGameLogger(gf);
-	
-		game.start();
-//		gf.initialize(gameInfo, gameSetting);
-//		gf.setVisible(true);
-
-	
-	}
+////		gf.initialize(gameInfo, gameSetting);
+////		gf.setVisible(true);
+//
+//	
+//	}
 
 	
 	public static final int DEFAULT_WAIT_TIME = 500;
@@ -285,6 +277,12 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 
 	int lastTurn = -1;
 
+
+	protected void updateVote(GameInfo gameInfo2) {
+		List<Vote> latestVoteList = gameInfo.getLatestVoteList();
+		infoPanel.updateLatestVote(latestVoteList);
+	}
+	
 	/**
 	 * update Talk
 	 * @param gameInfo
@@ -368,9 +366,27 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		}
 		update(gameInfo);
 
-		
-		updateTalk(gameInfo);
+		if(isLogType(log, "talk")){
+			updateTalk(gameInfo);
+		}
+		else if(isLogType(log, "vote")){
+			updateVote(gameInfo);
+		}
+//		else if(isLogType(log, "status")){
+//			String[] data = log.split(",");
+//			int idx = Integer.parseInt(data[2]);
+//			String name = data[5];
+//			resource.setName(idx, name);
+//		}
 		System.out.println(log);
+	}
+
+	private boolean isLogType(String log, String type) {
+		String[] data = log.split(",");
+		if(data.length < 2){
+			return false;
+		}
+		return data[1].equals(type);
 	}
 
 	@Override

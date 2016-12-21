@@ -448,4 +448,9 @@ public class DefaultResource implements AIWolfResource {
 		return "Turn "+turn;
 	}
 
+	@Override
+	public String convertVote() {
+		return "Vote";
+	}
+
 }

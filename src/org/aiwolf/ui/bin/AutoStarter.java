@@ -34,6 +34,7 @@ import org.aiwolf.ui.HumanPlayer;
 import org.aiwolf.ui.log.ContestResource;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.DefaultResource;
+import org.aiwolf.ui.res.JapaneseResource;
 import org.aiwolf.ui.util.AgentLibraryReader;
 
 
@@ -290,7 +291,11 @@ public class AutoStarter {
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i)); 
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
-							ContestResource resource = new ContestResource(game);
+//							ContestResource resource = new ContestResource(game);
+							JapaneseResource resource = new JapaneseResource();
+							for(Agent agent:gameServer.getConnectedAgentList()){
+								resource.setName(agent.getAgentIdx(), gameServer.getName(agent));
+							}
 							GameViewer gameViewer = new GameViewer(resource, game);
 //							Map<Agent, Role> agentRoleMap = new HashMap<>();
 //							for(Agent agent:game.getGameData().getAgentList()){

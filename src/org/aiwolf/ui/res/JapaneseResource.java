@@ -498,4 +498,10 @@ public class JapaneseResource implements AIWolfResource {
 	}
 
 
+	@Override
+	public String convertVote() {
+		return "投票";
+	}
+
+
 }
