@@ -366,7 +366,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		}
 		update(gameInfo);
 
-		if(isLogType(log, "talk")){
+		if(isLogType(log, "talk") || isLogType(log, "whisper")){
 			updateTalk(gameInfo);
 		}
 		else if(isLogType(log, "vote")){
