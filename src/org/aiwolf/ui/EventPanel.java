@@ -357,8 +357,10 @@ public class EventPanel extends JPanel{
 	 */
 	public void addArrow(Agent from, Agent to, Color color){
 //		arrowMap.clear();
-		arrowMap.put(new Pair<Agent, Agent>(from, to), color);
-		repaint();
+		synchronized (arrowMap) {
+			arrowMap.put(new Pair<Agent, Agent>(from, to), color);
+			repaint();
+		}
 //		agentMap.get(from).setBackground(Color.CYAN);
 //		agentMap.get(to).setBackground(Color.ORANGE);
 //		System.out.println(from+"=>"+to);
@@ -367,7 +369,9 @@ public class EventPanel extends JPanel{
 
 
 	public void clearArrow() {
-		arrowMap.clear();
+		synchronized (arrowMap) {
+			arrowMap.clear();
+		}
 //		centerPanel.setVisible(false);
 //		repaint();
 	}
