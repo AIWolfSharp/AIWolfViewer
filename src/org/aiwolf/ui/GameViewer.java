@@ -277,7 +277,10 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 
 	int lastTurn = -1;
 
-
+	/**
+	 * Update All Lastest Vote
+	 * @param gameInfo2
+	 */
 	protected void updateVote(GameInfo gameInfo2) {
 		List<Vote> latestVoteList = gameInfo.getLatestVoteList();
 		infoPanel.updateLatestVote(latestVoteList);
@@ -349,6 +352,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	}
 //
 	int lastDay = -1;
+	int voteSkip = 0;
 	@Override
 	public void log(String log) {
 		GameInfo gameInfo = game.getGameData().getGameInfo();
@@ -370,7 +374,14 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 			updateTalk(gameInfo);
 		}
 		else if(isLogType(log, "vote")){
-			updateVote(gameInfo);
+//			System.out.println(voteSkip+"\t"+gameInfo.getLatestVoteList().size());
+			if(voteSkip == 0){
+				updateVote(gameInfo);
+				voteSkip = gameInfo.getLatestVoteList().size();
+			}
+			if(gameInfo.getLatestVoteList().size() > 0){
+				voteSkip--;
+			}
 		}
 //		else if(isLogType(log, "status")){
 //			String[] data = log.split(",");
