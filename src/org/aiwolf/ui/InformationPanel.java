@@ -432,9 +432,17 @@ public class InformationPanel extends JPanel {
 			}
 		}
 		if (isFinalVote && gameInfo.getExecutedAgent() != null) {
-			inform(resource.convertExecuted(gameInfo.getExecutedAgent()), ACTION_COLOR, gameInfo.getExecutedAgent());
+			informExecutedAgent(gameInfo.getExecutedAgent());
 		}
 		eventPanel.clearArrow();
+	}
+
+	/**
+	 * 
+	 * @param agent
+	 */
+	public void informExecutedAgent(Agent agent) {
+		inform(resource.convertExecuted(agent), ACTION_COLOR, agent);
 	}
 
 

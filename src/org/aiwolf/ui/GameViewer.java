@@ -281,8 +281,8 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 	 * Update All Lastest Vote
 	 * @param gameInfo2
 	 */
-	protected void updateVote(GameInfo gameInfo2) {
-		List<Vote> latestVoteList = gameInfo.getLatestVoteList();
+	protected void showVoteList(List<Vote> latestVoteList) {
+//		List<Vote> latestVoteList = gameInfo.getLatestVoteList();
 		infoPanel.updateLatestVote(latestVoteList);
 	}
 	
@@ -376,12 +376,17 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		else if(isLogType(log, "vote")){
 //			System.out.println(voteSkip+"\t"+gameInfo.getLatestVoteList().size());
 			if(voteSkip == 0){
-				updateVote(gameInfo);
+				showVoteList(gameInfo.getLatestVoteList());
 				voteSkip = gameInfo.getLatestVoteList().size();
 			}
 			if(gameInfo.getLatestVoteList().size() > 0){
 				voteSkip--;
 			}
+		}
+		else if(isLogType(log, "execute")){
+//			infoPanel.updateVote(gameInfo.getLatestVoteList(), true);
+//			infoPanel.inform(resource.convertExecuted(gameInfo.getLatestExecutedAgent()), ACTION_COLOR, gameInfo.getLatestExecutedAgent());
+			infoPanel.informExecutedAgent(gameInfo.getLatestExecutedAgent());
 		}
 //		else if(isLogType(log, "status")){
 //			String[] data = log.split(",");
