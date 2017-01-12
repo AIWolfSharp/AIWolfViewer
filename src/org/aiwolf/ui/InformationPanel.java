@@ -2,30 +2,18 @@ package org.aiwolf.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.common.data.Agent;
@@ -235,7 +223,7 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Content u = new Content(talk.getText());
+			Content u = new Content(talk.getAgent(), talk.getText());
 			
 			eventPanel.clearArrow();
 			if(talkType == TalkType.TALK){

@@ -266,7 +266,7 @@ public class JapaneseResource implements AIWolfResource {
 	
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Content utterance = new Content(whisper.getText());
+		Content utterance = new Content(whisper.getAgent(), whisper.getText());
 		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
 			return String.format("%d日の%s(%03d)に賛成する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
@@ -307,7 +307,7 @@ public class JapaneseResource implements AIWolfResource {
 			return "特に話すことはない";
 		}
 		try{
-			Content utterance = new Content(talk.getText());
+			Content utterance = new Content(talk.getAgent(), talk.getText());
 			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
 				return String.format("%sを襲撃する", convert(utterance.getTarget()));

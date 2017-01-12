@@ -180,7 +180,7 @@ public class DefaultResource implements AIWolfResource {
 			return "Over";
 		}
 		try{
-			Content utterance = new Content(talk.getText());
+			Content utterance = new Content(talk.getAgent(), talk.getText());
 			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
 				return String.format("Attack %s", convert(utterance.getTarget()));
@@ -218,7 +218,7 @@ public class DefaultResource implements AIWolfResource {
 
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Content utterance = new Content(whisper.getText());
+		Content utterance = new Content(whisper.getAgent(), whisper.getText());
 		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
 			return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());

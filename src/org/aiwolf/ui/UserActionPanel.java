@@ -24,6 +24,7 @@ import org.aiwolf.client.lib.ComingoutContentBuilder;
 import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.DisagreeContentBuilder;
 import org.aiwolf.client.lib.DivineContentBuilder;
+import org.aiwolf.client.lib.DivinedContentBuilder;
 import org.aiwolf.client.lib.EstimateContentBuilder;
 import org.aiwolf.client.lib.GuardContentBuilder;
 import org.aiwolf.client.lib.InquestContentBuilder;
@@ -89,7 +90,9 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 	private GameSetting gameSetting;
 	private GameInfo gameInfo;
 	private Map<Integer, GameInfo> gameInfoMap;
-	
+
+	Agent agent = null;
+
 	String talk = null;
 	
 	Agent vote = null;
@@ -111,6 +114,8 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 
 	public UserActionPanel(AIWolfResource resource){
 		this.resource = resource;
+		this.agent = agent;
+		
 		gameInfoMap = new HashMap<Integer, GameInfo>();
 		dailyFinishMap = new HashMap<>();
 		
@@ -210,6 +215,14 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		
 		
 		
+	}
+
+	public Agent getAgent() {
+		return agent;
+	}
+
+	public void setAgent(Agent agent) {
+		this.agent = agent;
 	}
 
 	/**
@@ -561,28 +574,28 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 	protected void createTalk() {
 		Topic item = ((Item<Topic>)utteranceBox.getSelectedItem()).getValue();
 		if(item == Topic.AGREE){
-			talk = new Content(new AgreeContentBuilder(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new AgreeContentBuilder(agent, TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.DISAGREE){
-			talk = new Content(new DisagreeContentBuilder(TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new DisagreeContentBuilder(agent, TalkType.TALK, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.COMINGOUT){
-			talk = new Content(new ComingoutContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
+			talk = new Content(new ComingoutContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.ESTIMATE){
-			talk = new Content(new EstimateContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
+			talk = new Content(new EstimateContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.GUARDED){
-			talk = new Content(new GuardContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
+			talk = new Content(new GuardContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.DIVINED){
-			talk = new Content(new DivineContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new DivinedContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.INQUESTED){
-			talk = new Content(new InquestContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new InquestContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.VOTE){
-			talk = new Content(new VoteContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
+			talk = new Content(new VoteContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 	}
 
@@ -595,41 +608,41 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		if(item == Topic.AGREE){
 			TalkType talkType = (TalkType) agreeTargetBox.getSelectedItem();
 			if(talkType == TalkType.TALK){
-				talk = new Content(new AgreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
+				talk = new Content(new AgreeContentBuilder(agent, talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 			}
 			else{
-				talk = new Content(new AgreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
+				talk = new Content(new AgreeContentBuilder(agent, talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
 			}
 		}
 		else if(item == Topic.DISAGREE){
 			TalkType talkType = (TalkType) agreeTargetBox.getSelectedItem();
 			if(talkType == TalkType.TALK){
-				talk = new Content(new DisagreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
+				talk = new Content(new DisagreeContentBuilder(agent, talkType, dayBox.getSelectedIndex(), ((Item<Integer>) talkIdBox.getSelectedItem()).getValue())).getText();
 			}
 			else{
-				talk = new Content(new DisagreeContentBuilder(talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
+				talk = new Content(new DisagreeContentBuilder(agent, talkType, dayBox.getSelectedIndex(), ((Item<Integer>) whisperIdBox.getSelectedItem()).getValue())).getText();
 			}
 		}
 		else if(item == Topic.COMINGOUT){
-			talk = new Content(new ComingoutContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
+			talk = new Content(new ComingoutContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.ESTIMATE){
-			talk = new Content(new EstimateContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
+			talk = new Content(new EstimateContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Role) ((Item) (roleBox.getSelectedItem())).getValue())).getText();
 		}
 		else if(item == Topic.GUARDED){
-			talk = new Content(new GuardContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
+			talk = new Content(new GuardContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.DIVINED){
-			talk = new Content(new DivineContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new DivinedContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.INQUESTED){
-			talk = new Content(new InquestContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
+			talk = new Content(new InquestContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()), (Species) ((Item) speciesBox.getSelectedItem()).getValue())).getText();
 		}
 		else if(item == Topic.VOTE){
-			talk = new Content(new VoteContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
+			talk = new Content(new VoteContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 		else if(item == Topic.ATTACK){
-			talk = new Content(new AttackContentBuilder(resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
+			talk = new Content(new AttackContentBuilder(agent, resource.convertToAgent((String) targetBox.getSelectedItem()))).getText();
 		}
 //		
 //		

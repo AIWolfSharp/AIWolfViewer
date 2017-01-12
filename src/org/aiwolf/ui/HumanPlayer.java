@@ -183,9 +183,11 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 		this.gameSetting = gameSetting;
 		infoPanel.initialize(gameInfo, gameSetting);
 		userActionPanel.initialize(gameInfo, gameSetting);
+		userActionPanel.setAgent(gameInfo.getAgent());
 //		talkPanel.initialize(gameInfo, gameSetting);
 		setVisible(true);
 		update(gameInfo);
+		
 		
 //		samplePlayer.initialize(gameInfo, gameSetting);
 	}
@@ -199,7 +201,7 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 		infoPanel.scrollToTail();
 		
 		for(Talk talk:gameInfo.getTalkList()){
-			Content u = new Content(talk.getText());
+			Content u = new Content(talk.getAgent(), talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
 				infoPanel.setComingOut(talk.getAgent(), u.getRole());
 			}

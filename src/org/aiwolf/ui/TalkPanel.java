@@ -3,13 +3,10 @@ package org.aiwolf.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ItemListener;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -22,22 +19,19 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
 import javax.swing.SpringLayout;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.TitledBorder;
-import javax.xml.ws.handler.MessageContext.Scope;
 
-import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TalkType;
+import org.aiwolf.client.lib.Topic;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
-import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.net.GameInfo;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.common.util.Counter;
@@ -306,7 +300,7 @@ public class TalkPanel extends JPanel {
 	 * @return
 	 */
 	public JPanel createTalkPanel(Talk talk, TalkType talkType) {
-		Content utterance = new Content(talk.getText());
+		Content content = new Content(talk.getAgent(), talk.getText());
 
 		JPanel talkPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();
@@ -324,17 +318,17 @@ public class TalkPanel extends JPanel {
 			text.append(String.format("%s", resource.convertWhisper(talk)));
 		}
 		
-		if(utterance.getTopic() == Topic.AGREE || utterance.getTopic() == Topic.DISAGREE){
-			GameInfo gi = gameInfoMap.get(utterance.getTalkDay());
-			if(utterance.getTalkType() == TalkType.TALK){
-				Talk reference = gi.getTalkList().get(utterance.getTalkID());
+		if(content.getTopic() == Topic.AGREE || content.getTopic() == Topic.DISAGREE){
+			GameInfo gi = gameInfoMap.get(content.getTalkDay());
+			if(content.getTalkType() == TalkType.TALK){
+				Talk reference = gi.getTalkList().get(content.getTalkID());
 				text.append("\n");
 				text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
 				text.append("\n");
 				text.append(" > "+resource.convertTalk(reference));
 			}
 			else{
-				Talk reference = gi.getWhisperList().get(utterance.getTalkID());
+				Talk reference = gi.getWhisperList().get(content.getTalkID());
 				text.append("\n");
 				text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
 				text.append("\n");
@@ -371,7 +365,7 @@ public class TalkPanel extends JPanel {
 		else if(gameInfo.getRoleMap().get(talk.getAgent()) == gameInfo.getRole()){
 			talkPanel.setBackground(HumanPlayer.FRIEND_COLOR);
 		}
-		else if(utterance.getTopic() == Topic.COMINGOUT || utterance.getTopic() == Topic.DIVINED || utterance.getTopic() == Topic.GUARDED || utterance.getTopic() == Topic.INQUESTED){
+		else if(content.getTopic() == Topic.COMINGOUT || content.getTopic() == Topic.DIVINED || content.getTopic() == Topic.GUARDED || content.getTopic() == Topic.INQUESTED){
 			talkPanel.setBackground(HumanPlayer.IMPORTANT_COLOR);
 		}
 		else{
