@@ -180,7 +180,7 @@ public class DefaultResource implements AIWolfResource {
 			return "Over";
 		}
 		try{
-			Content utterance = new Content(talk.getAgent(), talk.getText());
+			Content utterance = new Content(talk.getText());
 			Topic topic = utterance.getTopic();
 			if(topic == Topic.ATTACK){
 				return String.format("Attack %s", convert(utterance.getTarget()));
@@ -203,7 +203,7 @@ public class DefaultResource implements AIWolfResource {
 			else if(topic == Topic.GUARDED){
 				return String.format("I guarded %s", convert(utterance.getTarget()));
 			}
-			else if(topic == Topic.INQUESTED){
+			else if(topic == Topic.IDENTIFIED){
 				return String.format("Result of Inquest:%s is %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 			}
 			else if(topic == Topic.VOTE){
@@ -218,7 +218,7 @@ public class DefaultResource implements AIWolfResource {
 
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Content utterance = new Content(whisper.getAgent(), whisper.getText());
+		Content utterance = new Content(whisper.getText());
 		Topic topic = utterance.getTopic();
 		if(topic == Topic.AGREE){
 			return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
@@ -238,7 +238,7 @@ public class DefaultResource implements AIWolfResource {
 		else if(topic == Topic.GUARDED){
 			return String.format("I will lie that I guarded %s", convert(utterance.getTarget()));
 		}
-		else if(topic == Topic.INQUESTED){
+		else if(topic == Topic.IDENTIFIED){
 			return String.format("I will lie that %s is inquested as %s", convert(utterance.getTarget()), convert(utterance.getResult()));
 		}
 		else if(topic == Topic.VOTE){

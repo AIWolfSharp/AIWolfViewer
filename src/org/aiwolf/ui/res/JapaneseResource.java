@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
+import org.aiwolf.client.lib.Operator;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
@@ -234,7 +235,7 @@ public class JapaneseResource implements AIWolfResource {
 			return "予想";
 		case GUARDED:
 			return "護衛先";
-		case INQUESTED:
+		case IDENTIFIED:
 			return "霊媒結果";
 		case OVER:
 			return "発言終了";
@@ -264,39 +265,39 @@ public class JapaneseResource implements AIWolfResource {
 		return bidiMap.getKey(name);
 	}
 	
-	@Override
-	public String convertWhisper(Talk whisper) {
-		Content utterance = new Content(whisper.getAgent(), whisper.getText());
-		Topic topic = utterance.getTopic();
-		if(topic == Topic.AGREE){
-			return String.format("%d日の%s(%03d)に賛成する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
-		}
-		else if(topic == Topic.COMINGOUT){
-			return String.format("私は%sと名乗り出る", convert(utterance.getRole()));
-		}
-		else if(topic == Topic.DISAGREE){
-			return String.format("%d日の%s(%03d)に反対する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
-		}
-		else if(topic == Topic.DIVINED){
-			return String.format("%sを占った結果%sだったことにする", convert(utterance.getTarget()), convert(utterance.getResult()));
-		}
-		else if(topic == Topic.ESTIMATE){
-			return String.format("%sは%sだと思う．", convert(utterance.getTarget()), convert(utterance.getRole()));
-		}
-		else if(topic == Topic.GUARDED){
-			return String.format("%sを護衛したことにする", convert(utterance.getTarget()));
-		}
-		else if(topic == Topic.INQUESTED){
-			return String.format("%sは%sだったと言う", convert(utterance.getTarget()), convert(utterance.getResult()));
-		}
-		else if(topic == Topic.VOTE){
-			return String.format("%sに投票する", convert(utterance.getTarget()));
-		}
-		else if(topic == Topic.ATTACK){
-			return String.format("%sを襲撃する", convert(utterance.getTarget()));
-		}
-		return whisper.getText();
-	}
+//	@Override
+//	public String convertWhisper(Talk whisper) {
+//		Content utterance = new Content(whisper.getText());
+//		Topic topic = utterance.getTopic();
+//		if(topic == Topic.AGREE){
+//			return String.format("%d日の%s(%03d)に賛成する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
+//		}
+//		else if(topic == Topic.COMINGOUT){
+//			return String.format("私は%sと名乗り出る", convert(utterance.getRole()));
+//		}
+//		else if(topic == Topic.DISAGREE){
+//			return String.format("%d日の%s(%03d)に反対する", utterance.getTalkDay(), convert(utterance.getTalkType()), utterance.getTalkID());
+//		}
+//		else if(topic == Topic.DIVINED){
+//			return String.format("%sを占った結果%sだったことにする", convert(utterance.getTarget()), convert(utterance.getResult()));
+//		}
+//		else if(topic == Topic.ESTIMATE){
+//			return String.format("%sは%sだと思う．", convert(utterance.getTarget()), convert(utterance.getRole()));
+//		}
+//		else if(topic == Topic.GUARDED){
+//			return String.format("%sを護衛したことにする", convert(utterance.getTarget()));
+//		}
+//		else if(topic == Topic.IDENTIFIED){
+//			return String.format("%sは%sだったと言う", convert(utterance.getTarget()), convert(utterance.getResult()));
+//		}
+//		else if(topic == Topic.VOTE){
+//			return String.format("%sに投票する", convert(utterance.getTarget()));
+//		}
+//		else if(topic == Topic.ATTACK){
+//			return String.format("%sを襲撃する", convert(utterance.getTarget()));
+//		}
+//		return whisper.getText();
+//	}
 
 	@Override
 	public String convertTalk(Talk talk) {
@@ -307,39 +308,151 @@ public class JapaneseResource implements AIWolfResource {
 			return "特に話すことはない";
 		}
 		try{
-			Content utterance = new Content(talk.getAgent(), talk.getText());
-			Topic topic = utterance.getTopic();
-			if(topic == Topic.ATTACK){
-				return String.format("%sを襲撃する", convert(utterance.getTarget()));
-			}
-			else if(topic == Topic.AGREE){
-				return String.format("%d日の意見(%03d)に同意", utterance.getTalkDay(), utterance.getTalkID());
-			}
-			else if(topic == Topic.COMINGOUT){
-				return String.format("【私は%s】です", convert(utterance.getRole()));
-			}
-			else if(topic == Topic.DISAGREE){
-				return String.format("%d日の意見(%03d)に反対", utterance.getTalkDay(), utterance.getTalkID());
-			}
-			else if(topic == Topic.DIVINED){
-				return String.format("占い結果：【%sは%s】だった．", convert(utterance.getTarget()), convert(utterance.getResult()));
-			}
-			else if(topic == Topic.ESTIMATE){
-				return String.format("%sは%sだと思う．", convert(utterance.getTarget()), convert(utterance.getRole()));
-			}
-			else if(topic == Topic.GUARDED){
-				return String.format("【%sを護衛】した", convert(utterance.getTarget()));
-			}
-			else if(topic == Topic.INQUESTED){
-				return String.format("霊媒結果：【%sは%s】だった", convert(utterance.getTarget()), convert(utterance.getResult()));
-			}
-			else if(topic == Topic.VOTE){
-				return String.format("%sに投票する", convert(utterance.getTarget()));
-			}
-			return talk.getText();
+			Content contents = new Content(talk.getText());
+			return contentToText(contents, TalkType.TALK);
 		}catch(Exception e){
+			e.printStackTrace();
 			return talk.getText();
 		}
+	}
+	
+	@Override
+	public String convertWhisper(Talk whisper) {
+		if(whisper.isSkip()){
+			return "様子を見ている";
+		}
+		else if(whisper.isOver()){
+			return "特に話すことはない";
+		}
+		try{
+			Content contents = new Content(whisper.getText());
+			return contentToText(contents, TalkType.WHISPER);
+		}catch(Exception e){
+			e.printStackTrace();
+			return whisper.getText();
+		}
+	}
+
+	/**
+	 * Convert content to text
+	 * @param baseContents
+	 */
+	protected String contentToText(Content baseContents, TalkType talkType) {
+		Operator operator = baseContents.getOperator();
+		Topic topic = baseContents.getTopic();
+		if(operator == null){
+			return topicToText(baseContents, topic, talkType);
+		}
+		else{
+			if(operator == Operator.REQUEST){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("要望：%s ", contentToText(content, talkType)));
+//					if(content.getSubject() != null){
+//						buf.append(String.format("%sに要望： %s ", convert(content.getSubject()), contentToText(content)));
+//					}
+//					else{
+//					}
+				}
+				return buf.toString();
+			}
+			System.out.println(operator);
+		}
+		return baseContents.getText();
+
+	}
+
+	/**
+	 * 
+	 * @param contents
+	 * @param topic
+	 * @return
+	 */
+	protected String topicToText(Content contents, Topic topic, TalkType talkType) {
+		if(topic == Topic.ATTACK){
+			return String.format("%sを襲撃する", convert(contents.getTarget()));
+		}
+		else if(topic == Topic.AGREE){
+			return String.format("%d日の意見(%03d)に同意", contents.getTalkDay(), contents.getTalkID());
+		}
+		else if(topic == Topic.COMINGOUT){
+			if(talkType == TalkType.TALK){
+				return String.format("【私は%s】です", convert(contents.getRole()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("私は%sと名乗る", convert(contents.getRole()));
+			}
+		}
+		else if(topic == Topic.DISAGREE){
+			return String.format("%d日の意見(%03d)に反対", contents.getTalkDay(), contents.getTalkID());
+		}
+		else if(topic == Topic.DIVINED){
+			if(talkType == TalkType.TALK){
+				return String.format("占い結果：【%sは%s】だった．", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("占い結果：%sは%sだったことにする", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+		}
+		else if(topic == Topic.DIVINATION){
+			if(talkType == TalkType.TALK){
+				if(contents.getSubject() != null){
+					return String.format("%sが%sを占う", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%sを占う", convert(contents.getTarget()));
+				}
+			}
+			else if(talkType == TalkType.WHISPER){
+				if(contents.getSubject() != null){
+					return String.format("%sが%sを占うことにする", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%sを占うことにする", convert(contents.getTarget()));
+				}
+			}
+		}
+		else if(topic == Topic.ESTIMATE){
+			return String.format("%sは%sだと思う．", convert(contents.getTarget()), convert(contents.getRole()));
+		}
+		else if(topic == Topic.GUARDED){
+			if(talkType == TalkType.TALK){
+				return String.format("【%sを護衛】した", convert(contents.getTarget()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("%sを護衛したことにする", convert(contents.getTarget()));
+			}
+		}
+		else if(topic == Topic.GUARD){
+			if(talkType == TalkType.TALK){
+				if(contents.getSubject() != null){
+					return String.format("%sが%sを護衛する", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%sを護衛する", convert(contents.getTarget()));
+				}
+			}
+			else if(talkType == TalkType.WHISPER){
+				if(contents.getSubject() != null){
+					return String.format("%sが%sを護衛することにする", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%sを護衛することにする", convert(contents.getTarget()));
+				}
+			}
+		}
+		else if(topic == Topic.IDENTIFIED){
+			if(talkType == TalkType.TALK){
+				return String.format("霊媒結果：【%sは%s】だった", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("霊媒結果：%sは%sだったことにする", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+		}
+		else if(topic == Topic.VOTE){
+			return String.format("%sに投票する", convert(contents.getTarget()));
+		}
+		return contents.getText();
 	}
 
 	@Override

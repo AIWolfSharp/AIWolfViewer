@@ -223,16 +223,16 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Content u = new Content(talk.getAgent(), talk.getText());
+			Content u = new Content(talk.getText());
 			
 			eventPanel.clearArrow();
-			if(talkType == TalkType.TALK){
+			if(talkType == TalkType.TALK && u.getTopic() != null){
 				switch(u.getTopic()){
 				case ATTACK:
 					eventPanel.addArrow(talk.getAgent(), u.getTarget(), Color.RED);
 					break;
 				case DIVINED:
-				case INQUESTED:
+				case IDENTIFIED:
 					eventPanel.addArrow(talk.getAgent(), u.getTarget(), new Color(128,64,255));
 					break;
 				case GUARDED:

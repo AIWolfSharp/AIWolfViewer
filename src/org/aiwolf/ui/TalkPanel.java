@@ -300,7 +300,7 @@ public class TalkPanel extends JPanel {
 	 * @return
 	 */
 	public JPanel createTalkPanel(Talk talk, TalkType talkType) {
-		Content content = new Content(talk.getAgent(), talk.getText());
+		Content content = new Content(talk.getText());
 
 		JPanel talkPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();
@@ -365,7 +365,7 @@ public class TalkPanel extends JPanel {
 		else if(gameInfo.getRoleMap().get(talk.getAgent()) == gameInfo.getRole()){
 			talkPanel.setBackground(HumanPlayer.FRIEND_COLOR);
 		}
-		else if(content.getTopic() == Topic.COMINGOUT || content.getTopic() == Topic.DIVINED || content.getTopic() == Topic.GUARDED || content.getTopic() == Topic.INQUESTED){
+		else if(content.getTopic() == Topic.COMINGOUT || content.getTopic() == Topic.DIVINED || content.getTopic() == Topic.GUARDED || content.getTopic() == Topic.IDENTIFIED){
 			talkPanel.setBackground(HumanPlayer.IMPORTANT_COLOR);
 		}
 		else{

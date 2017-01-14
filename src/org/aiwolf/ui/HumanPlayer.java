@@ -201,7 +201,7 @@ public class HumanPlayer extends JFrame implements Player, WaitListener{
 		infoPanel.scrollToTail();
 		
 		for(Talk talk:gameInfo.getTalkList()){
-			Content u = new Content(talk.getAgent(), talk.getText());
+			Content u = new Content(talk.getText());
 			if(u.getTopic() == Topic.COMINGOUT){
 				infoPanel.setComingOut(talk.getAgent(), u.getRole());
 			}
