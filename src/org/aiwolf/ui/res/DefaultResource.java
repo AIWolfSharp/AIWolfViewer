@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
 import org.aiwolf.client.lib.Content;
+import org.aiwolf.client.lib.Operator;
 import org.aiwolf.common.data.Agent;
 import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
@@ -174,82 +175,160 @@ public class DefaultResource implements AIWolfResource {
 	@Override
 	public String convertTalk(Talk talk) {
 		if(talk.isSkip()){
-			return "Skip";
+			return "SKIP";
 		}
 		else if(talk.isOver()){
-			return "Over";
+			return "OVER";
 		}
 		try{
-			Content utterance = new Content(talk.getText());
-			Topic topic = utterance.getTopic();
-			if(topic == Topic.ATTACK){
-				return String.format("Attack %s", convert(utterance.getTarget()));
-			}
-			else if(topic == Topic.AGREE){
-				return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
-			}
-			else if(topic == Topic.COMINGOUT){
-				return String.format("I am %s", convert(utterance.getRole()));
-			}
-			else if(topic == Topic.DISAGREE){
-				return String.format("I disagree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
-			}
-			else if(topic == Topic.DIVINED){
-				return String.format("Result of Devine:%s is %s", convert(utterance.getTarget()), convert(utterance.getResult()));
-			}
-			else if(topic == Topic.ESTIMATE){
-				return String.format("I estimate that %s is %s", convert(utterance.getTarget()), convert(utterance.getRole()));
-			}
-			else if(topic == Topic.GUARDED){
-				return String.format("I guarded %s", convert(utterance.getTarget()));
-			}
-			else if(topic == Topic.IDENTIFIED){
-				return String.format("Result of Inquest:%s is %s", convert(utterance.getTarget()), convert(utterance.getResult()));
-			}
-			else if(topic == Topic.VOTE){
-				return String.format("I vote to %s", convert(utterance.getTarget()));
-			}
-			return talk.getText();
+			Content contents = new Content(talk.getText());
+			return contentToText(contents, TalkType.TALK);
 		}catch(Exception e){
+			e.printStackTrace();
 			return talk.getText();
 		}
-//		return talk.getContent();
 	}
+	
 
 	@Override
 	public String convertWhisper(Talk whisper) {
-		Content utterance = new Content(whisper.getText());
-		Topic topic = utterance.getTopic();
-		if(topic == Topic.AGREE){
-			return String.format("I agree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
+		if(whisper.isSkip()){
+			return "SKIP";
+		}
+		else if(whisper.isOver()){
+			return "OVER";
+		}
+		try{
+			Content contents = new Content(whisper.getText());
+			return contentToText(contents, TalkType.WHISPER);
+		}catch(Exception e){
+			e.printStackTrace();
+			return whisper.getText();
+		}
+	}
+
+	/**
+	 * Convert content to text
+	 * @param baseContents
+	 */
+	protected String contentToText(Content baseContents, TalkType talkType) {
+		Operator operator = baseContents.getOperator();
+		Topic topic = baseContents.getTopic();
+		if(operator == null){
+			return topicToText(baseContents, topic, talkType);
+		}
+		else{
+			if(operator == Operator.REQUEST){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("Request：%s ", contentToText(content, talkType)));
+//					if(content.getSubject() != null){
+//						buf.append(String.format("%sに要望： %s ", convert(content.getSubject()), contentToText(content)));
+//					}
+//					else{
+//					}
+				}
+				return buf.toString();
+			}
+			System.out.println(operator);
+		}
+		return baseContents.getText();
+
+	}
+
+	/**
+	 * 
+	 * @param contents
+	 * @param topic
+	 * @return
+	 */
+	protected String topicToText(Content contents, Topic topic, TalkType talkType) {
+		if(topic == Topic.ATTACK){
+			return String.format("Attack %s", convert(contents.getTarget()));
+		}
+		else if(topic == Topic.AGREE){
+			return String.format("I agree to %03d at day%d", contents.getTalkID(), contents.getTalkDay());
 		}
 		else if(topic == Topic.COMINGOUT){
-			return String.format("I will comingout as %s", convert(utterance.getRole()));
+			if(talkType == TalkType.TALK){
+				return String.format("I am %s", convert(contents.getRole()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("I will comming out as %s", convert(contents.getRole()));
+			}
 		}
 		else if(topic == Topic.DISAGREE){
-			return String.format("I disagree to %03d at day %d", utterance.getTalkID(), utterance.getTalkDay());
+			return String.format("I disagree to %03d at day %d", contents.getTalkID(), contents.getTalkDay());
 		}
 		else if(topic == Topic.DIVINED){
-			return String.format("I will lie that I divine %s as %s", convert(utterance.getTarget()), convert(utterance.getResult()));
+			if(talkType == TalkType.TALK){
+				return String.format("Divine Result：%s is %s", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("Fake Divine Result：%s is %s", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+		}
+		else if(topic == Topic.DIVINATION){
+			if(talkType == TalkType.TALK){
+				if(contents.getSubject() != null){
+					return String.format("%s divines %s", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("Divine %s", convert(contents.getTarget()));
+				}
+			}
+			else if(talkType == TalkType.WHISPER){
+				if(contents.getSubject() != null){
+					return String.format("I lie that %s divine %s", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("I will lie that I will divine %s", convert(contents.getTarget()));
+				}
+			}
 		}
 		else if(topic == Topic.ESTIMATE){
-			return String.format("I estimate %s is %s", convert(utterance.getTarget()), convert(utterance.getRole()));
+			return String.format("I estimate %s is %s．", convert(contents.getTarget()), convert(contents.getRole()));
 		}
 		else if(topic == Topic.GUARDED){
-			return String.format("I will lie that I guarded %s", convert(utterance.getTarget()));
+			if(talkType == TalkType.TALK){
+				return String.format("I guarded %s", convert(contents.getTarget()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("I lie that I guarded %s", convert(contents.getTarget()));
+			}
+		}
+		else if(topic == Topic.GUARD){
+			if(talkType == TalkType.TALK){
+				if(contents.getSubject() != null){
+					return String.format("%s will guard %s", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%s will be guarded", convert(contents.getTarget()));
+				}
+			}
+			else if(talkType == TalkType.WHISPER){
+				if(contents.getSubject() != null){
+					return String.format("I lie that %s will guard %s", convert(contents.getSubject()), convert(contents.getTarget()));
+				}
+				else{
+					return String.format("%sを護衛することにする", convert(contents.getTarget()));
+				}
+			}
 		}
 		else if(topic == Topic.IDENTIFIED){
-			return String.format("I will lie that %s is inquested as %s", convert(utterance.getTarget()), convert(utterance.getResult()));
+			if(talkType == TalkType.TALK){
+				return String.format("Identified：%s was %s", convert(contents.getTarget()), convert(contents.getResult()));
+			}
+			else if(talkType == TalkType.WHISPER){
+				return String.format("Identified：I will lie that %s was %s", convert(contents.getTarget()), convert(contents.getResult()));
+			}
 		}
 		else if(topic == Topic.VOTE){
-			return String.format("I vote %s", convert(utterance.getTarget()));
+			return String.format("I vote to %s", convert(contents.getTarget()));
 		}
-		else if(topic == Topic.ATTACK){
-			return String.format("I want to attack %s", convert(utterance.getTarget()));
-		}
-		return whisper.getText();
-//		return whisper.getContent();
+		return contents.getText();
 	}
+
 
 	@Override
 	public String convertVote(Vote vote) {
