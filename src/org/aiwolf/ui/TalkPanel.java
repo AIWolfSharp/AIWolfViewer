@@ -300,7 +300,6 @@ public class TalkPanel extends JPanel {
 	 * @return
 	 */
 	public JPanel createTalkPanel(Talk talk, TalkType talkType) {
-		Content content = new Content(talk.getText());
 
 		JPanel talkPanel = new JPanel();
 		SpringLayout layout = new SpringLayout();
@@ -318,22 +317,28 @@ public class TalkPanel extends JPanel {
 			text.append(String.format("%s", resource.convertWhisper(talk)));
 		}
 		
-		if(content.getTopic() == Topic.AGREE || content.getTopic() == Topic.DISAGREE){
-			GameInfo gi = gameInfoMap.get(content.getTalkDay());
-			if(content.getTalkType() == TalkType.TALK){
-				Talk reference = gi.getTalkList().get(content.getTalkID());
-				text.append("\n");
-				text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
-				text.append("\n");
-				text.append(" > "+resource.convertTalk(reference));
+		Content content = null;
+		try{
+			content = new Content(talk.getText());
+			if(content.getTopic() == Topic.AGREE || content.getTopic() == Topic.DISAGREE){
+				GameInfo gi = gameInfoMap.get(content.getTalkDay());
+				if(content.getTalkType() == TalkType.TALK){
+					Talk reference = gi.getTalkList().get(content.getTalkID());
+					text.append("\n");
+					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
+					text.append("\n");
+					text.append(" > "+resource.convertTalk(reference));
+				}
+				else{
+					Talk reference = gi.getWhisperList().get(content.getTalkID());
+					text.append("\n");
+					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
+					text.append("\n");
+					text.append(" > "+resource.convertWhisper(reference));
+				}
 			}
-			else{
-				Talk reference = gi.getWhisperList().get(content.getTalkID());
-				text.append("\n");
-				text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
-				text.append("\n");
-				text.append(" > "+resource.convertWhisper(reference));
-			}
+		}catch(NullPointerException |ArrayIndexOutOfBoundsException e){
+			
 		}
 		
 		JTextArea textArea = new JTextArea(text.toString());
@@ -365,7 +370,7 @@ public class TalkPanel extends JPanel {
 		else if(gameInfo.getRoleMap().get(talk.getAgent()) == gameInfo.getRole()){
 			talkPanel.setBackground(HumanPlayer.FRIEND_COLOR);
 		}
-		else if(content.getTopic() == Topic.COMINGOUT || content.getTopic() == Topic.DIVINED || content.getTopic() == Topic.GUARDED || content.getTopic() == Topic.IDENTIFIED){
+		else if(content != null && (content.getTopic() == Topic.COMINGOUT || content.getTopic() == Topic.DIVINED || content.getTopic() == Topic.GUARDED || content.getTopic() == Topic.IDENTIFIED)){
 			talkPanel.setBackground(HumanPlayer.IMPORTANT_COLOR);
 		}
 		else{

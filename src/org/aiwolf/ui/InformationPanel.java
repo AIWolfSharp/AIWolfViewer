@@ -223,26 +223,30 @@ public class InformationPanel extends JPanel {
 
 			agentPanelMap.get(talk.getAgent()).setBackground(FOCUS_COLOR);
 			
-			Content u = new Content(talk.getText());
-			
-			eventPanel.clearArrow();
-			if(talkType == TalkType.TALK && u.getTopic() != null){
-				switch(u.getTopic()){
-				case ATTACK:
-					eventPanel.addArrow(talk.getAgent(), u.getTarget(), Color.RED);
-					break;
-				case DIVINED:
-				case IDENTIFIED:
-					eventPanel.addArrow(talk.getAgent(), u.getTarget(), new Color(128,64,255));
-					break;
-				case GUARDED:
-				case VOTE:
-				case ESTIMATE:
-					eventPanel.addArrow(talk.getAgent(), u.getTarget(), Color.BLUE);
-					break;
-				default:
-					break;
+			try{
+				Content u = new Content(talk.getText());
+				
+				eventPanel.clearArrow();
+				if(talkType == TalkType.TALK && u.getTopic() != null){
+					switch(u.getTopic()){
+					case ATTACK:
+						eventPanel.addArrow(talk.getAgent(), u.getTarget(), Color.RED);
+						break;
+					case DIVINED:
+					case IDENTIFIED:
+						eventPanel.addArrow(talk.getAgent(), u.getTarget(), new Color(128,64,255));
+						break;
+					case GUARDED:
+					case VOTE:
+					case ESTIMATE:
+						eventPanel.addArrow(talk.getAgent(), u.getTarget(), Color.BLUE);
+						break;
+					default:
+						break;
+					}
 				}
+			}catch(NullPointerException |ArrayIndexOutOfBoundsException e){
+				
 			}
 			return true;
 		}
