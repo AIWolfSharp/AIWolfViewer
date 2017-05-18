@@ -2,11 +2,10 @@ package org.aiwolf.ui.bin;
 
 import java.io.IOException;
 
-import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
 import org.aiwolf.common.data.Role;
+import org.aiwolf.sample.player.SampleRoleAssignPlayer;
 import org.aiwolf.server.bin.RoleRequestStarter;
 import org.aiwolf.ui.HumanPlayer;
-import org.aiwolf.ui.res.DefaultResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
 

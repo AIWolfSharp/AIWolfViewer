@@ -6,12 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -21,12 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
+import org.aiwolf.client.lib.Content;
 import org.aiwolf.client.lib.TalkType;
 import org.aiwolf.client.lib.Topic;
-import org.aiwolf.client.lib.Content;
 import org.aiwolf.common.data.Agent;
-import org.aiwolf.common.data.Player;
 import org.aiwolf.common.data.Role;
 import org.aiwolf.common.data.Species;
 import org.aiwolf.common.data.Status;
@@ -34,14 +28,9 @@ import org.aiwolf.common.data.Talk;
 import org.aiwolf.common.data.Team;
 import org.aiwolf.common.net.GameInfo;
 import org.aiwolf.common.net.GameSetting;
-import org.aiwolf.common.util.CalendarTools;
-import org.aiwolf.server.AIWolfGame;
-import org.aiwolf.server.GameData;
-import org.aiwolf.server.net.DirectConnectServer;
 import org.aiwolf.server.util.GameLogger;
 import org.aiwolf.ui.log.LogGameData;
 import org.aiwolf.ui.res.AIWolfResource;
-import org.aiwolf.ui.res.JapaneseResource;
 
 public class GameViewer2 extends JFrame implements GameLogger, ActionListener{
 

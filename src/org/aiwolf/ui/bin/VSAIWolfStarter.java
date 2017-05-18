@@ -18,13 +18,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.aiwolf.client.base.smpl.SampleRoleAssignPlayer;
-import org.aiwolf.common.AIWolfRuntimeException;
 import org.aiwolf.common.data.Player;
 import org.aiwolf.common.data.Role;
+import org.aiwolf.sample.player.SampleRoleAssignPlayer;
 import org.aiwolf.server.bin.RoleRequestStarter;
 import org.aiwolf.ui.HumanPlayer;
 import org.aiwolf.ui.res.JapaneseResource;
