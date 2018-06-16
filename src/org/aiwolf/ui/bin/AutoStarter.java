@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.aiwolf.common.data.Agent;
@@ -47,52 +48,52 @@ public class AutoStarter {
 
 	private Map<String, Pair<String, Role>> roleAgentMap;
 	private File libraryDir;
-	
+
 	int agentNum = -1;
 	int port = 10000;
 	int gameNum = 100;
 	String logDirName ="./log/";
-	
+
 	private TcpipServer gameServer;
-	
-	private String settingFileName; 
+
+	private String settingFileName;
 	private GameSetting gameSetting;
 	boolean isRunning;
 	boolean isSuccessToFinish;
 	Thread serverThread;
 	boolean isVisualize = false;
-	
+
 	boolean initServer=false;
-	
+
 	Map<String, Counter<Role>> winCounterMap;
 	Map<String, Counter<Role>> roleCounterMap;
 	private Map<String, Class> playerClassMap;
 	AIWolfResource resource;
-	
-	
+
+
 	/**
 	 * Start Human Agent Starter
-	 * 
+	 *
 	 * @param args
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws IOException 
+	 * @throws ClassNotFoundException
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		if(args.length == 0){
 			System.err.println("Usage:"+AutoStarter.class.getName()+" initFileName");
 			return;
 		}
-		
+
 		AutoStarter ssbi = new AutoStarter(args[0]);
 		ssbi.start();
 		ssbi.result();
 		System.exit(1);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param fileName
 	 * @throws IOException
 	 */
@@ -156,7 +157,7 @@ public class AutoStarter {
 				roleAgentMap.put(name, new Pair<String, Role>(classPath, role));
 			}
 		}
-		
+
 		if(agentNum < 5){
 			agentNum = roleAgentMap.size();
 		}
@@ -169,9 +170,9 @@ public class AutoStarter {
 //				throw new IllegalArgumentException("No such agent as "+clsName);
 //			}
 //		}
-		
+
 	}
-	
+
 	/**
 	 * Start server and client
 	 * @throws SocketTimeoutException
@@ -192,7 +193,7 @@ public class AutoStarter {
 			}
 		}
 	}
-	
+
 	/**
 	 * Start client from init files
 	 * @throws InstantiationException
@@ -205,7 +206,7 @@ public class AutoStarter {
 		for(String playerName:roleAgentMap.keySet()){
 			String clsName = roleAgentMap.get(playerName).getKey();
 			Role role = roleAgentMap.get(playerName).getValue();
-			
+
 			Player player = null;
 			Class<? extends Player> playerClass = null;
 			if(playerClassMap.containsKey(clsName)){
@@ -222,20 +223,29 @@ public class AutoStarter {
 			else{
 				player = (Player)playerClass.newInstance();
 			}
-			
+
 			//引数にRoleRequestを追加
-			TcpipClient client = new TcpipClient("localhost", port, role);
+			final TcpipClient client = new TcpipClient("localhost", port, role);
 			if(playerName != null){
 				client.setName(playerName);
 //				System.out.println("Set name "+client.getName());
 			}
-			
-			if(client.connect(player)){
-//				System.out.println("Player connected to server:"+player);
-			}
+
+			final Player p = player;
+			Runnable r = new Runnable() {
+
+				@Override
+				public void run() {
+					if(client.connect(p)){
+//						System.out.println("Player connected to server:"+player);
+					}
+				}
+			};
+			Thread t = new Thread(r);
+			t.start();
 
 		}
-		
+
 	}
 
 	/**
@@ -244,7 +254,7 @@ public class AutoStarter {
 	 * @throws IOException
 	 */
 	private void startServer() throws SocketTimeoutException, IOException {
-		
+
 		if(settingFileName == null){
 			gameSetting = GameSetting.getDefaultGame(agentNum);
 		}
@@ -254,29 +264,29 @@ public class AutoStarter {
 		}
 		gameServer = new TcpipServer(port, agentNum, gameSetting);
 		gameServer.addServerListener(new ServerListener() {
-			
+
 			@Override
 			public void unconnected(Socket socket, Agent agent, String name) {
-				
+
 			}
-			
+
 			@Override
 			public void connected(Socket socket, Agent agent, String name) {
 				System.out.println("Connected:"+name);
-				
+
 			}
 		});
 //		gameServer.waitForConnection();
-//		
+//
 //		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
 //		game.setRand(new Random());
 //		if(logDirName != null){
 //			game.setLogFile(new File(logDirName));
 //		}
 //		game.start();
-		
+
 		Runnable r = new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try{
@@ -289,7 +299,7 @@ public class AutoStarter {
 						AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
 
 						game.setRand(new Random(i));
-						File logFile = new File(String.format("%s/%03d.log", logDirName, i)); 
+						File logFile = new File(String.format("%s/%03d.log", logDirName, i));
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
 //							ContestResource resource = new ContestResource(game);
@@ -307,10 +317,10 @@ public class AutoStarter {
 							logger = new MultiGameLogger(logger, gameViewer);
 						}
 						game.setGameLogger(logger);
-						
+
 						try{
 							game.start();
-	
+
 							Team winner = game.getWinner();
 							GameData gameData = game.getGameData();
 							for(Agent agent:gameData.getAgentList()){
@@ -334,7 +344,7 @@ public class AutoStarter {
 							logger.flush();
 							throw e;
 						}
-						
+
 					}
 					isSuccessToFinish = true;
 					gameServer.close();
@@ -379,7 +389,11 @@ public class AutoStarter {
 			System.out.print("\t"+role);
 		}
 		System.out.println("\tTotal");
-		for(String name:new TreeSet<>(roleAgentMap.keySet())){
+		TreeSet<String> nameSet = new TreeSet<>(winCounterMap.keySet());
+		nameSet.addAll(roleCounterMap.keySet());
+
+		for(String name:nameSet){
+//		for(String name:new TreeSet<>(roleAgentMap.keySet())){
 			if(!winCounterMap.containsKey(name) || !roleCounterMap.containsKey(name)){
 				continue;
 			}
@@ -397,11 +411,11 @@ public class AutoStarter {
 			System.out.printf("%.3f\n", win/cnt);
 		}
 
-		
+
 	}
 
 
-	
+
 	/**
 	 * ディレクトリ以下のライブラリから
 	 * @param dir
