@@ -40,14 +40,14 @@ public class JapaneseResource implements AIWolfResource {
 			{"探偵トーリイ", "img/Male_11.png"}, 
 			{"露天商クリフ", "img/Male_12.png"}, 
 			{"雑貨屋ノラ", "img/Female_01.png"}, 
-			{"堅物クレア", "img/Female_02.png"}, 
+			{"魔女ターニャ", "img/Female_02.png"}, 
 			{"老婆キノ", "img/Female_03.png"}, 
 			{"洗濯屋メアリ", "img/Female_04.png"}, 
 			{"村娘カサリナ", "img/Female_05.png"}, 
 			{"優等生デニース", "img/Female_06.png"}, 
 			{"記者キャサリン", "img/Female_07.png"}, 
 			{"不機嫌エイミー", "img/Female_08.png"}, 
-			{"踊り子バルバラ", "img/Female_09.png"}, 
+			{"浜辺のフラン", "img/Female_09.png"}, 
 			{"令嬢ブレンダ", "img/Female_10.png"}, 
 			{"力持ちメリーズ", "img/Female_11.png"}, 
 			{"眼鏡マリンダ", "img/Female_12.png"}, 
@@ -131,7 +131,7 @@ public class JapaneseResource implements AIWolfResource {
 //
 //	
 	
-	final protected List<String[]> agentResourceList;
+	protected List<String[]> agentResourceList;
 	
 	protected BidiMap<Agent, String> bidiMap;
 	
@@ -147,6 +147,7 @@ public class JapaneseResource implements AIWolfResource {
 	@Override
 	public void setName(int i, String name){
 		agentResourceList.get(i)[0] = name;
+//		System.out.println(name);
 	}
 	
 	@Override
@@ -522,6 +523,7 @@ public class JapaneseResource implements AIWolfResource {
 //		System.out.println(imageUrl+"\t"+agentResourceList.get(agent.getAgentIdx())[0]);
 		URL url=getClass().getClassLoader().getResource(imageUrl);
 		ImageIcon icon = new ImageIcon(url);
+		
 		return icon;
 	}
 

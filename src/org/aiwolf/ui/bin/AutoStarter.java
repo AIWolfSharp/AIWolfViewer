@@ -229,6 +229,7 @@ public class AutoStarter {
 				client.setName(playerName);
 //				System.out.println("Set name "+client.getName());
 			}
+			
 			if(client.connect(player)){
 //				System.out.println("Player connected to server:"+player);
 			}
