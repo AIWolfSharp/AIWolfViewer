@@ -64,6 +64,7 @@ public class AutoStarter {
 	boolean isVisualize = false;
 
 	boolean initServer=false;
+	boolean isHumanPlayer;
 
 	Map<String, Counter<Role>> winCounterMap;
 	Map<String, Counter<Role>> roleCounterMap;
@@ -219,9 +220,11 @@ public class AutoStarter {
 			}
 			if(playerClass == HumanPlayer.class){
 				player = new HumanPlayer(resource);
+				isHumanPlayer = true;
 			}
 			else{
 				player = (Player)playerClass.newInstance();
+				isHumanPlayer = false;
 			}
 
 			//引数にRoleRequestを追加
@@ -262,6 +265,10 @@ public class AutoStarter {
 			File file = new File(settingFileName);
 			gameSetting = GameSetting.getCustomGame(settingFileName, agentNum);
 		}
+		if(isHumanPlayer) {
+			gameSetting.setTimeLimit(-1);
+		}
+
 		gameServer = new TcpipServer(port, agentNum, gameSetting);
 		gameServer.addServerListener(new ServerListener() {
 
