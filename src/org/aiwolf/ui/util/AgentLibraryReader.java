@@ -3,10 +3,10 @@ package org.aiwolf.ui.util;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -54,36 +54,41 @@ public class AgentLibraryReader {
 		
 		List<Class> classList = new ArrayList<>();
 //		System.out.println(url);
-		JarFile jarFile = new JarFile(new File(url.getPath()));
-		Enumeration<JarEntry> en = jarFile.entries();
-		while(en.hasMoreElements()){
-			JarEntry entry = en.nextElement();
-			if(entry.getName().endsWith("class")){
-				try {
-//						System.out.println(entry.getComment());
-					Class cls = Class.forName(entry.toString().replaceAll("/", ".").replaceAll("\\.class$", ""), true, classLoader);
-//					System.out.println(cls);
-					if(Player.class.isAssignableFrom(cls)){
-						if((cls.getModifiers() & Modifier.ABSTRACT) == 0){
-							try {
-								Object p = cls.newInstance();
-								classList.add(cls);
-							} catch (InstantiationException e) {
-							} catch (IllegalAccessException e) {
-							} catch (Exception e) {
+		JarFile jarFile;
+		try {
+			jarFile = new JarFile(Paths.get(url.toURI()).toFile());
+			Enumeration<JarEntry> en = jarFile.entries();
+			while (en.hasMoreElements()) {
+				JarEntry entry = en.nextElement();
+				if (entry.getName().endsWith("class")) {
+					try {
+						// System.out.println(entry.getComment());
+						Class cls = Class.forName(entry.toString().replaceAll("/", ".").replaceAll("\\.class$", ""), true, classLoader);
+						// System.out.println(cls);
+						if (Player.class.isAssignableFrom(cls)) {
+							if ((cls.getModifiers() & Modifier.ABSTRACT) == 0) {
+								try {
+									Object p = cls.newInstance();
+									classList.add(cls);
+								} catch (InstantiationException e) {
+								} catch (IllegalAccessException e) {
+								} catch (Exception e) {
+								}
 							}
 						}
+					} catch (ClassNotFoundException e) {
+						// e.printStackTrace();
+					} catch (NoClassDefFoundError e) {
+						// e.printStackTrace();
+					} catch (IllegalAccessError e) {
+						// e.printStackTrace();
 					}
-				} catch (ClassNotFoundException e) {
-//						e.printStackTrace();
-				} catch(NoClassDefFoundError e){
-//					e.printStackTrace();
-				} catch(IllegalAccessError e){
-//					e.printStackTrace();
 				}
 			}
+			jarFile.close();
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
 		}
-		jarFile.close();
 		return classList;
 	}
 	
