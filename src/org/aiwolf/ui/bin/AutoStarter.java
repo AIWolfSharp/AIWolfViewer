@@ -33,6 +33,7 @@ import org.aiwolf.server.util.MultiGameLogger;
 import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.HumanPlayer;
 import org.aiwolf.ui.log.ContestResource;
+import org.aiwolf.ui.net.TcpipDirectServer;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.DefaultResource;
 import org.aiwolf.ui.res.JapaneseResource;
@@ -54,7 +55,7 @@ public class AutoStarter {
 	int gameNum = 100;
 	String logDirName ="./log/";
 
-	private TcpipServer gameServer;
+	private TcpipDirectServer gameServer;
 
 	private String settingFileName;
 	private GameSetting gameSetting;
@@ -155,6 +156,9 @@ public class AutoStarter {
 					}catch(IllegalArgumentException e){
 					}
 				}
+				if(roleAgentMap.containsKey(name)) {
+					throw new IllegalArgumentException("Same player name is not allowed");
+				}
 				roleAgentMap.put(name, new Pair<String, Role>(classPath, role));
 			}
 		}
@@ -183,8 +187,9 @@ public class AutoStarter {
 	 * @throws ClassNotFoundException
 	 */
 	public void start() throws SocketTimeoutException, IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		createServer();
+		startJavaClient();
 		startServer();
-		startClient();
 
 		while(initServer || isRunning){
 			try {
@@ -195,69 +200,11 @@ public class AutoStarter {
 		}
 	}
 
-	/**
-	 * Start client from init files
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 */
-	private void startClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-//		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
-//		Collections.shuffle(nameList);
-		for(String playerName:roleAgentMap.keySet()){
-			String clsName = roleAgentMap.get(playerName).getKey();
-			Role role = roleAgentMap.get(playerName).getValue();
-
-			Player player = null;
-			Class<? extends Player> playerClass = null;
-			if(playerClassMap.containsKey(clsName)){
-				playerClass = playerClassMap.get(clsName);
-//				player = (Player)playerClassMap.get(clsName).newInstance();
-			}
-			else{
-				playerClass = (Class<Player>) Class.forName(clsName);
-//				player = (Player)Class.forName(clsName).newInstance();
-			}
-			if(playerClass == HumanPlayer.class){
-				player = new HumanPlayer(resource);
-				isHumanPlayer = true;
-			}
-			else{
-				player = (Player)playerClass.newInstance();
-				isHumanPlayer = false;
-			}
-
-			//引数にRoleRequestを追加
-			final TcpipClient client = new TcpipClient("localhost", port, role);
-			if(playerName != null){
-				client.setName(playerName);
-//				System.out.println("Set name "+client.getName());
-			}
-
-			final Player p = player;
-			Runnable r = new Runnable() {
-
-				@Override
-				public void run() {
-					if(client.connect(p)){
-//						System.out.println("Player connected to server:"+player);
-					}
-				}
-			};
-			Thread t = new Thread(r);
-			t.start();
-
-		}
-
-	}
 
 	/**
-	 * start server
-	 * @throws SocketTimeoutException
 	 * @throws IOException
 	 */
-	private void startServer() throws SocketTimeoutException, IOException {
-
+	protected void createServer() throws IOException {
 		if(settingFileName == null){
 			gameSetting = GameSetting.getDefaultGame(agentNum);
 		}
@@ -269,7 +216,7 @@ public class AutoStarter {
 			gameSetting.setTimeLimit(-1);
 		}
 
-		gameServer = new TcpipServer(port, agentNum, gameSetting);
+		gameServer = new TcpipDirectServer(port, agentNum, gameSetting);
 		gameServer.addServerListener(new ServerListener() {
 
 			@Override
@@ -283,6 +230,73 @@ public class AutoStarter {
 
 			}
 		});
+	}
+
+	/**
+	 * Start client from init files
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws ClassNotFoundException
+	 */
+	protected void startJavaClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+//		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
+//		Collections.shuffle(nameList);
+		for(String playerName:roleAgentMap.keySet()){
+			String clsName = roleAgentMap.get(playerName).getKey();
+			Role role = roleAgentMap.get(playerName).getValue();
+
+			Player player = null;
+			Class<? extends Player> playerClass = null;
+			if(playerClassMap.containsKey(clsName)){
+				playerClass = playerClassMap.get(clsName);
+				player = (Player)playerClassMap.get(clsName).newInstance();
+			}
+			else{
+				playerClass = (Class<Player>) Class.forName(clsName);
+				player = (Player)Class.forName(clsName).newInstance();
+			}
+			if(playerClass == HumanPlayer.class){
+				player = new HumanPlayer(resource);
+				isHumanPlayer = true;
+			}
+			else{
+				player = (Player)playerClass.newInstance();
+				isHumanPlayer = false;
+			}
+
+			gameServer.add(playerName, player, role);
+
+//			//引数にRoleRequestを追加
+//			final TcpipClient client = new TcpipClient("localhost", port, role);
+//			if(playerName != null){
+//				client.setName(playerName);
+////				System.out.println("Set name "+client.getName());
+//			}
+//
+//			final Player p = player;
+//			Runnable r = new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					if(client.connect(p)){
+////						System.out.println("Player connected to server:"+player);
+//					}
+//				}
+//			};
+//			Thread t = new Thread(r);
+//			t.start();
+
+		}
+
+	}
+
+	/**
+	 * start server
+	 * @throws SocketTimeoutException
+	 * @throws IOException
+	 */
+	protected void startServer() throws SocketTimeoutException, IOException {
+
 //		gameServer.waitForConnection();
 //
 //		AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
@@ -383,6 +397,7 @@ public class AutoStarter {
 			}
 		}
 	}
+
 
 	/**
 	 * TODO 外部接続エージェントの成績が表示されない
