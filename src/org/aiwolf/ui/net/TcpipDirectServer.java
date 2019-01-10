@@ -59,7 +59,7 @@ public class TcpipDirectServer extends TcpipServer {
 		Agent agent = Agent.getAgent(idx);
 		playerAgentMap.put(player, agent);
 		nameMap.put(agent, name);
-		requestRoleMap.put(agent, null);
+		requestRoleMap.put(agent, role);
 		System.out.println("add "+name);
 
 	}
@@ -85,7 +85,7 @@ public class TcpipDirectServer extends TcpipServer {
 
 
 	    int startIdx = playerAgentMap.size()+socketAgentMap.size()+1;
-	    System.out.println(socketAgentMap.size()+":"+playerAgentMap.size());
+//	    System.out.println(socketAgentMap.size()+":"+playerAgentMap.size());
 	    while(socketAgentMap.size()+playerAgentMap.size() < limit && isWaitForClient){
 	        Socket socket = serverSocket.accept();
 

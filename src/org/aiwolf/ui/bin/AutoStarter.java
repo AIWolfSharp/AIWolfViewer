@@ -2,13 +2,17 @@ package org.aiwolf.ui.bin;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -38,6 +42,7 @@ import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.DefaultResource;
 import org.aiwolf.ui.res.JapaneseResource;
 import org.aiwolf.ui.util.AgentLibraryReader;
+
 
 
 /**
@@ -190,6 +195,7 @@ public class AutoStarter {
 		createServer();
 		startJavaClient();
 		startServer();
+		startPythonClient();
 
 		while(initServer || isRunning){
 			try {
@@ -209,12 +215,14 @@ public class AutoStarter {
 			gameSetting = GameSetting.getDefaultGame(agentNum);
 		}
 		else{
-			File file = new File(settingFileName);
+//			File file = new File(settingFileName);
 			gameSetting = GameSetting.getCustomGame(settingFileName, agentNum);
 		}
 		if(isHumanPlayer) {
 			gameSetting.setTimeLimit(-1);
 		}
+		gameSetting.setEnableRoleRequest(true);
+
 
 		gameServer = new TcpipDirectServer(port, agentNum, gameSetting);
 		gameServer.addServerListener(new ServerListener() {
@@ -239,12 +247,15 @@ public class AutoStarter {
 	 * @throws ClassNotFoundException
 	 */
 	protected void startJavaClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-//		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
+		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
 //		Collections.shuffle(nameList);
-		for(String playerName:roleAgentMap.keySet()){
+		for(String playerName:nameList){
 			String clsName = roleAgentMap.get(playerName).getKey();
 			Role role = roleAgentMap.get(playerName).getValue();
 
+			if(clsName.endsWith(".py")) {
+				continue;
+			}
 			Player player = null;
 			Class<? extends Player> playerClass = null;
 			if(playerClassMap.containsKey(clsName)){
@@ -261,7 +272,7 @@ public class AutoStarter {
 			}
 			else{
 				player = (Player)playerClass.newInstance();
-				isHumanPlayer = false;
+//				isHumanPlayer = false;
 			}
 
 			gameServer.add(playerName, player, role);
@@ -400,6 +411,48 @@ public class AutoStarter {
 
 
 	/**
+	 * Starte python player via tcpip
+	 */
+	protected void startPythonClient() {
+		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
+//		Collections.shuffle(nameList);
+		for(String playerName:nameList){
+			String scriptPath = roleAgentMap.get(playerName).getKey();
+			Role role = roleAgentMap.get(playerName).getValue();
+
+			if(!scriptPath.endsWith(".py")) {
+				continue;
+			}
+
+			try{
+				List<String> command = new ArrayList<String>();
+
+				command.add("python");
+				command.add("-u");
+				command.add(scriptPath);
+
+				command.add("-p");
+				command.add(""+port);
+				command.add("-h");
+				command.add("localhost");
+
+//				logFile.getParentFile().mkdirs();
+				ProcessBuilder processBuilder = new ProcessBuilder(command);
+				processBuilder.redirectErrorStream(true);
+//				processBuilder.redirectError(Redirect.appendTo(outputFile));
+//				processBuilder.redirectOutput(Redirect.appendTo(outputFile));
+				Process process = processBuilder.start();
+//				processMap.put(playerName, process);
+			}catch(IOException e){
+//				outputExceptionToLogFile(outputFile, e);
+//				processMap.put(teamName, null);
+				e.printStackTrace();
+			}
+
+
+		}
+	}
+	/**
 	 * TODO 外部接続エージェントの成績が表示されない
 	 * show results
 	 */
@@ -423,7 +476,7 @@ public class AutoStarter {
 			double win = 0;
 			double cnt = 0;
 			for(Role role:Role.values()){
-				if(role == Role.FREEMASON){
+				if(role == Role.FREEMASON || role == Role.FOX){
 					continue;
 				}
 				System.out.printf("%d/%d\t", winCounterMap.get(name).get(role), roleCounterMap.get(name).get(role));
