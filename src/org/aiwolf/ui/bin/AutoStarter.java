@@ -52,7 +52,7 @@ import org.aiwolf.ui.util.AgentLibraryReader;
  */
 public class AutoStarter {
 
-	private Map<String, Pair<String, Role>> roleAgentMap;
+	private Map<String, PlayerInfo> roleAgentMap;
 	private File libraryDir;
 
 	int agentNum = -1;
@@ -74,8 +74,15 @@ public class AutoStarter {
 
 	Map<String, Counter<Role>> winCounterMap;
 	Map<String, Counter<Role>> roleCounterMap;
+
 	private Map<String, Class> playerClassMap;
+	private Map<String, ProgType> agentTypeMap;
 	AIWolfResource resource;
+
+	/**
+	 * Path to C# ClientSterter.exe
+	 */
+	String csharpClientStarterPath;
 
 
 	/**
@@ -108,6 +115,8 @@ public class AutoStarter {
 
 		libraryDir = new File("./");
 		roleAgentMap = new HashMap<>();
+		agentTypeMap = new HashMap<>();
+
 		File initFile = new File(fileName);
 		Path src = initFile.toPath();
 		resource = new DefaultResource();
@@ -135,6 +144,9 @@ public class AutoStarter {
 				else if(data[0].trim().equals("setting")){
 					settingFileName = data[1].trim();
 				}
+				else if(data[0].toUpperCase().trim().equals("C#")){
+					csharpClientStarterPath = data[1].trim();
+				}
 				else if(data[0].trim().equals("resource")){
 					try {
 						resource = (AIWolfResource) Class.forName(data[1].trim()).newInstance();
@@ -153,18 +165,26 @@ public class AutoStarter {
 					continue;
 				}
 				String name = data[0];
-				String classPath = data[1];
+				ProgType progType = null;
+				if(data[1].toUpperCase().equals("C#")) {
+					progType = ProgType.C_SHARP;
+				}
+				else {
+					progType = ProgType.valueOf(data[1].toUpperCase());
+				}
+				String target = data[2];
 				Role role = null;
-				if(data.length >= 3){
+				if(data.length >= 4){
 					try{
-						role = Role.valueOf(data[2]);
+						role = Role.valueOf(data[3]);
 					}catch(IllegalArgumentException e){
 					}
 				}
 				if(roleAgentMap.containsKey(name)) {
 					throw new IllegalArgumentException("Same player name is not allowed");
 				}
-				roleAgentMap.put(name, new Pair<String, Role>(classPath, role));
+				PlayerInfo playerInfo = new PlayerInfo(name, progType, target, role);
+				roleAgentMap.put(name, playerInfo);
 			}
 		}
 
@@ -195,7 +215,7 @@ public class AutoStarter {
 		createServer();
 		startJavaClient();
 		startServer();
-		startPythonClient();
+		startTcpipClient();
 
 		while(initServer || isRunning){
 			try {
@@ -245,26 +265,36 @@ public class AutoStarter {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 * @throws ClassNotFoundException
+	 * @throws IOException
 	 */
-	protected void startJavaClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	protected void startJavaClient() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
 //		Collections.shuffle(nameList);
 		for(String playerName:nameList){
-			String clsName = roleAgentMap.get(playerName).getKey();
-			Role role = roleAgentMap.get(playerName).getValue();
+			PlayerInfo playerInfo = roleAgentMap.get(playerName);
+			String classPath = playerInfo.getTarget();
 
-			if(clsName.endsWith(".py")) {
+			if(playerInfo.getProgType()!= ProgType.JAVA) {
 				continue;
 			}
+
+			if(classPath.indexOf(":") >= 0) {
+				String[] data = classPath.split(":");
+				String jarPath = data[0];
+				classPath = data[1];
+				AgentLibraryReader.getPlayerClassList(new File(jarPath));
+			}
+
+			Role role = playerInfo.getRole();
 			Player player = null;
 			Class<? extends Player> playerClass = null;
-			if(playerClassMap.containsKey(clsName)){
-				playerClass = playerClassMap.get(clsName);
-				player = (Player)playerClassMap.get(clsName).newInstance();
+			if(playerClassMap.containsKey(classPath)){
+				playerClass = playerClassMap.get(classPath);
+				player = (Player)playerClassMap.get(classPath).newInstance();
 			}
 			else{
-				playerClass = (Class<Player>) Class.forName(clsName);
-				player = (Player)Class.forName(clsName).newInstance();
+				playerClass = (Class<Player>) Class.forName(classPath);
+				player = (Player)Class.forName(classPath).newInstance();
 			}
 			if(playerClass == HumanPlayer.class){
 				player = new HumanPlayer(resource);
@@ -413,45 +443,96 @@ public class AutoStarter {
 	/**
 	 * Starte python player via tcpip
 	 */
-	protected void startPythonClient() {
+	protected void startTcpipClient() {
 		List<String> nameList = new ArrayList<>(roleAgentMap.keySet());
 //		Collections.shuffle(nameList);
 		for(String playerName:nameList){
-			String scriptPath = roleAgentMap.get(playerName).getKey();
-			Role role = roleAgentMap.get(playerName).getValue();
-
-			if(!scriptPath.endsWith(".py")) {
-				continue;
-			}
+			PlayerInfo playerInfo = roleAgentMap.get(playerName);
+			ProgType pt = playerInfo.getProgType();
+//			String scriptPath = playerInfo.getTarget();
+//			Role role = playerInfo.getRole();
 
 			try{
-				List<String> command = new ArrayList<String>();
-
-				command.add("python");
-				command.add("-u");
-				command.add(scriptPath);
-
-				command.add("-p");
-				command.add(""+port);
-				command.add("-h");
-				command.add("localhost");
-
-//				logFile.getParentFile().mkdirs();
-				ProcessBuilder processBuilder = new ProcessBuilder(command);
-				processBuilder.redirectErrorStream(true);
-//				processBuilder.redirectError(Redirect.appendTo(outputFile));
-//				processBuilder.redirectOutput(Redirect.appendTo(outputFile));
-				Process process = processBuilder.start();
-//				processMap.put(playerName, process);
+				if(pt == ProgType.PYTHON) {
+					startPythonClient(playerInfo);
+				}
+				else if(pt == ProgType.C_SHARP) {
+					startCSharpClient(playerInfo);
+				}
 			}catch(IOException e){
 //				outputExceptionToLogFile(outputFile, e);
 //				processMap.put(teamName, null);
 				e.printStackTrace();
 			}
 
-
 		}
 	}
+
+	private void startPythonClient(PlayerInfo playerInfo) throws IOException {
+
+		String scriptPath = playerInfo.getTarget();
+
+		List<String> command = new ArrayList<String>();
+
+		command.add("python");
+		command.add("-u");
+		command.add(scriptPath);
+
+		command.add("-p");
+		command.add(""+port);
+		command.add("-h");
+		command.add("localhost");
+
+//				logFile.getParentFile().mkdirs();
+		ProcessBuilder processBuilder = new ProcessBuilder(command);
+		processBuilder.inheritIO();
+//		processBuilder.redirectErrorStream(true);
+//				processBuilder.redirectError(Redirect.appendTo(outputFile));
+//				processBuilder.redirectOutput(Redirect.appendTo(outputFile));
+		Process process = processBuilder.start();
+//				processMap.put(playerName, process);
+	}
+
+
+	/**
+	 * Start .NET Cliets
+	 * @param csharpFile
+	 * @param className
+	 * @throws IOException
+	 */
+	public void startCSharpClient(PlayerInfo playerInfo) throws IOException{
+		if(csharpClientStarterPath == null) {
+			throw new IllegalArgumentException("Path to C# ClientStarter must be expressed in AutoStarter.ini");
+		}
+		String[] paths = playerInfo.getTarget().split(":");
+		if(paths.length < 2) {
+			throw new IllegalArgumentException("C# player must be include DLL_PATH:CLASS_NAME");
+		}
+		String filePath = paths[0];
+		String className = paths[1];
+
+		List<String> command = new ArrayList<String>();
+		command.add(csharpClientStarterPath);
+		command.add("-h");
+		command.add("localhost");
+		command.add("-p");
+		command.add(""+port);
+		command.add("-c");
+		command.add(className);
+		command.add(filePath);
+		command.add("-n");
+		command.add(playerInfo.getName());
+
+		ProcessBuilder processBuilder = new ProcessBuilder(command);
+		processBuilder.inheritIO();
+//			processBuilder.redirectErrorStream(true);
+//			processBuilder.redirectError(Redirect.);
+//			processBuilder.redirectOutput(Redirect.appendTo(outputFile));
+		Process process = processBuilder.start();
+//			processMap.put(teamName, process);
+	}
+
+
 	/**
 	 * TODO 外部接続エージェントの成績が表示されない
 	 * show results
@@ -505,6 +586,46 @@ public class AutoStarter {
 			}
 		}
 		return playerClassMap;
+	}
+
+
+}
+
+enum ProgType{
+	JAVA,
+	PYTHON,
+	C_SHARP,
+	OTHERS
+}
+
+/**
+ * 接続プレイヤーの情報
+ * @author xtori
+ *
+ */
+class PlayerInfo{
+	String name;
+	ProgType progType;
+	String target;
+	Role role;
+	public PlayerInfo(String name, ProgType progType, String target, Role role) {
+		super();
+		this.name = name;
+		this.progType = progType;
+		this.target = target;
+		this.role = role;
+	}
+	public String getName() {
+		return name;
+	}
+	public ProgType getProgType() {
+		return progType;
+	}
+	public String getTarget() {
+		return target;
+	}
+	public Role getRole() {
+		return role;
 	}
 
 
