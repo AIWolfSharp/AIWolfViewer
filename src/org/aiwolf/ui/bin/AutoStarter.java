@@ -121,6 +121,9 @@ public class AutoStarter {
 		Path src = initFile.toPath();
 		resource = new DefaultResource();
 		for(String line:Files.readAllLines(src, Charset.forName("UTF8"))){
+			if(line.startsWith("#")) {
+				continue;
+			}
 			if(line.contains("=")){
 				String[] data = line.split("=");
 				if(data[0].trim().equals("lib")){
@@ -161,7 +164,7 @@ public class AutoStarter {
 			}
 			else{
 				String[] data = line.split(",");
-				if(data.length < 2 || line.startsWith("#")){
+				if(data.length < 2){
 					continue;
 				}
 				String name = data[0];
