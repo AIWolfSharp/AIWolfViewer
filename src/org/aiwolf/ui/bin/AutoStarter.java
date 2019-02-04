@@ -288,6 +288,15 @@ public class AutoStarter {
 				AgentLibraryReader.getPlayerClassList(new File(jarPath));
 			}
 
+
+//			List<File> jarInJarPath = getJarInJarPath(jarFile);
+//			if(!jarInJarPath.isEmpty()){
+//				for(File jarPath:jarInJarPath){
+//					jars = jars+pathSplitter+jarPath.getPath();
+//				}
+//			}
+
+
 			Role role = playerInfo.getRole();
 			Player player = null;
 			Class<? extends Player> playerClass = null;
