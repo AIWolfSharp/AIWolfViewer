@@ -130,14 +130,14 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 
 		utteranceBox = new JComboBox<Item<Topic>>();
 		utteranceBox.addItem(new Item<Topic>("---------", null));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.VOTE), Topic.VOTE));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.COMINGOUT), Topic.COMINGOUT));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.DIVINED), Topic.DIVINED));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.ESTIMATE), Topic.ESTIMATE));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.GUARDED), Topic.GUARDED));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.IDENTIFIED), Topic.IDENTIFIED));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.AGREE), Topic.AGREE));
-		utteranceBox.addItem(new Item<Topic>(resource.convert(Topic.DISAGREE), Topic.DISAGREE));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.VOTE), Topic.VOTE));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.COMINGOUT), Topic.COMINGOUT));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.DIVINED), Topic.DIVINED));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.ESTIMATE), Topic.ESTIMATE));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.GUARDED), Topic.GUARDED));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.IDENTIFIED), Topic.IDENTIFIED));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.AGREE), Topic.AGREE));
+		utteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.DISAGREE), Topic.DISAGREE));
 		utteranceBox.addItemListener(this);
 //		optionBox1 = new JComboBox<String>();
 //		optionBox1.setVisible(false);
@@ -146,24 +146,24 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		talkButton = new JButton("Talk");
 		talkButton.setEnabled(false);
 		talkButton.addActionListener(this);
-		skipButton = new JButton(resource.convert(Talk.SKIP));
+		skipButton = new JButton(resource.convertText(Talk.SKIP));
 		skipButton.addActionListener(this);
-		overButton = new JButton(resource.convert(Talk.OVER));
+		overButton = new JButton(resource.convertText(Talk.OVER));
 		overButton.addActionListener(this);
-		finishButton = new JButton(resource.convert("finish"));
+		finishButton = new JButton(resource.convertText("finish"));
 		finishButton.addActionListener(this);
 		
 		whisperUtteranceBox = new JComboBox<Item<Topic>>();
 		whisperUtteranceBox.addItem(new Item<Topic>("---------", null));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.ATTACK), Topic.ATTACK));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.VOTE), Topic.VOTE));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.COMINGOUT), Topic.COMINGOUT));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.DIVINED), Topic.DIVINED));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.ESTIMATE), Topic.ESTIMATE));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.GUARDED), Topic.GUARDED));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.IDENTIFIED), Topic.IDENTIFIED));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.AGREE), Topic.AGREE));
-		whisperUtteranceBox.addItem(new Item<Topic>(resource.convert(Topic.DISAGREE), Topic.DISAGREE));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.ATTACK), Topic.ATTACK));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.VOTE), Topic.VOTE));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.COMINGOUT), Topic.COMINGOUT));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.DIVINED), Topic.DIVINED));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.ESTIMATE), Topic.ESTIMATE));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.GUARDED), Topic.GUARDED));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.IDENTIFIED), Topic.IDENTIFIED));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.AGREE), Topic.AGREE));
+		whisperUtteranceBox.addItem(new Item<Topic>(resource.convertTopic(Topic.DISAGREE), Topic.DISAGREE));
 //
 //		whisperUtteranceBox.addItem("---------");
 //		whisperUtteranceBox.addItem("attack");
@@ -191,14 +191,14 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		
 		speciesBox = new JComboBox<Item<Species>>();
 		for(Species species:Species.values()){
-			speciesBox.addItem(new Item<Species>(resource.convert(species), species));
+			speciesBox.addItem(new Item<Species>(resource.convertSpecies(species), species));
 		}
 		roleBox = new JComboBox<Item<Role>>();
 		for(Role role:Role.values()){
 			if(role == Role.FREEMASON){
 				continue;
 			}
-			roleBox.addItem(new Item<Role>(resource.convert(role), role));
+			roleBox.addItem(new Item<Role>(resource.convertRole(role), role));
 		}
 		targetBox = new JComboBox<String>();
 		dayBox = new JComboBox<String>();
@@ -283,7 +283,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		//Create Target Here
 		targetBox.removeAllItems();
 		for(Agent agent:new TreeSet<Agent>(gameInfo.getAgentList())){
-			targetBox.addItem(resource.convert(agent));
+			targetBox.addItem(resource.convertAgent(agent));
 		}
 	}
 	
@@ -300,12 +300,12 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 			if(agent.equals(gameInfo.getAgent())){
 				continue;
 			}
-			voteComboBox.addItem(resource.convert(agent));
+			voteComboBox.addItem(resource.convertAgent(agent));
 			if(gameInfo.getRoleMap().get(agent) != Role.WEREWOLF){
-				attackVoteComboBox.addItem(resource.convert(agent));
+				attackVoteComboBox.addItem(resource.convertAgent(agent));
 			}
-			divineComboBox.addItem(resource.convert(agent));
-			guardComboBox.addItem(resource.convert(agent));
+			divineComboBox.addItem(resource.convertAgent(agent));
+			guardComboBox.addItem(resource.convertAgent(agent));
 		}
 		
 		//各ComboBoxはここで作成
@@ -337,7 +337,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 			utteranceBox.setVisible(true);
 			whisperUtteranceBox.setVisible(false);
 			actionPanel.setVisible(false);
-			talkButton.setText(resource.convert("Talk")+"("+remainTalk+")");
+			talkButton.setText(resource.convertText("Talk")+"("+remainTalk+")");
 			finishButton.setVisible(true);
 	//		remainTalkLabel.setVisible(true);
 	//		remainWhisperLabel.setVisible(false);
@@ -364,7 +364,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 		utteranceBox.setVisible(false);
 		whisperUtteranceBox.setVisible(true);
 		actionPanel.setVisible(false);
-		talkButton.setText(resource.convert("Whisper")+"("+remainWhisper+")");
+		talkButton.setText(resource.convertText("Whisper")+"("+remainWhisper+")");
 		finishButton.setVisible(false);
 
 //		remainTalkLabel.setVisible(false);
@@ -761,7 +761,7 @@ public class UserActionPanel extends JPanel implements ItemListener, ActionListe
 	public void selectAgent(Agent agent){
 		for(int i = 0; i < voteComboBox.getItemCount(); i++){
 			String name = voteComboBox.getItemAt(i);
-			if(resource.convert(agent).equals(name)){
+			if(resource.convertAgent(agent).equals(name)){
 				voteComboBox.setSelectedIndex(i);
 				continue;
 			}

@@ -38,7 +38,7 @@ public interface AIWolfResource {
 	 * @param agent
 	 * @return
 	 */
-	String convert(Agent agent);
+	String convertAgent(Agent agent);
 
 	/**
 	 * convert agent to name
@@ -125,21 +125,21 @@ public interface AIWolfResource {
 	 * @param role
 	 * @return
 	 */
-	String convert(Role role);
+	String convertRole(Role role);
 
 	/**
 	 * 
 	 * @param species
 	 * @return
 	 */
-	String convert(Species species);
+	String convertSpecies(Species species);
 
 	/**
 	 * 
 	 * @param team
 	 * @return
 	 */
-	String convert(Team team);
+	String convertTeam(Team team);
 
 	/**
 	 * Information of alival agents num
@@ -153,7 +153,7 @@ public interface AIWolfResource {
 	 * @param topic
 	 * @return
 	 */
-	String convert(Topic topic);
+	String convertTopic(Topic topic);
 
 	/**
 	 * get ImageIcon of Agent
@@ -203,7 +203,7 @@ public interface AIWolfResource {
 	 * @param talkType
 	 * @return
 	 */
-	String convert(TalkType talkType);
+	String convertTalkType(TalkType talkType);
 
 	/**
 	 * 
@@ -244,14 +244,14 @@ public interface AIWolfResource {
 	 * @param status
 	 * @return
 	 */
-	String convert(Status status);
+	String convertStatus(Status status);
 
 	/**
 	 * 
 	 * @param text
 	 * @return
 	 */
-	String convert(String text);
+	String convertText(String text);
 
 	/**
 	 * 

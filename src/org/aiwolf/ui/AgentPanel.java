@@ -93,13 +93,13 @@ public class AgentPanel extends JPanel {
 		this.role = role;
 		this.resource = resource;
 		
-		nameLabel = new JLabel(agent.getAgentIdx()+":"+resource.convert(agent));
+		nameLabel = new JLabel(agent.getAgentIdx()+":"+resource.convertAgent(agent));
 		statusLabel = new JLabel(" ");
 		infoLabel = new JLabel(" ");
 		roleLabel = new JLabel();
 		coLabel = new JLabel(" ");
 		if(role != null){
-			roleLabel.setText(resource.convert(role));
+			roleLabel.setText(resource.convertRole(role));
 		}
 		
 //		Border border = new BevelBorder(BevelBorder.RAISED);
@@ -147,7 +147,7 @@ public class AgentPanel extends JPanel {
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
-		statusLabel.setText(resource.convert(status));
+		statusLabel.setText(resource.convertStatus(status));
 		if(status == Status.DEAD){
 			if(isPlayer){
 				setBackground(PLAYER_DEAD);
@@ -185,7 +185,7 @@ public class AgentPanel extends JPanel {
 	
 	public void setRole(Role role){
 		if(role != null){
-			roleLabel.setText(resource.convert(role));
+			roleLabel.setText(resource.convertRole(role));
 			if(role.getTeam() == Team.WEREWOLF){
 				roleLabel.setForeground(Color.RED);
 			}
@@ -201,7 +201,7 @@ public class AgentPanel extends JPanel {
 
 	public void setComingOut(Role role){
 		if(role != null){
-			coLabel.setText("CO:"+resource.convert(role));
+			coLabel.setText("CO:"+resource.convertRole(role));
 		}
 	}
 

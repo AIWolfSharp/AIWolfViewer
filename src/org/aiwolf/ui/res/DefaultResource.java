@@ -156,7 +156,10 @@ public class DefaultResource implements AIWolfResource {
 
 	
 	@Override
-	public String convert(Agent agent) {
+	public String convertAgent(Agent agent) {
+		if(agent == null){
+			return "";
+		}
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
 		bidiMap.put(agent, name);
 		return name;
@@ -230,7 +233,20 @@ public class DefaultResource implements AIWolfResource {
 				}
 				return buf.toString();
 			}
-			System.out.println(operator);
+			else if(operator == Operator.BECAUSE){
+				StringBuffer buf = new StringBuffer();
+				List<Content> contentList = baseContents.getContentList();
+				if(contentList.size() == 2){
+					Content reason = contentList.get(0);
+					Content action = contentList.get(1);
+					buf.append(String.format("%s becase %s", contentToText(action, talkType), contentToText(reason, talkType)));
+				}
+				else{
+					return baseContents.getText();
+				}
+				return buf.toString();
+			}
+//			System.out.println(operator);
 		}
 		return baseContents.getText();
 
@@ -244,17 +260,17 @@ public class DefaultResource implements AIWolfResource {
 	 */
 	protected String topicToText(Content contents, Topic topic, TalkType talkType) {
 		if(topic == Topic.ATTACK){
-			return String.format("Attack %s", convert(contents.getTarget()));
+			return String.format("Attack %s", convertAgent(contents.getTarget()));
 		}
 		else if(topic == Topic.AGREE){
 			return String.format("I agree to %03d at day%d", contents.getTalkID(), contents.getTalkDay());
 		}
 		else if(topic == Topic.COMINGOUT){
 			if(talkType == TalkType.TALK){
-				return String.format("I am %s", convert(contents.getRole()));
+				return String.format("I am %s", convertRole(contents.getRole()));
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("I will comming out as %s", convert(contents.getRole()));
+				return String.format("I will comming out as %s", convertRole(contents.getRole()));
 			}
 		}
 		else if(topic == Topic.DISAGREE){
@@ -262,69 +278,69 @@ public class DefaultResource implements AIWolfResource {
 		}
 		else if(topic == Topic.DIVINED){
 			if(talkType == TalkType.TALK){
-				return String.format("Divine Result：%s is %s", convert(contents.getTarget()), convert(contents.getResult()));
+				return String.format("Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("Fake Divine Result：%s is %s", convert(contents.getTarget()), convert(contents.getResult()));
+				return String.format("Fake Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 			}
 		}
 		else if(topic == Topic.DIVINATION){
 			if(talkType == TalkType.TALK){
 				if(contents.getSubject() != null){
-					return String.format("%s divines %s", convert(contents.getSubject()), convert(contents.getTarget()));
+					return String.format("%s divines %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("Divine %s", convert(contents.getTarget()));
+					return String.format("Divine %s", convertAgent(contents.getTarget()));
 				}
 			}
 			else if(talkType == TalkType.WHISPER){
 				if(contents.getSubject() != null){
-					return String.format("I lie that %s divine %s", convert(contents.getSubject()), convert(contents.getTarget()));
+					return String.format("I lie that %s divine %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("I will lie that I will divine %s", convert(contents.getTarget()));
+					return String.format("I will lie that I will divine %s", convertAgent(contents.getTarget()));
 				}
 			}
 		}
 		else if(topic == Topic.ESTIMATE){
-			return String.format("I estimate %s is %s．", convert(contents.getTarget()), convert(contents.getRole()));
+			return String.format("I estimate %s is %s．", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
 		}
 		else if(topic == Topic.GUARDED){
 			if(talkType == TalkType.TALK){
-				return String.format("I guarded %s", convert(contents.getTarget()));
+				return String.format("I guarded %s", convertAgent(contents.getTarget()));
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("I lie that I guarded %s", convert(contents.getTarget()));
+				return String.format("I lie that I guarded %s", convertAgent(contents.getTarget()));
 			}
 		}
 		else if(topic == Topic.GUARD){
 			if(talkType == TalkType.TALK){
 				if(contents.getSubject() != null){
-					return String.format("%s will guard %s", convert(contents.getSubject()), convert(contents.getTarget()));
+					return String.format("%s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("%s will be guarded", convert(contents.getTarget()));
+					return String.format("%s will be guarded", convertAgent(contents.getTarget()));
 				}
 			}
 			else if(talkType == TalkType.WHISPER){
 				if(contents.getSubject() != null){
-					return String.format("I lie that %s will guard %s", convert(contents.getSubject()), convert(contents.getTarget()));
+					return String.format("I lie that %s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("%sを護衛することにする", convert(contents.getTarget()));
+					return String.format("%sを護衛することにする", convertAgent(contents.getTarget()));
 				}
 			}
 		}
 		else if(topic == Topic.IDENTIFIED){
 			if(talkType == TalkType.TALK){
-				return String.format("Identified：%s was %s", convert(contents.getTarget()), convert(contents.getResult()));
+				return String.format("Identified：%s was %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("Identified：I will lie that %s was %s", convert(contents.getTarget()), convert(contents.getResult()));
+				return String.format("Identified：I will lie that %s was %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 			}
 		}
 		else if(topic == Topic.VOTE){
-			return String.format("I vote to %s", convert(contents.getTarget()));
+			return String.format("I vote to %s", convertAgent(contents.getTarget()));
 		}
 		return contents.getText();
 	}
@@ -332,12 +348,12 @@ public class DefaultResource implements AIWolfResource {
 
 	@Override
 	public String convertVote(Vote vote) {
-		return convert(vote.getAgent())+" voted to "+convert(vote.getTarget());
+		return convertAgent(vote.getAgent())+" voted to "+convertAgent(vote.getTarget());
 	}
 
 	@Override
 	public String convertAttackVote(Vote vote) {
-		return convert(vote.getAgent())+" attack to "+convert(vote.getTarget());
+		return convertAgent(vote.getAgent())+" attack to "+convertAgent(vote.getTarget());
 	}
 
 	@Override
@@ -345,7 +361,7 @@ public class DefaultResource implements AIWolfResource {
 		if(mediumResult.getAgent() == null){
 			return "No one inquested";
 		}
-		return String.format("%s was %s", convert(mediumResult.getTarget()), convert(mediumResult.getResult()));
+		return String.format("%s was %s", convertAgent(mediumResult.getTarget()), convertSpecies(mediumResult.getResult()));
 	}
 
 	@Override
@@ -353,7 +369,7 @@ public class DefaultResource implements AIWolfResource {
 		if(divineResult.getAgent() == null){
 			return "No one divined";
 		}
-		return String.format("%s was %s", convert(divineResult.getTarget()), convert(divineResult.getResult()));
+		return String.format("%s was %s", convertAgent(divineResult.getTarget()), convertSpecies(divineResult.getResult()));
 	}
 
 	@Override
@@ -362,7 +378,7 @@ public class DefaultResource implements AIWolfResource {
 			return "No one guarded";
 		}
 
-		return String.format("%s guarded", convert(guardedAgent));
+		return String.format("%s guarded", convertAgent(guardedAgent));
 	}
 
 	@Override
@@ -370,7 +386,7 @@ public class DefaultResource implements AIWolfResource {
 		if(attackedAgent == null){
 			return "No one attacked";
 		}
-		return String.format("%s was attacked", convert(attackedAgent));
+		return String.format("%s was attacked", convertAgent(attackedAgent));
 	}
 
 	@Override
@@ -378,7 +394,7 @@ public class DefaultResource implements AIWolfResource {
 		if(executedAgent == null){
 			return "No one executed";
 		}
-		return String.format("%s was executed", convert(executedAgent));
+		return String.format("%s was executed", convertAgent(executedAgent));
 	}
 	
 	@Override
@@ -386,13 +402,13 @@ public class DefaultResource implements AIWolfResource {
 		if(agent == null){
 			return "No one dead";
 		}
-		return String.format("%s dead", convert(agent));
+		return String.format("%s dead", convertAgent(agent));
 	}
 
 
 
 	@Override
-	public String convert(Role role) {
+	public String convertRole(Role role) {
 		if(role != null){
 			return role.toString();
 		}else{
@@ -401,7 +417,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convert(Species species) {
+	public String convertSpecies(Species species) {
 		if(species != null){
 			return species.toString();
 		}else{
@@ -410,7 +426,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convert(Team team) {
+	public String convertTeam(Team team) {
 		if(team != null){
 			return team.toString();
 		}else{
@@ -420,7 +436,7 @@ public class DefaultResource implements AIWolfResource {
 
 
 	@Override
-	public String convert(Status status) {
+	public String convertStatus(Status status) {
 		if(status != null){
 			return status.toString();
 		}else{
@@ -434,7 +450,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convert(Topic topic) {
+	public String convertTopic(Topic topic) {
 		if(topic != null){
 			return topic.toString();
 		}else{
@@ -456,7 +472,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	public String convertWinner(Team winner){
-		return "Winner:"+convert(winner);
+		return "Winner:"+convertTeam(winner);
 	}
 	
 	public String convertWinner(Team winner, Team yourTeam){
@@ -471,7 +487,7 @@ public class DefaultResource implements AIWolfResource {
 
 	@Override
 	public String getFirstText(Agent agent, Role role) {
-		return String.format("You are %s with role %s", convert(agent), convert(role));
+		return String.format("You are %s with role %s", convertAgent(agent), convertRole(role));
 	}
 
 	@Override
@@ -481,14 +497,14 @@ public class DefaultResource implements AIWolfResource {
 			if(roleCounter.get(role) == 0){
 				continue;
 			}
-			buf.append(convert(role)+":"+roleCounter.get(role)+", ");
+			buf.append(convertRole(role)+":"+roleCounter.get(role)+", ");
 		}
 //		buf.append("\n");
 		return buf.toString();
 	}
 
 	@Override
-	public String convert(TalkType talkType) {
+	public String convertTalkType(TalkType talkType) {
 		return talkType.toString();
 	}
 
@@ -508,7 +524,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	@Override
-	public String convert(String text) {
+	public String convertText(String text) {
 		return text;
 	}
 

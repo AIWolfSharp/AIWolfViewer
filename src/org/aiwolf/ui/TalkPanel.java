@@ -308,7 +308,7 @@ public class TalkPanel extends JPanel {
 		ImageIcon imageIcon = getAgentIcon(talk.getAgent());
 		
 		JLabel iconLabel = new JLabel(imageIcon);
-		JLabel nameLabel = new JLabel(String.format("%03d:%s", talk.getIdx(), resource.convert(talk.getAgent())));
+		JLabel nameLabel = new JLabel(String.format("%03d:%s", talk.getIdx(), resource.convertAgent(talk.getAgent())));
 		StringBuffer text = new StringBuffer();
 		if(talkType == TalkType.TALK){
 			text.append(String.format("%s", resource.convertTalk(talk)));
@@ -325,14 +325,14 @@ public class TalkPanel extends JPanel {
 				if(content.getTalkType() == TalkType.TALK){
 					Talk reference = gi.getTalkList().get(content.getTalkID());
 					text.append("\n");
-					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
+					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convertAgent(reference.getAgent())));
 					text.append("\n");
 					text.append(" > "+resource.convertTalk(reference));
 				}
 				else{
 					Talk reference = gi.getWhisperList().get(content.getTalkID());
 					text.append("\n");
-					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convert(reference.getAgent())));
+					text.append(String.format(" > %03d:%s", reference.getIdx(), resource.convertAgent(reference.getAgent())));
 					text.append("\n");
 					text.append(" > "+resource.convertWhisper(reference));
 				}

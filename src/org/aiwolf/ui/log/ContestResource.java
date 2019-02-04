@@ -88,7 +88,7 @@ public class ContestResource extends JapaneseResource implements Serializable{
 
 
 	@Override
-	public String convert(Agent agent) {
+	public String convertAgent(Agent agent) {
 		if(game != null){
 			for(Agent a:game.getGameData().getAgentList()){
 				setName(a.getAgentIdx(), game.getAgentName(a));

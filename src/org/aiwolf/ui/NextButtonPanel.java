@@ -27,13 +27,13 @@ class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 	public NextButtonPanel(AIWolfResource resource){
 		this.resource = resource;
 
-		nextButton = new JButton(resource.convert("NEXT"));
+		nextButton = new JButton(resource.convertText("NEXT"));
 		nextButton.addActionListener(this);
 		
-		autoButton = new JButton(resource.convert("Auto"));
+		autoButton = new JButton(resource.convertText("Auto"));
 		autoButton.addActionListener(this);
 
-		skipAllButton = new JButton(resource.convert("SKIP ALL"));
+		skipAllButton = new JButton(resource.convertText("SKIP ALL"));
 		skipAllButton.addActionListener(this);
 //		stepActionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 //		stepActionPanel.add(nextButton);
@@ -84,12 +84,12 @@ class NextButtonPanel extends JPanel implements ActionListener, WaitListener {
 			skip = false;
 			step = false;
 			waitTime = DEFAULT_WAIT_TIME;
-			autoButton.setText(resource.convert("Auto"));
+			autoButton.setText(resource.convertText("Auto"));
 		}
 		else{
 			step = true;
 			skip = true;
-			autoButton.setText(resource.convert("Stop"));
+			autoButton.setText(resource.convertText("Stop"));
 		}
 	}
 	
