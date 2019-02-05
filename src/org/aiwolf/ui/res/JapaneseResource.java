@@ -156,6 +156,9 @@ public class JapaneseResource implements AIWolfResource {
 		if(agent == null){
 			return "";
 		}
+		else if(agent == Agent.ANY){
+			return "誰か";
+		}
 		int agentIdx = agent.getAgentIdx();
 		String name = agentResourceList.get(agentIdx)[0];
 		bidiMap.put(agent, name);

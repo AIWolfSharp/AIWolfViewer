@@ -160,6 +160,9 @@ public class DefaultResource implements AIWolfResource {
 		if(agent == null){
 			return "";
 		}
+		else if(agent == Agent.ANY){
+			return "any";
+		}
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
 		bidiMap.put(agent, name);
 		return name;
