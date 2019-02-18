@@ -35,111 +35,111 @@ import org.aiwolf.common.util.Counter;
 public class DefaultResource implements AIWolfResource {
 
 	String[][] agentResourceAry = {
-			{"Tatton", "img/Male_01.png"}, 
-			{"Deicle", "img/Male_02.png"}, 
-			{"Randal", "img/Male_03.png"}, 
-			{"Dacota", "img/Male_04.png"}, 
-			{"Peace", "img/Male_05.png"}, 
-			{"Joakim", "img/Male_06.png"}, 
-			{"Rodelic", "img/Male_07.png"}, 
-			{"Ivan", "img/Male_08.png"}, 
-			{"Jack", "img/Male_09.png"}, 
-			{"Qu", "img/Male_10.png"}, 
-			{"Tory", "img/Male_11.png"}, 
-			{"Chrif", "img/Male_12.png"}, 
-			{"Norah", "img/Female_01.png"}, 
-			{"Clare", "img/Female_02.png"}, 
-			{"Kino", "img/Female_03.png"}, 
-			{"Mary", "img/Female_04.png"}, 
-			{"Casalina", "img/Female_05.png"}, 
-			{"Denis", "img/Female_06.png"}, 
-			{"Catherine", "img/Female_07.png"}, 
-			{"Eimy", "img/Female_08.png"}, 
-			{"Barbara", "img/Female_09.png"}, 
-			{"Brenda", "img/Female_10.png"}, 
-			{"Meries", "img/Female_11.png"}, 
-			{"Marinda", "img/Female_12.png"}, 
+			{"Tatton", "img/Male_01.png"},
+			{"Deicle", "img/Male_02.png"},
+			{"Randal", "img/Male_03.png"},
+			{"Dacota", "img/Male_04.png"},
+			{"Peace", "img/Male_05.png"},
+			{"Joakim", "img/Male_06.png"},
+			{"Rodelic", "img/Male_07.png"},
+			{"Ivan", "img/Male_08.png"},
+			{"Jack", "img/Male_09.png"},
+			{"Qu", "img/Male_10.png"},
+			{"Tory", "img/Male_11.png"},
+			{"Chrif", "img/Male_12.png"},
+			{"Norah", "img/Female_01.png"},
+			{"Clare", "img/Female_02.png"},
+			{"Kino", "img/Female_03.png"},
+			{"Mary", "img/Female_04.png"},
+			{"Casalina", "img/Female_05.png"},
+			{"Denis", "img/Female_06.png"},
+			{"Catherine", "img/Female_07.png"},
+			{"Eimy", "img/Female_08.png"},
+			{"Barbara", "img/Female_09.png"},
+			{"Brenda", "img/Female_10.png"},
+			{"Meries", "img/Female_11.png"},
+			{"Marinda", "img/Female_12.png"},
 		};
-	
+
 //	String[][] agentResourceAry = {
-//			{"Oliver", "img/00_body.png"}, 
-//			{"Deicle", "img/01_body.png"}, 
-//			{"Lenox", "img/02_body.png"}, 
-//			{"Traise", "img/03_body.png"}, 
-//			{"Dylany", "img/04_body.png"}, 
-//			{"Jerico", "img/05_body.png"}, 
-//			{"Safira", "img/06_body.png"}, 
-//			{"Birkley", "img/07_body.png"}, 
-//			{"Rodelic", "img/08_body.png"}, 
-//			{"Monty", "img/09_body.png"}, 
-//			{"Rinsy", "img/10_body.png"}, 
-//			{"Dacota", "img/11_body.png"}, 
-//			{"Masha", "img/12_body.png"}, 
-//			{"Kypling", "img/13_body.png"}, 
-//			{"Chazz", "img/14_body.png"}, 
-//			{"Tory", "img/15_body.png"}, 
-//			{"Tatton", "img/16_body.png"}, 
-//			{"Marinda", "img/17_body.png"}, 
-//			{"Randal", "img/18_body.png"}, 
-//			{"Nikky", "img/19_body.png"}, 
-//			{"Reginald", "img/20_body.png"}, 
-//			{"Michael", "img/21_body.png"}, 
-//			{"Rusias", "img/22_body.png"}, 
-//			{"Joakim", "img/23_body.png"}, 
-//			{"Casalina", "img/24_body.png"}, 
-//			{"Clare", "img/25_body.png"}, 
-//			{"Ted", "img/26_body.png"}, 
-//			{"Garda", "img/27_body.png"}, 
-//			{"Ku", "img/28_body.png"}, 
-//			{"Pink", "img/29_body.png"}, 
-//			{"Tom", "img/30_body.png"}, 
-//			{"Chrif", "img/31_body.png"}, 
-//			{"Alexey", "img/32_body.png"}, 
-//			{"Eimy", "img/33_body.png"}, 
-//			{"Jack", "img/34_body.png"}, 
-//			{"Catherine", "img/35_body.png"}, 
-//			{"Blenda", "img/36_body.png"}, 
-//			{"Pierre", "img/37_body.png"}, 
-//			{"Chocola", "img/38_body.png"}, 
-//			{"Zak", "img/39_body.png"}, 
-//			{"Emet", "img/40_body.png"}, 
-//			{"Emit", "img/41_body.png"}, 
-//			{"Sarah", "img/42_body.png"}, 
-//			{"Boss", "img/43_body.png"}, 
-//			{"Kino", "img/44_body.png"}, 
-//			{"Monica", "img/45_body.png"}, 
-//			{"Denis", "img/46_body.png"}, 
-//			{"Camus", "img/47_body.png"}, 
-//			{"Yurie", "img/48_body.png"}, 
-//			{"Norah", "img/49_body.png"}, 
-//			{"Barbara", "img/50_body.png"}, 
-//			{"Chercy", "img/51_body.png"}, 
-//			{"Cherio", "img/52_body.png"}, 
-//			{"Guen", "img/53_body.png"}, 
-//			{"Lyza", "img/54_body.png"}, 
-//			{"Beth", "img/55_body.png"}, 
-//			{"Walker", "img/56_body.png"}, 
-//			{"Mary", "img/57_body.png"}, 
-//			{"Maxris", "img/58_body.png"}, 
-//			{"Kanabis", "img/59_body.png"}, 
-//			{"Hach", "img/60_body.png"}, 
-//			{"Marble", "img/61_body.png"}, 
-//			{"Peace", "img/62_body.png"}, 
-//			{"Doc", "img/63_body.png"}, 
-//			{"Meries", "img/64_body.png"}, 
-//			{"Fran", "img/65_body.png"}, 
-//			{"Higras", "img/66_body.png"}, 
-//			{"Ivan", "img/67_body.png"}, 
-//			{"Tao", "img/68_body.png"}, 
-//			{"Jima", "img/69_body.png"}, 
-//			{"Tanya", "img/70_body.png"}, 
-//			{"Jonnie", "img/71_body.png"}, 
-//			{"Lindberg", "img/72_body.png"}, 
+//			{"Oliver", "img/00_body.png"},
+//			{"Deicle", "img/01_body.png"},
+//			{"Lenox", "img/02_body.png"},
+//			{"Traise", "img/03_body.png"},
+//			{"Dylany", "img/04_body.png"},
+//			{"Jerico", "img/05_body.png"},
+//			{"Safira", "img/06_body.png"},
+//			{"Birkley", "img/07_body.png"},
+//			{"Rodelic", "img/08_body.png"},
+//			{"Monty", "img/09_body.png"},
+//			{"Rinsy", "img/10_body.png"},
+//			{"Dacota", "img/11_body.png"},
+//			{"Masha", "img/12_body.png"},
+//			{"Kypling", "img/13_body.png"},
+//			{"Chazz", "img/14_body.png"},
+//			{"Tory", "img/15_body.png"},
+//			{"Tatton", "img/16_body.png"},
+//			{"Marinda", "img/17_body.png"},
+//			{"Randal", "img/18_body.png"},
+//			{"Nikky", "img/19_body.png"},
+//			{"Reginald", "img/20_body.png"},
+//			{"Michael", "img/21_body.png"},
+//			{"Rusias", "img/22_body.png"},
+//			{"Joakim", "img/23_body.png"},
+//			{"Casalina", "img/24_body.png"},
+//			{"Clare", "img/25_body.png"},
+//			{"Ted", "img/26_body.png"},
+//			{"Garda", "img/27_body.png"},
+//			{"Ku", "img/28_body.png"},
+//			{"Pink", "img/29_body.png"},
+//			{"Tom", "img/30_body.png"},
+//			{"Chrif", "img/31_body.png"},
+//			{"Alexey", "img/32_body.png"},
+//			{"Eimy", "img/33_body.png"},
+//			{"Jack", "img/34_body.png"},
+//			{"Catherine", "img/35_body.png"},
+//			{"Blenda", "img/36_body.png"},
+//			{"Pierre", "img/37_body.png"},
+//			{"Chocola", "img/38_body.png"},
+//			{"Zak", "img/39_body.png"},
+//			{"Emet", "img/40_body.png"},
+//			{"Emit", "img/41_body.png"},
+//			{"Sarah", "img/42_body.png"},
+//			{"Boss", "img/43_body.png"},
+//			{"Kino", "img/44_body.png"},
+//			{"Monica", "img/45_body.png"},
+//			{"Denis", "img/46_body.png"},
+//			{"Camus", "img/47_body.png"},
+//			{"Yurie", "img/48_body.png"},
+//			{"Norah", "img/49_body.png"},
+//			{"Barbara", "img/50_body.png"},
+//			{"Chercy", "img/51_body.png"},
+//			{"Cherio", "img/52_body.png"},
+//			{"Guen", "img/53_body.png"},
+//			{"Lyza", "img/54_body.png"},
+//			{"Beth", "img/55_body.png"},
+//			{"Walker", "img/56_body.png"},
+//			{"Mary", "img/57_body.png"},
+//			{"Maxris", "img/58_body.png"},
+//			{"Kanabis", "img/59_body.png"},
+//			{"Hach", "img/60_body.png"},
+//			{"Marble", "img/61_body.png"},
+//			{"Peace", "img/62_body.png"},
+//			{"Doc", "img/63_body.png"},
+//			{"Meries", "img/64_body.png"},
+//			{"Fran", "img/65_body.png"},
+//			{"Higras", "img/66_body.png"},
+//			{"Ivan", "img/67_body.png"},
+//			{"Tao", "img/68_body.png"},
+//			{"Jima", "img/69_body.png"},
+//			{"Tanya", "img/70_body.png"},
+//			{"Jonnie", "img/71_body.png"},
+//			{"Lindberg", "img/72_body.png"},
 //	};
-	
+
 	BidiMap<Agent, String> bidiMap = new BidiMap<>();
 	final List<String[]> agentResourceList;
-		
+
 	public DefaultResource(){
 		agentResourceList = Arrays.asList(agentResourceAry);
 		long seed = Calendar.getInstance().getTimeInMillis()/(1000*60*60);
@@ -148,13 +148,13 @@ public class DefaultResource implements AIWolfResource {
 
 		bidiMap = new BidiMap<>();
 	}
-	
+
 	@Override
 	public void setName(int i, String name){
 		agentResourceList.get(i)[0] = name;
 	}
 
-	
+
 	@Override
 	public String convertAgent(Agent agent) {
 		if(agent == null){
@@ -166,7 +166,7 @@ public class DefaultResource implements AIWolfResource {
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
 		bidiMap.put(agent, name);
 		return name;
-		
+
 //		String.format("%s%02d", agent.toString(), agent.getAgentIdx());
 //		bidiMap.put(agent, agent.toString());
 //		return agent.toString();
@@ -177,7 +177,7 @@ public class DefaultResource implements AIWolfResource {
 		return bidiMap.getKey(name);
 	}
 
-	
+
 	@Override
 	public String convertTalk(Talk talk) {
 		if(talk.isSkip()){
@@ -194,7 +194,7 @@ public class DefaultResource implements AIWolfResource {
 			return talk.getText();
 		}
 	}
-	
+
 
 	@Override
 	public String convertWhisper(Talk whisper) {
@@ -249,6 +249,51 @@ public class DefaultResource implements AIWolfResource {
 				}
 				return buf.toString();
 			}
+			else if(operator == Operator.INQUIRE){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("Inquire：%s ", contentToText(content, talkType)));
+				}
+				return buf.toString();
+
+			}
+			else if(operator == Operator.AND){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
+					and = "and ";
+				}
+				return buf.toString();
+			}
+			else if(operator == Operator.OR){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
+					and = "or ";
+				}
+				return buf.toString();
+			}
+			else if(operator == Operator.XOR){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
+					and = "or ";
+				}
+				if(baseContents.getContentList().size() > 1) {
+					buf.append(", but not both ");
+				}
+				return buf.toString();
+			}
+			else if(operator == Operator.NOT){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("not %s ", contentToText(content, talkType)));
+				}
+				return buf.toString();
+			}
 //			System.out.println(operator);
 		}
 		return baseContents.getText();
@@ -256,7 +301,7 @@ public class DefaultResource implements AIWolfResource {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param contents
 	 * @param topic
 	 * @return
@@ -399,7 +444,7 @@ public class DefaultResource implements AIWolfResource {
 		}
 		return String.format("%s was executed", convertAgent(executedAgent));
 	}
-	
+
 	@Override
 	public String convertDead(Agent agent) {
 		if(agent == null){
@@ -446,7 +491,7 @@ public class DefaultResource implements AIWolfResource {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String aliveRemain(int agents) {
 		return String.format("%d agents alive", agents);
@@ -461,8 +506,8 @@ public class DefaultResource implements AIWolfResource {
 		}
 	}
 
-	
-	
+
+
 	@Override
 	public ImageIcon getImageIcon(Agent agent) {
 		String imageUrl = agentResourceList.get(agent.getAgentIdx())[1];
@@ -477,7 +522,7 @@ public class DefaultResource implements AIWolfResource {
 	public String convertWinner(Team winner){
 		return "Winner:"+convertTeam(winner);
 	}
-	
+
 	public String convertWinner(Team winner, Team yourTeam){
 		String result = convertWinner(winner)+"\n";
 		if(winner == yourTeam){

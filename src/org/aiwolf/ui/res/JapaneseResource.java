@@ -393,7 +393,7 @@ public class JapaneseResource implements AIWolfResource {
 				StringBuffer buf = new StringBuffer();
 				String and = "";
 				for(Content content:baseContents.getContentList()){
-					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
 					and = "かつ ";
 				}
 				return buf.toString();
@@ -402,7 +402,7 @@ public class JapaneseResource implements AIWolfResource {
 				StringBuffer buf = new StringBuffer();
 				String and = "";
 				for(Content content:baseContents.getContentList()){
-					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
 					and = "または ";
 				}
 				return buf.toString();
@@ -411,7 +411,7 @@ public class JapaneseResource implements AIWolfResource {
 				StringBuffer buf = new StringBuffer();
 				String and = "";
 				for(Content content:baseContents.getContentList()){
-					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					buf.append(String.format("%s%s ", and, contentToText(content, talkType)));
 					and = "か ";
 				}
 				if(baseContents.getContentList().size() > 1) {
@@ -419,6 +419,15 @@ public class JapaneseResource implements AIWolfResource {
 				}
 				return buf.toString();
 			}
+			else if(operator == Operator.NOT){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s ", contentToText(content, talkType)));
+				}
+				buf.append("ではない ");
+				return buf.toString();
+			}
+
 
 			//			System.out.println(operator);
 		}
