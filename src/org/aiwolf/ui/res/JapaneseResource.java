@@ -27,114 +27,114 @@ import org.aiwolf.common.util.BidiMap;
 public class JapaneseResource implements AIWolfResource {
 
 	protected String[][] agentResourceAry = {
-			{"不幸なタットン", "img/Male_01.png"}, 
-			{"学生デイクル", "img/Male_02.png"}, 
-			{"御曹司ランダル", "img/Male_03.png"}, 
-			{"用心棒ダコタ", "img/Male_04.png"}, 
-			{"調査員ピース", "img/Male_05.png"}, 
-			{"教師ジョアキム", "img/Male_06.png"}, 
-			{"絵描きロデリック", "img/Male_07.png"}, 
-			{"村長イワン", "img/Male_08.png"}, 
-			{"嘘つきジャック", "img/Male_09.png"}, 
-			{"牧童クゥ", "img/Male_10.png"}, 
-			{"探偵トーリイ", "img/Male_11.png"}, 
-			{"露天商クリフ", "img/Male_12.png"}, 
-			{"雑貨屋ノラ", "img/Female_01.png"}, 
-			{"魔女ターニャ", "img/Female_02.png"}, 
-			{"老婆キノ", "img/Female_03.png"}, 
-			{"洗濯屋メアリ", "img/Female_04.png"}, 
-			{"村娘カサリナ", "img/Female_05.png"}, 
-			{"優等生デニース", "img/Female_06.png"}, 
-			{"記者キャサリン", "img/Female_07.png"}, 
-			{"不機嫌エイミー", "img/Female_08.png"}, 
-			{"浜辺のフラン", "img/Female_09.png"}, 
-			{"令嬢ブレンダ", "img/Female_10.png"}, 
-			{"力持ちメリーズ", "img/Female_11.png"}, 
-			{"眼鏡マリンダ", "img/Female_12.png"}, 
+			{"不幸なタットン", "img/Male_01.png"},
+			{"学生デイクル", "img/Male_02.png"},
+			{"御曹司ランダル", "img/Male_03.png"},
+			{"用心棒ダコタ", "img/Male_04.png"},
+			{"調査員ピース", "img/Male_05.png"},
+			{"教師ジョアキム", "img/Male_06.png"},
+			{"絵描きロデリック", "img/Male_07.png"},
+			{"村長イワン", "img/Male_08.png"},
+			{"嘘つきジャック", "img/Male_09.png"},
+			{"牧童クゥ", "img/Male_10.png"},
+			{"探偵トーリイ", "img/Male_11.png"},
+			{"露天商クリフ", "img/Male_12.png"},
+			{"雑貨屋ノラ", "img/Female_01.png"},
+			{"魔女ターニャ", "img/Female_02.png"},
+			{"老婆キノ", "img/Female_03.png"},
+			{"洗濯屋メアリ", "img/Female_04.png"},
+			{"村娘カサリナ", "img/Female_05.png"},
+			{"優等生デニース", "img/Female_06.png"},
+			{"記者キャサリン", "img/Female_07.png"},
+			{"不機嫌エイミー", "img/Female_08.png"},
+			{"浜辺のフラン", "img/Female_09.png"},
+			{"令嬢ブレンダ", "img/Female_10.png"},
+			{"力持ちメリーズ", "img/Female_11.png"},
+			{"眼鏡マリンダ", "img/Female_12.png"},
 		};
-//	
+//
 //	String[][] agentResourceAry = {
-//			{"麦藁帽のオリバー", "img/00_body.png"}, 
-//			{"学生デイクル", "img/01_body.png"}, 
-//			{"変人レノックス", "img/02_body.png"}, 
-//			{"医者の卵トレイス", "img/03_body.png"}, 
-//			{"水商売ディラニイ", "img/04_body.png"}, 
-//			{"パジャマジェリコ", "img/05_body.png"}, 
-//			{"王女サフィラ", "img/06_body.png"}, 
-//			{"団長バークレイ", "img/07_body.png"}, 
-//			{"浮浪者ロデリック", "img/08_body.png"}, 
-//			{"掃除人モンティ", "img/09_body.png"}, 
-//			{"元軍人リンシイ", "img/10_body.png"}, 
-//			{"用心棒ダコタ", "img/11_body.png"}, 
-//			{"黒ずきんマーシャ", "img/12_body.png"}, 
-//			{"囚人キプリング", "img/13_body.png"}, 
-//			{"料理人チャズ", "img/14_body.png"}, 
-//			{"探偵トーリイ", "img/15_body.png"}, 
-//			{"不幸なタットン", "img/16_body.png"}, 
-//			{"眼鏡マリンダ", "img/17_body.png"}, 
-//			{"御曹司ランダル", "img/18_body.png"}, 
-//			{"包帯の子ニッキー", "img/19_body.png"}, 
-//			{"盗賊レギナルド", "img/20_body.png"}, 
-//			{"怠け者ミッチェル", "img/21_body.png"}, 
-//			{"詩人ルシアス", "img/22_body.png"}, 
-//			{"教師ジョアキム", "img/23_body.png"}, 
-//			{"村娘カサリナ", "img/24_body.png"}, 
-//			{"堅物クレア", "img/25_body.png"}, 
-//			{"曲芸師テッド", "img/26_body.png"}, 
-//			{"ゴロツキガルダ", "img/27_body.png"}, 
-//			{"牧童クゥ", "img/28_body.png"}, 
-//			{"モノマネ師ピンク", "img/29_body.png"}, 
-//			{"男前少年トム", "img/30_body.png"}, 
-//			{"露天商クリフ", "img/31_body.png"}, 
-//			{"酔払いアレクセイ", "img/32_body.png"}, 
-//			{"不機嫌エイミー", "img/33_body.png"}, 
-//			{"嘘つきジャック", "img/34_body.png"}, 
-//			{"記者キャサリン", "img/35_body.png"}, 
-//			{"令嬢ブレンダ", "img/36_body.png"}, 
-//			{"芸人ピエール", "img/37_body.png"}, 
-//			{"孤児ショコラ", "img/38_body.png"}, 
-//			{"旅人ザク", "img/39_body.png"}, 
-//			{"双子の兄エメット", "img/40_body.png"}, 
-//			{"双子の弟ミメット", "img/41_body.png"}, 
-//			{"女学生サーラ", "img/42_body.png"}, 
-//			{"ボスアンジェラ", "img/43_body.png"}, 
-//			{"老婆キノ", "img/44_body.png"}, 
-//			{"看板娘モニカ", "img/45_body.png"}, 
-//			{"優等生デニース", "img/46_body.png"}, 
-//			{"教徒カミュ", "img/47_body.png"}, 
-//			{"修道女ユーリエ", "img/48_body.png"}, 
-//			{"雑貨屋ノラ", "img/49_body.png"}, 
-//			{"踊り子バルバラ", "img/50_body.png"}, 
-//			{"双子のチェルシー", "img/51_body.png"}, 
-//			{"双子のチェリオ", "img/52_body.png"}, 
-//			{"猫仙人グエン", "img/53_body.png"}, 
-//			{"闇商人ライザ", "img/54_body.png"}, 
-//			{"赤面症ベス", "img/55_body.png"}, 
-//			{"剣士ウォーカー", "img/56_body.png"}, 
-//			{"洗濯屋メアリ", "img/57_body.png"}, 
-//			{"聖者マキリス", "img/58_body.png"}, 
-//			{"処刑人カナビス", "img/59_body.png"}, 
-//			{"悪童ハッチ", "img/60_body.png"}, 
-//			{"植物好きマーブル", "img/61_body.png"}, 
-//			{"調査員ピース", "img/62_body.png"}, 
-//			{"天才医師バラキン", "img/63_body.png"}, 
-//			{"家庭教師メリーズ", "img/64_body.png"}, 
-//			{"浜辺の少女フラン", "img/65_body.png"}, 
-//			{"作家ヒグラシ", "img/66_body.png"}, 
-//			{"村長イワン", "img/67_body.png"}, 
-//			{"食道楽タオ", "img/68_body.png"}, 
-//			{"アウトロージーマ", "img/69_body.png"}, 
-//			{"魔女ターニャ", "img/70_body.png"}, 
-//			{"遊び人ジョニー", "img/71_body.png"}, 
-//			{"旅人リンドバーグ", "img/72_body.png"}, 
+//			{"麦藁帽のオリバー", "img/00_body.png"},
+//			{"学生デイクル", "img/01_body.png"},
+//			{"変人レノックス", "img/02_body.png"},
+//			{"医者の卵トレイス", "img/03_body.png"},
+//			{"水商売ディラニイ", "img/04_body.png"},
+//			{"パジャマジェリコ", "img/05_body.png"},
+//			{"王女サフィラ", "img/06_body.png"},
+//			{"団長バークレイ", "img/07_body.png"},
+//			{"浮浪者ロデリック", "img/08_body.png"},
+//			{"掃除人モンティ", "img/09_body.png"},
+//			{"元軍人リンシイ", "img/10_body.png"},
+//			{"用心棒ダコタ", "img/11_body.png"},
+//			{"黒ずきんマーシャ", "img/12_body.png"},
+//			{"囚人キプリング", "img/13_body.png"},
+//			{"料理人チャズ", "img/14_body.png"},
+//			{"探偵トーリイ", "img/15_body.png"},
+//			{"不幸なタットン", "img/16_body.png"},
+//			{"眼鏡マリンダ", "img/17_body.png"},
+//			{"御曹司ランダル", "img/18_body.png"},
+//			{"包帯の子ニッキー", "img/19_body.png"},
+//			{"盗賊レギナルド", "img/20_body.png"},
+//			{"怠け者ミッチェル", "img/21_body.png"},
+//			{"詩人ルシアス", "img/22_body.png"},
+//			{"教師ジョアキム", "img/23_body.png"},
+//			{"村娘カサリナ", "img/24_body.png"},
+//			{"堅物クレア", "img/25_body.png"},
+//			{"曲芸師テッド", "img/26_body.png"},
+//			{"ゴロツキガルダ", "img/27_body.png"},
+//			{"牧童クゥ", "img/28_body.png"},
+//			{"モノマネ師ピンク", "img/29_body.png"},
+//			{"男前少年トム", "img/30_body.png"},
+//			{"露天商クリフ", "img/31_body.png"},
+//			{"酔払いアレクセイ", "img/32_body.png"},
+//			{"不機嫌エイミー", "img/33_body.png"},
+//			{"嘘つきジャック", "img/34_body.png"},
+//			{"記者キャサリン", "img/35_body.png"},
+//			{"令嬢ブレンダ", "img/36_body.png"},
+//			{"芸人ピエール", "img/37_body.png"},
+//			{"孤児ショコラ", "img/38_body.png"},
+//			{"旅人ザク", "img/39_body.png"},
+//			{"双子の兄エメット", "img/40_body.png"},
+//			{"双子の弟ミメット", "img/41_body.png"},
+//			{"女学生サーラ", "img/42_body.png"},
+//			{"ボスアンジェラ", "img/43_body.png"},
+//			{"老婆キノ", "img/44_body.png"},
+//			{"看板娘モニカ", "img/45_body.png"},
+//			{"優等生デニース", "img/46_body.png"},
+//			{"教徒カミュ", "img/47_body.png"},
+//			{"修道女ユーリエ", "img/48_body.png"},
+//			{"雑貨屋ノラ", "img/49_body.png"},
+//			{"踊り子バルバラ", "img/50_body.png"},
+//			{"双子のチェルシー", "img/51_body.png"},
+//			{"双子のチェリオ", "img/52_body.png"},
+//			{"猫仙人グエン", "img/53_body.png"},
+//			{"闇商人ライザ", "img/54_body.png"},
+//			{"赤面症ベス", "img/55_body.png"},
+//			{"剣士ウォーカー", "img/56_body.png"},
+//			{"洗濯屋メアリ", "img/57_body.png"},
+//			{"聖者マキリス", "img/58_body.png"},
+//			{"処刑人カナビス", "img/59_body.png"},
+//			{"悪童ハッチ", "img/60_body.png"},
+//			{"植物好きマーブル", "img/61_body.png"},
+//			{"調査員ピース", "img/62_body.png"},
+//			{"天才医師バラキン", "img/63_body.png"},
+//			{"家庭教師メリーズ", "img/64_body.png"},
+//			{"浜辺の少女フラン", "img/65_body.png"},
+//			{"作家ヒグラシ", "img/66_body.png"},
+//			{"村長イワン", "img/67_body.png"},
+//			{"食道楽タオ", "img/68_body.png"},
+//			{"アウトロージーマ", "img/69_body.png"},
+//			{"魔女ターニャ", "img/70_body.png"},
+//			{"遊び人ジョニー", "img/71_body.png"},
+//			{"旅人リンドバーグ", "img/72_body.png"},
 //	};
 //
-//	
-	
+//
+
 	protected List<String[]> agentResourceList;
-	
+
 	protected BidiMap<Agent, String> bidiMap;
-	
+
 	public JapaneseResource() {
 		agentResourceList = Arrays.asList(agentResourceAry);
 		long seed = Calendar.getInstance().getTimeInMillis()/(1000*60*60);
@@ -142,14 +142,14 @@ public class JapaneseResource implements AIWolfResource {
 
 		bidiMap = new BidiMap<>();
 	}
-	
-	
+
+
 	@Override
 	public void setName(int i, String name){
 		agentResourceList.get(i)[0] = name;
 //		System.out.println(name);
 	}
-	
+
 	@Override
 	public String convertAgent(Agent agent) {
 //		return agent.toString();
@@ -164,7 +164,7 @@ public class JapaneseResource implements AIWolfResource {
 		bidiMap.put(agent, name);
 		return name;
 	}
-	
+
 	@Override
 	public String convertRole(Role role) {
 		switch (role) {
@@ -186,7 +186,7 @@ public class JapaneseResource implements AIWolfResource {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String convertSpecies(Species species) {
 		switch (species) {
@@ -198,7 +198,7 @@ public class JapaneseResource implements AIWolfResource {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String convertTeam(Team team) {
 		switch (team) {
@@ -254,7 +254,7 @@ public class JapaneseResource implements AIWolfResource {
 		default:
 			return "";
 		}
-		
+
 	}
 
 	@Override
@@ -267,12 +267,12 @@ public class JapaneseResource implements AIWolfResource {
 		}
 		return "";
 	}
-	
+
 	@Override
 	public Agent convertToAgent(String name) {
 		return bidiMap.getKey(name);
 	}
-	
+
 //	@Override
 //	public String convertWhisper(Talk whisper) {
 //		Content utterance = new Content(whisper.getText());
@@ -323,7 +323,7 @@ public class JapaneseResource implements AIWolfResource {
 			return talk.getText();
 		}
 	}
-	
+
 	@Override
 	public String convertWhisper(Talk whisper) {
 		if(whisper.isSkip()){
@@ -370,25 +370,64 @@ public class JapaneseResource implements AIWolfResource {
 				if(contentList.size() == 2){
 					Content reason = contentList.get(0);
 					Content action = contentList.get(1);
-					buf.append(String.format("%s から %s", contentToText(reason, talkType), contentToText(action, talkType)));
+					buf.append(String.format("%s， だから %s", contentToText(reason, talkType), contentToText(action, talkType)));
 				}
 				else{
 					return baseContents.getText();
 				}
-				
+
 //				for(Content content:baseContents.getContentList()){
 //					buf.append(String.format("理由： %s ", contentToText(content, talkType)));
 //				}
 				return buf.toString();
 			}
-//			System.out.println(operator);
+			else if(operator == Operator.INQUIRE){
+				StringBuffer buf = new StringBuffer();
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("照会：%s ", contentToText(content, talkType)));
+				}
+				return buf.toString();
+
+			}
+			else if(operator == Operator.AND){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					and = "かつ ";
+				}
+				return buf.toString();
+			}
+			else if(operator == Operator.OR){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					and = "または ";
+				}
+				return buf.toString();
+			}
+			else if(operator == Operator.XOR){
+				StringBuffer buf = new StringBuffer();
+				String and = "";
+				for(Content content:baseContents.getContentList()){
+					buf.append(String.format("%s%s ", contentToText(content, talkType)));
+					and = "か ";
+				}
+				if(baseContents.getContentList().size() > 1) {
+					buf.append("のどちらか");
+				}
+				return buf.toString();
+			}
+
+			//			System.out.println(operator);
 		}
 		return baseContents.getText();
 
 	}
 
 	/**
-	 * 
+	 *
 	 * @param contents
 	 * @param topic
 	 * @return
@@ -521,7 +560,7 @@ public class JapaneseResource implements AIWolfResource {
 	public String convertExecuted(Agent exectedAgent) {
 		return String.format("%sを追放した", convertAgent(exectedAgent));
 	}
-	
+
 	@Override
 	public String convertDead(Agent agent) {
 		if(agent == null){
@@ -547,7 +586,7 @@ public class JapaneseResource implements AIWolfResource {
 //		System.out.println(imageUrl+"\t"+agentResourceList.get(agent.getAgentIdx())[0]);
 		URL url=getClass().getClassLoader().getResource(imageUrl);
 		ImageIcon icon = new ImageIcon(url);
-		
+
 		return icon;
 	}
 
@@ -570,7 +609,7 @@ public class JapaneseResource implements AIWolfResource {
 			return result+"あなたは敗北しました";
 		}
 	}
-	
+
 	@Override
 	public String getFirstText(Agent agent, Role role) {
 		if(role != null && agent != null){
@@ -586,7 +625,7 @@ public class JapaneseResource implements AIWolfResource {
 	@Override
 	public String getRoleInformation(Map<Role, Integer> roleCounter) {
 		Role[] roleAry = new Role[]{Role.VILLAGER, Role.WEREWOLF, Role.SEER, Role.MEDIUM, Role.BODYGUARD, Role.POSSESSED, Role.FREEMASON};
-		
+
 		StringBuffer buf = new StringBuffer();
 		buf.append("この村には\n");
 		String separator = "";
@@ -601,7 +640,7 @@ public class JapaneseResource implements AIWolfResource {
 		buf.append("がいるらしい");
 		return buf.toString();
 	}
-	
+
 
 	@Override
 	public String convertAttackedDay(int day) {
@@ -612,7 +651,7 @@ public class JapaneseResource implements AIWolfResource {
 	public String convertExecutedDay(int day) {
 		return day + "日目に追放";
 	}
-	
+
 	@Override
 	public String dayStart(int day) {
 		if(day == 0){
@@ -633,7 +672,7 @@ public class JapaneseResource implements AIWolfResource {
 
 	@Override
 	public String convertCursedDay(int day) {
-		return day + "日目に呪殺";	
+		return day + "日目に呪殺";
 	}
 
 
