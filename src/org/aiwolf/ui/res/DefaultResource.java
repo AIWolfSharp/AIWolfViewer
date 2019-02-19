@@ -160,7 +160,7 @@ public class DefaultResource implements AIWolfResource {
 		if(agent == null){
 			return "";
 		}
-		else if(agent == Agent.ANY){
+		else if(agent == Content.ANY){
 			return "any";
 		}
 		String name = agentResourceList.get(agent.getAgentIdx())[0];
