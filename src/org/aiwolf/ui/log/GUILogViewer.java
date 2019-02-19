@@ -14,14 +14,11 @@ import java.util.zip.GZIPInputStream;
 import javax.swing.JFrame;
 
 import org.aiwolf.common.data.Agent;
-import org.aiwolf.common.data.Guard;
-import org.aiwolf.common.data.Judge;
 import org.aiwolf.common.data.Role;
-import org.aiwolf.common.data.Talk;
-import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.net.GameSetting;
 import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.res.AIWolfResource;
+import org.aiwolf.ui.res.JapaneseResource;
 
 
 
@@ -32,7 +29,7 @@ public class GUILogViewer {
 	ExGame game;
 
 	GameViewer gameLogger;
-	private ContestResource contestResource;
+	private AIWolfResource resource;
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -69,7 +66,7 @@ public class GUILogViewer {
 
 	private void init() throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Map<Agent, Role> agentRoleMap = new LinkedHashMap<Agent, Role>();
-		contestResource = new ContestResource();
+		resource = new JapaneseResource();
 		BufferedReader br = getBufferedReader();
 		String line;
 		while((line = br.readLine()) != null){
@@ -82,14 +79,14 @@ public class GUILogViewer {
 			Role role = Role.valueOf(data[3]);
 			String name = data[5];
 			agentRoleMap.put(agent, role);
-			contestResource.setName(agent.getAgentIdx(), name);
+			resource.setName(agent.getAgentIdx(), name);
 		}
 		br.close();
 		
 		GameSetting gameSetting = GameSetting.getDefaultGame(agentRoleMap.size());
 		gameData = new LogGameData(gameSetting, agentRoleMap);
 		game = new ExGame(gameSetting, gameData);
-		gameLogger = new GameViewer(contestResource, game);
+		gameLogger = new GameViewer(resource, game);
 	}
 
 	private BufferedReader getBufferedReader() throws IOException, FileNotFoundException, UnsupportedEncodingException {
