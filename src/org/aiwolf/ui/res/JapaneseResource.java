@@ -494,69 +494,119 @@ public class JapaneseResource implements AIWolfResource {
 		}
 		else if (topic == Topic.DIVINED) {
 			if (talkType == TalkType.TALK) {
-				return String.format("占い結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("占い結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else {
+					return String.format("%sの占い結果：【%sは%s】だった", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			} 
 			else if (talkType == TalkType.WHISPER) {
-				return String.format("占い結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("占い結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else {
+					return String.format("%sの占い結果：%sは%sだったことにする", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			}
 		}
 		else if (topic == Topic.DIVINATION) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() != null) {
-					return String.format("%sが%sを占う", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker ) {
+					return String.format("%sを占う", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sを占う", convertAgent(contents.getTarget()));
+					return String.format("%sが%sを占う", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() != null) {
-					return String.format("%sが%sを占うことにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("%sを占うことにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sを占うことにする", convertAgent(contents.getTarget()));
+					return String.format("%sが%sを占うことにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 		} 
 		else if (topic == Topic.ESTIMATE) {
-			return String.format("%sは%sだと思う", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+			if (contents.getSubject() == talker ) {
+				return String.format("%sは%sだと思う", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+			} 
+			else {
+				return String.format("%sが%sは%sだと思っている", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+			}
 		}
 		else if (topic == Topic.GUARDED) {
 			if (talkType == TalkType.TALK) {
-				return String.format("【%sを護衛】した", convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker ) {
+					return String.format("【%sを護衛】した", convertAgent(contents.getTarget()));
+				} 
+				else {
+					return String.format("%sが【%sを護衛】した",convertAgent(contents.getSubject()),  convertAgent(contents.getTarget()));
+				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				return String.format("%sを護衛したことにする", convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker ) {
+					return String.format("%sを護衛したことにする", convertAgent(contents.getTarget()));
+				} 
+				else {
+					return String.format("%sが【%sを護衛】したことにする",convertAgent(contents.getSubject()),  convertAgent(contents.getTarget()));
+				}
 			}
 		} 
 		else if (topic == Topic.GUARD) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() != null) {
-					return String.format("%sが%sを護衛する", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("%sを護衛する", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sを護衛する", convertAgent(contents.getTarget()));
+					return String.format("%sが%sを護衛する", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			} 
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() != null) {
-					return String.format("%sが%sを護衛することにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("%sを護衛することにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sを護衛することにする", convertAgent(contents.getTarget()));
+					return String.format("%sが%sを護衛することにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 		} 
 		else if (topic == Topic.IDENTIFIED) {
 			if (talkType == TalkType.TALK) {
-				return String.format("霊媒結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("霊媒結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				} 
+				else {
+					return String.format("%sの霊媒結果：【%sは%s】だった", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				return String.format("霊媒結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("霊媒結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				} 
+				else {
+					return String.format("%sの霊媒結果：%sは%sだったことにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			}
 		} 
 		else if (topic == Topic.VOTE) {
-			return String.format("%sに投票する", convertAgent(contents.getTarget()));
+			if (talkType == TalkType.TALK) {
+				if (contents.getSubject() == talker) {
+					return String.format("%sに投票する", convertAgent(contents.getTarget()));
+				}
+				else {
+					return String.format("%sが%sに投票する", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()));
+				}
+			}
+			else if (talkType == TalkType.WHISPER) {
+				if (contents.getSubject() == talker) {
+					return String.format("%sに投票することにする", convertAgent(contents.getTarget()));
+				} 
+				else {
+					return String.format("%sが%sに投票することにする", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()));
+				}
+			}
 		}
 		return contents.getText();
 	}

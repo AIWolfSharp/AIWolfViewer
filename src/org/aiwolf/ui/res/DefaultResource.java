@@ -360,69 +360,119 @@ public class DefaultResource implements AIWolfResource {
 		}
 		else if(topic == Topic.DIVINED){
 			if(talkType == TalkType.TALK){
-				return String.format("Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else {
+					return String.format("%s\'s Divine Result：%s is %s", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("Fake Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("Fake Divine Result：%s is %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else {
+					return String.format("%s\'s Fake Divine Result：%s is %s", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
 			}
 		}
 		else if(topic == Topic.DIVINATION){
 			if(talkType == TalkType.TALK){
-				if(contents.getSubject() != null){
-					return String.format("%s divines %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
-				}
-				else{
+				if (contents.getSubject() == talker) {
 					return String.format("Divine %s", convertAgent(contents.getTarget()));
+				}
+				else {
+					return String.format("%s divines %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 			else if(talkType == TalkType.WHISPER){
-				if(contents.getSubject() != null){
-					return String.format("I lie that %s divine %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("I will lie that I will divine %s", convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("I will lie that I will divine %s", convertAgent(contents.getTarget()));
+					return String.format("I lie that %s divine %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 		}
 		else if(topic == Topic.ESTIMATE){
-			return String.format("I estimate %s is %s．", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+			if (contents.getSubject() == talker) {
+				return String.format("I estimate %s is %s．", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+			}
+			else {
+				return String.format("%s estimates %s is %s．", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertRole(contents.getRole()));				
+			}
 		}
 		else if(topic == Topic.GUARDED){
 			if(talkType == TalkType.TALK){
-				return String.format("I guarded %s", convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("I guarded %s", convertAgent(contents.getTarget()));
+				}
+				else {
+					return String.format("%s guarded %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				}
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("I lie that I guarded %s", convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("I lie that I guarded %s", convertAgent(contents.getTarget()));
+				}
+				else {
+					return String.format("I lie that %s guarded %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				}
 			}
 		}
 		else if(topic == Topic.GUARD){
 			if(talkType == TalkType.TALK){
-				if(contents.getSubject() != null){
-					return String.format("%s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("%s will be guarded", convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("%s will be guarded", convertAgent(contents.getTarget()));
+					return String.format("%s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 			else if(talkType == TalkType.WHISPER){
-				if(contents.getSubject() != null){
-					return String.format("I lie that %s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				if (contents.getSubject() == talker) {
+					return String.format("I lie that I will guard %s", convertAgent(contents.getTarget()));
 				}
 				else{
-					return String.format("%sを護衛することにする", convertAgent(contents.getTarget()));
+					return String.format("I lie that %s will guard %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}
 			}
 		}
 		else if(topic == Topic.IDENTIFIED){
 			if(talkType == TalkType.TALK){
-				return String.format("Identified：%s was %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("I identified %s as %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else{
+					return String.format("%s identified %s as %s", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));					
+				}
 			}
 			else if(talkType == TalkType.WHISPER){
-				return String.format("Identified：I will lie that %s was %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				if (contents.getSubject() == talker) {
+					return String.format("I will lie that I identified %s as %s", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+				}
+				else{
+					return String.format("I will lie that %s identified %s as %s", convertAgent(contents.getSubject()),convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));					
+				}
 			}
 		}
 		else if(topic == Topic.VOTE){
-			return String.format("I vote to %s", convertAgent(contents.getTarget()));
+			if(talkType == TalkType.TALK){
+				if (contents.getSubject() == talker) {
+					return String.format("I vote to %s", convertAgent(contents.getTarget()));
+				}
+				else{
+					return String.format("%s votes to %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				}
+			}
+			else if(talkType == TalkType.WHISPER){
+				if (contents.getSubject() == talker) {
+					return String.format("I will lie that I vote to %s", convertAgent(contents.getTarget()));
+				}
+				else{
+					return String.format("I will lie that %s votes to %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				}				
+			}
 		}
 		return contents.getText();
 	}
