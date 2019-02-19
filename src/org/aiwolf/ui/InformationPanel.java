@@ -136,6 +136,9 @@ public class InformationPanel extends JPanel {
 		
 		for(Agent agent:gameInfo.getAgentList()){
 			agentPanelMap.get(agent).setStatus(gameInfo.getStatusMap().get(agent));
+			if (gameInfo.getLatestExecutedAgent() != null) {
+				agentPanelMap.get(gameInfo.getLatestExecutedAgent()).setStatus(Status.ALIVE);
+			}
 			agentPanelMap.get(agent).setRole(gameInfo.getRoleMap().get(agent));
 		}
 
@@ -378,6 +381,7 @@ public class InformationPanel extends JPanel {
 		Agent deadAgent = null;
 		for (Agent agent : gameInfo.getLastDeadAgentList()) {
 			if (agent != gameInfo.getExecutedAgent()) {
+				agentPanelMap.get(agent).setStatus(Status.DEAD);
 				if(agent == gameInfo.getAttackedAgent()){
 					inform(resource.convertDead(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
 				}
@@ -424,6 +428,7 @@ public class InformationPanel extends JPanel {
 			}
 		}
 		if (isFinalVote && gameInfo.getExecutedAgent() != null) {
+			agentPanelMap.get(gameInfo.getExecutedAgent()).setStatus(Status.DEAD);
 			informExecutedAgent(gameInfo.getExecutedAgent());
 		}
 		eventPanel.clearArrow();

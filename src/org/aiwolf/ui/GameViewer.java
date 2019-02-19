@@ -390,7 +390,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 		else if(isLogType(log, "execute")){
 //			infoPanel.updateVote(gameInfo.getLatestVoteList(), true);
 //			infoPanel.inform(resource.convertExecuted(gameInfo.getLatestExecutedAgent()), ACTION_COLOR, gameInfo.getLatestExecutedAgent());
-			infoPanel.informExecutedAgent(gameInfo.getLatestExecutedAgent());
+//			infoPanel.informExecutedAgent(gameInfo.getLatestExecutedAgent());
 		}
 //		else if(isLogType(log, "status")){
 //			String[] data = log.split(",");
