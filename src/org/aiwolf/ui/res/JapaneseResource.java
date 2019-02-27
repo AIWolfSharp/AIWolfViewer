@@ -446,6 +446,13 @@ public class JapaneseResource implements AIWolfResource {
 		if (topic == Topic.ATTACK) {
 			return String.format("%sを襲撃する", convertAgent(contents.getTarget()));
 		}
+		else if (topic == Topic.ATTACKED) {
+			if (contents.getSubject() == talker) {
+				return String.format("%sを襲撃した", convertAgent(contents.getTarget()));
+			} else {
+				return String.format("%sが%sを襲撃した", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+			}
+		}
 		else if (topic == Topic.AGREE) {
 			return String.format("%d日の意見(%03d)に同意", contents.getTalkDay(), contents.getTalkID());
 		}
@@ -606,6 +613,13 @@ public class JapaneseResource implements AIWolfResource {
 				else {
 					return String.format("%sが%sに投票することにする", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()));
 				}
+			}
+		}
+		else if (topic == Topic.VOTED) {
+			if (contents.getSubject() == talker) {
+				return String.format("%sに投票した", convertAgent(contents.getTarget()));
+			} else {
+				return String.format("%sが%sに投票した", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 			}
 		}
 		return contents.getText();

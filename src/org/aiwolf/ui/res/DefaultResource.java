@@ -313,6 +313,13 @@ public class DefaultResource implements AIWolfResource {
 		if(topic == Topic.ATTACK){
 			return String.format("Attack %s", convertAgent(contents.getTarget()));
 		}
+		else if(topic == Topic.ATTACKED){
+			if (contents.getSubject() == talker) {
+				return String.format("I attacked %s", convertAgent(contents.getTarget()));
+			} else {
+				return String.format("%s attacked %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+			}
+		}
 		else if(topic == Topic.AGREE){
 			return String.format("I agree to %03d at day%d", contents.getTalkID(), contents.getTalkDay());
 		}
@@ -472,6 +479,13 @@ public class DefaultResource implements AIWolfResource {
 				else{
 					return String.format("I will lie that %s votes to %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 				}				
+			}
+		}
+		else if(topic == Topic.VOTED){
+			if (contents.getSubject() == talker) {
+				return String.format("I voted to %s", convertAgent(contents.getTarget()));
+			} else {
+				return String.format("%s voted to %s", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
 			}
 		}
 		return contents.getText();
