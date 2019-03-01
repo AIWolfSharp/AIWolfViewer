@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -251,6 +252,19 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //		samplePlayer.initialize(gameInfo, gameSetting);
 	}
 	
+	void updateCO(Talk talk) {
+		Content u = new Content(talk.getText());
+		if(u.getTopic() == Topic.COMINGOUT){
+			infoPanel.setComingOut(talk.getAgent(), u.getRole());
+		}
+		else if(u.getTopic() == Topic.DIVINED){
+			infoPanel.setComingOut(talk.getAgent(), Role.SEER);
+		}
+		else if(u.getTopic() == Topic.IDENTIFIED){
+			infoPanel.setComingOut(talk.getAgent(), Role.MEDIUM);
+		}
+	}
+
 	public void update(GameInfo gameInfo){
 		infoPanel.update(gameInfo);
 
@@ -308,6 +322,7 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 				boolean isUpdated = infoPanel.updateTalk(gameInfo.getDay(), talk, TalkType.TALK);
 				if(isUpdated){
 					infoPanel.update(gameInfo);
+					updateCO(talk);
 					lastTalk = talk;
 				}
 			}
@@ -357,8 +372,10 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //
 	int lastDay = -1;
 	int voteSkip = 0;
+	private List<Vote> voteList = new ArrayList<>();
 	@Override
 	public void log(String log) {
+		System.out.println(log);
 		GameInfo gameInfo = game.getGameData().getGameInfo();
 		GameSetting gameSetting = game.getGameSetting();
 //		GameInfo gameInfo = gameData.getGameInfo();
@@ -372,22 +389,25 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 			dayStart();
 			lastDay = gameInfo.getDay();
 		}
-		update(gameInfo);
+		infoPanel.update(gameInfo);
 
 		if(isLogType(log, "talk") || isLogType(log, "whisper")){
 			updateTalk(gameInfo);
 		}
 		else if(isLogType(log, "vote")){
 //			System.out.println(voteSkip+"\t"+gameInfo.getLatestVoteList().size());
-			if(voteSkip == 0){
-				showVoteList(gameInfo.getLatestVoteList());
-				voteSkip = gameInfo.getLatestVoteList().size();
+			String[] data = log.split(",");
+			Vote vote = new Vote(Integer.parseInt(data[0]), Agent.getAgent(Integer.parseInt(data[2])), Agent.getAgent(Integer.parseInt(data[3])));
+			if(voteList.stream().filter(v->v.getAgent() == vote.getAgent()).count() != 0) {
+				waitForNext();
+				infoPanel.updateVote(voteList, false);
+				voteList.clear();				
 			}
-			if(gameInfo.getLatestVoteList().size() > 0){
-				voteSkip--;
-			}
+			voteList.add(vote);
 		}
 		else if(isLogType(log, "execute")){
+			infoPanel.updateVote(voteList, true);
+			voteList.clear();
 //			infoPanel.updateVote(gameInfo.getLatestVoteList(), true);
 //			infoPanel.inform(resource.convertExecuted(gameInfo.getLatestExecutedAgent()), ACTION_COLOR, gameInfo.getLatestExecutedAgent());
 //			infoPanel.informExecutedAgent(gameInfo.getLatestExecutedAgent());
@@ -398,7 +418,6 @@ public class GameViewer extends JFrame implements GameLogger, ActionListener{
 //			String name = data[5];
 //			resource.setName(idx, name);
 //		}
-		System.out.println(log);
 	}
 
 	private boolean isLogType(String log, String type) {
