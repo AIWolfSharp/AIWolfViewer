@@ -138,20 +138,6 @@ public class InformationPanel extends JPanel {
 			agentPanelMap.get(agent).setStatus(gameInfo.getStatusMap().get(agent));
 			agentPanelMap.get(agent).setRole(gameInfo.getRoleMap().get(agent));
 		}
-
-		for (Agent agent : gameInfo.getLastDeadAgentList()) {
-			if (agent != gameInfo.getExecutedAgent()) {
-				if(agent == gameInfo.getAttackedAgent()){
-					agentPanelMap.get(agent).setAttacked(gameInfo.getDay()); 
-				}
-				else{
-					agentPanelMap.get(agent).setDead(gameInfo.getDay()); 
-				}
-			}
-		}
-		if (gameInfo.getExecutedAgent() != null) {
-			agentPanelMap.get(gameInfo.getExecutedAgent()).setExecuted(gameInfo.getDay());
-		}
 	
 		talkPanel.update(gameInfo);
 		talkPanel.scrollToTail();
@@ -311,12 +297,6 @@ public class InformationPanel extends JPanel {
 		eventPanel.clearArrow();
 		inform(resource.dayStart(gameInfo.getDay()), ACTION_COLOR);
 //		talkPanel.addText(day, resource.dayStart(gameInfo.getDay()));
-
-		///////////////////////////////////////////////////////
-		//Vote
-		TreeSet<Vote> voteSet = new TreeSet<>(voteComparator);
-		voteSet.addAll(gameInfo.getVoteList());
-		updateVote(voteSet, true);
 		
 		///////////////////////////////////////////////////////
 		//Divine Medium
@@ -378,10 +358,13 @@ public class InformationPanel extends JPanel {
 		Agent deadAgent = null;
 		for (Agent agent : gameInfo.getLastDeadAgentList()) {
 			if (agent != gameInfo.getExecutedAgent()) {
-				if(agent == gameInfo.getAttackedAgent()){
+				agentPanelMap.get(agent).setStatus(Status.DEAD);
+				if(agent == gameInfo.getAttackedAgent()){ // TODO LogViewerではattackedAgentがnullとなるバグ（仕様？）
+					agentPanelMap.get(agent).setAttacked(day - 1);
 					inform(resource.convertDead(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
 				}
 				else{
+					agentPanelMap.get(agent).setAttacked(day - 1); // TODO 上記のバグへの応急措置（妖狐を無視）
 					inform(resource.convertDead(agent), WHISPER_COLOR, agent); // TODO 妖狐考慮
 				}
 				deadAgent = agent;
@@ -423,8 +406,13 @@ public class InformationPanel extends JPanel {
 				waitListener.waitForNext();
 			}
 		}
-		if (isFinalVote && gameInfo.getExecutedAgent() != null) {
-			informExecutedAgent(gameInfo.getExecutedAgent());
+		if(isFinalVote) {
+			if(gameInfo.getLatestExecutedAgent() != null) {
+				agentPanelMap.get(gameInfo.getLatestExecutedAgent()).setStatus(Status.DEAD);
+				agentPanelMap.get(gameInfo.getLatestExecutedAgent()).setExecuted(gameInfo.getDay());
+				agentPanelMap.get(gameInfo.getLatestExecutedAgent()).repaint();
+				informExecutedAgent(gameInfo.getLatestExecutedAgent());
+			}
 		}
 		eventPanel.clearArrow();
 	}

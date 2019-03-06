@@ -342,6 +342,9 @@ public class TalkPanel extends JPanel {
 		}
 		
 		JTextArea textArea = new JTextArea(text.toString());
+		textArea.setColumns(80);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		textArea.setBackground(new Color(0,0,0,0));
 		textArea.setFont(nameLabel.getFont());
 		
