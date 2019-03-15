@@ -24,6 +24,11 @@ import org.aiwolf.common.data.Team;
 import org.aiwolf.common.data.Vote;
 import org.aiwolf.common.util.BidiMap;
 
+
+
+
+
+
 public class JapaneseResource implements AIWolfResource {
 
 	protected String[][] agentResourceAry = {
@@ -315,7 +320,7 @@ public class JapaneseResource implements AIWolfResource {
 			return "特に話すことはない";
 		}
 		try {
-			Content contents = new Content(talk.getAgent() + " " + talk.getText());
+			Content contents = new Content(talk.getAgent() + " " + Content.stripSubject(talk.getText()));
 			return contentToText(contents.getSubject(), contents, TalkType.TALK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -332,7 +337,7 @@ public class JapaneseResource implements AIWolfResource {
 			return "特に話すことはない";
 		}
 		try {
-			Content contents = new Content(whisper.getAgent() + " " + whisper.getText());
+			Content contents = new Content(whisper.getAgent() + " " + Content.stripSubject(whisper.getText()));
 			return contentToText(contents.getSubject(), contents, TalkType.WHISPER);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -345,6 +350,7 @@ public class JapaneseResource implements AIWolfResource {
 	 * @param baseContents
 	 */
 	protected String contentToText(Agent talker, Content baseContents, TalkType talkType) {
+		Agent subject = baseContents.getSubject();
 		Operator operator = baseContents.getOperator();
 		Topic topic = baseContents.getTopic();
 		if (operator == null) {
@@ -353,8 +359,11 @@ public class JapaneseResource implements AIWolfResource {
 		else {
 			if (operator == Operator.REQUEST) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				for (Content content : baseContents.getContentList()) {
-					buf.append(String.format("要望：%s ", contentToText(talker, content, talkType)));
+						buf.append(String.format("要望：%s ", contentToText(talker, content, talkType)));						
 					// if(content.getSubject() != null){
 					// buf.append(String.format("%sに要望： %s ", convert(content.getSubject()), contentToText(content)));
 					// }
@@ -365,6 +374,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.BECAUSE) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				List<Content> contentList = baseContents.getContentList();
 				if (contentList.size() == 2) {
 					Content reason = contentList.get(0);
@@ -382,6 +394,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.INQUIRE) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				for (Content content : baseContents.getContentList()) {
 					buf.append(String.format("照会：%s ", contentToText(talker, content, talkType)));
 				}
@@ -390,6 +405,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.AND) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				String and = "";
 				for (Content content : baseContents.getContentList()) {
 					buf.append(String.format("%s%s ", and, contentToText(talker, content, talkType)));
@@ -399,6 +417,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.OR) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				String and = "";
 				for (Content content : baseContents.getContentList()) {
 					buf.append(String.format("%s%s ", and, contentToText(talker, content, talkType)));
@@ -408,6 +429,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.XOR) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				String and = "";
 				for (Content content : baseContents.getContentList()) {
 					buf.append(String.format("%s%s ", and, contentToText(talker, content, talkType)));
@@ -420,6 +444,9 @@ public class JapaneseResource implements AIWolfResource {
 			}
 			else if (operator == Operator.NOT) {
 				StringBuffer buf = new StringBuffer();
+				if (subject != talker) {
+					buf.append(convertAgent(subject) + "->");
+				}
 				for (Content content : baseContents.getContentList()) {
 					buf.append(String.format("%s ", contentToText(talker, content, talkType)));
 				}
@@ -427,7 +454,11 @@ public class JapaneseResource implements AIWolfResource {
 				return buf.toString();
 			}
 			else if (operator == Operator.DAY) {
-				return "day" + baseContents.getDay() + "に " + contentToText(talker, baseContents.getContentList().get(0), talkType);
+				if (subject == talker) {
+					return "day" + baseContents.getDay() + "に " + contentToText(talker, baseContents.getContentList().get(0), talkType);
+				}else {
+					return convertAgent(subject) + "->day" + baseContents.getDay() + "に " + contentToText(talker, baseContents.getContentList().get(0), talkType);
+				}
 			}
 
 			// System.out.println(operator);
@@ -443,22 +474,32 @@ public class JapaneseResource implements AIWolfResource {
 	 * @return
 	 */
 	protected String topicToText(Agent talker, Content contents, Topic topic, TalkType talkType) {
+		Agent subject = contents.getSubject();
 		if (topic == Topic.ATTACK) {
-			return String.format("%sを襲撃する", convertAgent(contents.getTarget()));
+			if (subject == talker) {
+				return String.format("%sを襲撃する", convertAgent(contents.getTarget()));
+
+			} else {
+				return String.format("%sが%sを襲撃する", convertAgent(subject), convertAgent(contents.getTarget()));
+			}
 		}
 		else if (topic == Topic.ATTACKED) {
-			if (contents.getSubject() == talker) {
+			if (subject == talker) {
 				return String.format("%sを襲撃した", convertAgent(contents.getTarget()));
 			} else {
-				return String.format("%sが%sを襲撃した", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				return String.format("%sが%sを襲撃した", convertAgent(subject), convertAgent(contents.getTarget()));
 			}
 		}
 		else if (topic == Topic.AGREE) {
-			return String.format("%d日の意見(%03d)に同意", contents.getTalkDay(), contents.getTalkID());
+			if (subject == talker) {
+				return String.format("%d日の意見(%03d)に同意", contents.getTalkDay(), contents.getTalkID());
+			} else {
+				return String.format("%sが%d日の意見(%03d)に同意", convertAgent(subject), contents.getTalkDay(), contents.getTalkID());
+			}
 		}
 		else if (topic == Topic.COMINGOUT) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					if (contents.getTarget() == talker) {
 						return String.format("【私は%s】です", convertRole(contents.getRole()));
 
@@ -468,16 +509,16 @@ public class JapaneseResource implements AIWolfResource {
 					}
 				}
 				else {
-					if (contents.getSubject() == contents.getTarget()) {
-						return String.format("【%sは%sとCO】した", convertAgent(contents.getSubject()), convertRole(contents.getRole()));
+					if (subject == contents.getTarget()) {
+						return String.format("【%sは%sとCO】した", convertAgent(subject), convertRole(contents.getRole()));
 					}
 					else {
-						return String.format("%sが【%sは%sとCO】した", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+						return String.format("%sが【%sは%sとCO】した", convertAgent(subject), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
 					}
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					if (contents.getTarget() == talker) {
 						return String.format("私は%sと名乗る", convertRole(contents.getRole()));
 
@@ -487,139 +528,143 @@ public class JapaneseResource implements AIWolfResource {
 					}
 				} 
 				else {
-					if (contents.getSubject() == contents.getTarget()) {
-						return String.format("%sは%sとCOした", convertAgent(contents.getSubject()), convertRole(contents.getRole()));
+					if (subject == contents.getTarget()) {
+						return String.format("%sは%sとCOした", convertAgent(subject), convertRole(contents.getRole()));
 					}
 					else {
-						return String.format("%sが%sは%sとCOした", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+						return String.format("%sが%sは%sとCOした", convertAgent(subject), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
 					}
 				}
 			}
 		}
 		else if (topic == Topic.DISAGREE) {
-			return String.format("%d日の意見(%03d)に反対", contents.getTalkDay(), contents.getTalkID());
+			if (subject == talker) {
+				return String.format("%d日の意見(%03d)に反対", contents.getTalkDay(), contents.getTalkID());
+			} else {
+				return String.format("%sが%d日の意見(%03d)に反対", convertAgent(subject), contents.getTalkDay(), contents.getTalkID());
+			}
 		}
 		else if (topic == Topic.DIVINED) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("占い結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 				else {
-					return String.format("%sの占い結果：【%sは%s】だった", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+					return String.format("%sの占い結果：【%sは%s】だった", convertAgent(subject), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 			} 
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("占い結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 				else {
-					return String.format("%sの占い結果：%sは%sだったことにする", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+					return String.format("%sの占い結果：%sは%sだったことにする", convertAgent(subject), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 			}
 		}
 		else if (topic == Topic.DIVINATION) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker ) {
+				if (subject == talker) {
 					return String.format("%sを占う", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが%sを占う", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+					return String.format("%sが%sを占う", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("%sを占うことにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが%sを占うことにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+					return String.format("%sが%sを占うことにする", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 		} 
 		else if (topic == Topic.ESTIMATE) {
-			if (contents.getSubject() == talker ) {
+			if (subject == talker) {
 				return String.format("%sは%sだと思う", convertAgent(contents.getTarget()), convertRole(contents.getRole()));
 			} 
 			else {
-				return String.format("%sが%sは%sだと思っている", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
+				return String.format("%sが%sは%sだと思っている", convertAgent(subject), convertAgent(contents.getTarget()), convertRole(contents.getRole()));
 			}
 		}
 		else if (topic == Topic.GUARDED) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker ) {
+				if (subject == talker) {
 					return String.format("【%sを護衛】した", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが【%sを護衛】した",convertAgent(contents.getSubject()),  convertAgent(contents.getTarget()));
+					return String.format("%sが【%sを護衛】した", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker ) {
+				if (subject == talker) {
 					return String.format("%sを護衛したことにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが【%sを護衛】したことにする",convertAgent(contents.getSubject()),  convertAgent(contents.getTarget()));
+					return String.format("%sが【%sを護衛】したことにする", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 		} 
 		else if (topic == Topic.GUARD) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("%sを護衛する", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが%sを護衛する", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+					return String.format("%sが%sを護衛する", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			} 
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("%sを護衛することにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが%sを護衛することにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+					return String.format("%sが%sを護衛することにする", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 		} 
 		else if (topic == Topic.IDENTIFIED) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("霊媒結果：【%sは%s】だった", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				} 
 				else {
-					return String.format("%sの霊媒結果：【%sは%s】だった", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+					return String.format("%sの霊媒結果：【%sは%s】だった", convertAgent(subject), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("霊媒結果：%sは%sだったことにする", convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				} 
 				else {
-					return String.format("%sの霊媒結果：%sは%sだったことにする", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
+					return String.format("%sの霊媒結果：%sは%sだったことにする", convertAgent(subject), convertAgent(contents.getTarget()), convertSpecies(contents.getResult()));
 				}
 			}
 		} 
 		else if (topic == Topic.VOTE) {
 			if (talkType == TalkType.TALK) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("%sに投票する", convertAgent(contents.getTarget()));
 				}
 				else {
-					return String.format("%sが%sに投票する", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()));
+					return String.format("%sが%sに投票する", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 			else if (talkType == TalkType.WHISPER) {
-				if (contents.getSubject() == talker) {
+				if (subject == talker) {
 					return String.format("%sに投票することにする", convertAgent(contents.getTarget()));
 				} 
 				else {
-					return String.format("%sが%sに投票することにする", convertAgent(contents.getSubject()),convertAgent(contents.getTarget()));
+					return String.format("%sが%sに投票することにする", convertAgent(subject), convertAgent(contents.getTarget()));
 				}
 			}
 		}
 		else if (topic == Topic.VOTED) {
-			if (contents.getSubject() == talker) {
+			if (subject == talker) {
 				return String.format("%sに投票した", convertAgent(contents.getTarget()));
 			} else {
-				return String.format("%sが%sに投票した", convertAgent(contents.getSubject()), convertAgent(contents.getTarget()));
+				return String.format("%sが%sに投票した", convertAgent(subject), convertAgent(contents.getTarget()));
 			}
 		}
 		return contents.getText();
