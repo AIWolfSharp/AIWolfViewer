@@ -551,7 +551,7 @@ public class AutoStarter {
 	 */
 	private void result() {
 		for(Role role:Role.values()){
-			if(role == Role.FREEMASON){
+			if(role == Role.FREEMASON || role == Role.FOX || role == Role.ANY){
 				continue;
 			}
 			System.out.print("\t"+role);
@@ -569,7 +569,7 @@ public class AutoStarter {
 			double win = 0;
 			double cnt = 0;
 			for(Role role:Role.values()){
-				if(role == Role.FREEMASON || role == Role.FOX){
+				if(role == Role.FREEMASON || role == Role.FOX || role == Role.ANY){
 					continue;
 				}
 				System.out.printf("%d/%d\t", winCounterMap.get(name).get(role), roleCounterMap.get(name).get(role));
