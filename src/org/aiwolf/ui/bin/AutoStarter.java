@@ -376,8 +376,8 @@ public class AutoStarter {
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i));
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
-//							ContestResource resource = new ContestResource(game);
-							JapaneseResource resource = new JapaneseResource();
+							DefaultResource resource = new DefaultResource();
+//							JapaneseResource resource = new JapaneseResource();
 							for(Agent agent:gameServer.getConnectedAgentList()){
 								resource.setName(agent.getAgentIdx(), gameServer.getName(agent));
 							}
