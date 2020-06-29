@@ -494,6 +494,12 @@ public class AutoStarter {
 		command.add(""+port);
 		command.add("-h");
 		command.add("localhost");
+		// command.add("-n"); waiting for implementation in python client starter.
+		// command.add(playerInfo.getName());
+		if (playerInfo.getRole() != null) {
+			command.add("-r");
+			command.add(playerInfo.getRole().toString());
+		}
 
 //				logFile.getParentFile().mkdirs();
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -534,6 +540,10 @@ public class AutoStarter {
 		command.add(filePath);
 		command.add("-n");
 		command.add(playerInfo.getName());
+		if (playerInfo.getRole() != null) {
+			command.add("-r");
+			command.add(playerInfo.getRole().toString());
+		}
 
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.inheritIO();
