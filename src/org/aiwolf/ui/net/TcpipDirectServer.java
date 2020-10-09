@@ -7,7 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +41,18 @@ public class TcpipDirectServer extends TcpipServer {
 	BidiMap<Player, Agent> playerAgentMap;
 	Map<Agent, Role> requestRoleMap;
 	List<Agent> agentList = new ArrayList<>();
+	Deque<Agent> shuffledAgentQueue;
 
 	public TcpipDirectServer(int port, int limit, GameSetting gameSetting) {
 		super(port, limit, gameSetting);
 		playerAgentMap = new BidiMap<>();
 		requestRoleMap = new HashMap<>();
+		List<Agent> shuffledAgentList = new ArrayList<>();
+	    for(int i = 1; i <= limit; i++) {
+	    	shuffledAgentList.add(Agent.getAgent(i));
+	    }
+	    Collections.shuffle(shuffledAgentList);
+	    shuffledAgentQueue = new LinkedList<>(shuffledAgentList);
 	}
 
 	/**
@@ -51,12 +61,11 @@ public class TcpipDirectServer extends TcpipServer {
 	 * @param role
 	 */
 	public void add(String name, Player player, Role role) {
-		if(playerAgentMap.size() >= limit) {
+		if(shuffledAgentQueue.isEmpty()) {
 			throw new AIWolfRuntimeException("Too many players added");
 		}
 
-		int idx = playerAgentMap.size()+1;
-		Agent agent = Agent.getAgent(idx);
+		Agent agent = shuffledAgentQueue.poll();
 		playerAgentMap.put(player, agent);
 		nameMap.put(agent, name);
 		requestRoleMap.put(agent, role);
@@ -84,16 +93,15 @@ public class TcpipDirectServer extends TcpipServer {
 	    isWaitForClient = true;
 
 
-	    int startIdx = playerAgentMap.size()+socketAgentMap.size()+1;
 //	    System.out.println(socketAgentMap.size()+":"+playerAgentMap.size());
 	    while(socketAgentMap.size()+playerAgentMap.size() < limit && isWaitForClient){
 	        Socket socket = serverSocket.accept();
 
 	        synchronized (socketAgentMap) {
 		        Agent agent = null;
-				for (int i = startIdx; i <= limit; i++) {
-		        	if(!socketAgentMap.containsValue(Agent.getAgent(i)) && !playerAgentMap.containsValue(agent)){
-		        		agent = Agent.getAgent(i);
+		        while(!shuffledAgentQueue.isEmpty()) {
+		        	if(!socketAgentMap.containsValue(shuffledAgentQueue.peek()) && !playerAgentMap.containsValue(shuffledAgentQueue.peek())){
+		        		agent = shuffledAgentQueue.poll();
 		        		break;
 		        	}
 		        }
