@@ -1,4 +1,5 @@
 package org.aiwolf.ui.log;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +21,6 @@ import org.aiwolf.ui.GameViewer;
 import org.aiwolf.ui.res.AIWolfResource;
 import org.aiwolf.ui.res.JapaneseResource;
 
-
-
 public class GUILogViewer {
 
 	File logFile;
@@ -30,49 +29,50 @@ public class GUILogViewer {
 
 	GameViewer gameLogger;
 	private AIWolfResource resource;
+
 	/**
 	 * @param args
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		GUILogViewer lta = new GUILogViewer("../CEDEC2016/game/000.log.gz");
+		GUILogViewer lta = new GUILogViewer("../CEDEC2016/game/000.log.gz", null);
 		lta.start();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param logFileName
-	 * @throws IOException 
-	 * @throws NumberFormatException 
+	 * @throws IOException
+	 * @throws NumberFormatException
 	 */
-	public GUILogViewer(String logFileName) throws NumberFormatException, IOException{
-		this(new File(logFileName));
+	public GUILogViewer(String logFileName, AIWolfResource resource) throws NumberFormatException, IOException {
+		this(new File(logFileName), resource);
 	}
 
-	
 	/**
-	 * 
+	 *
 	 * @param logFile
-	 * @throws IOException 
-	 * @throws NumberFormatException 
+	 * @throws IOException
+	 * @throws NumberFormatException
 	 */
-	public GUILogViewer(File logFile) throws NumberFormatException, IOException {
+	public GUILogViewer(File logFile, AIWolfResource resource) throws NumberFormatException, IOException {
 		super();
 		this.logFile = logFile;
 
-	
-		init();
+		init(resource);
 	}
 
-	private void init() throws FileNotFoundException, UnsupportedEncodingException, IOException {
+	private void init(AIWolfResource resource) throws FileNotFoundException, UnsupportedEncodingException, IOException {
 		Map<Agent, Role> agentRoleMap = new LinkedHashMap<Agent, Role>();
-		resource = new JapaneseResource();
+		if (resource == null) {
+			resource = new JapaneseResource();
+		}
 		BufferedReader br = getBufferedReader();
 		String line;
-		while((line = br.readLine()) != null){
-			
+		while ((line = br.readLine()) != null) {
+
 			String[] data = line.split(",");
-			if(!data[1].equals("status")){
+			if (!data[1].equals("status")) {
 				break;
 			}
 			Agent agent = Agent.getAgent(Integer.parseInt(data[2]));
@@ -82,7 +82,7 @@ public class GUILogViewer {
 			resource.setName(agent.getAgentIdx(), name);
 		}
 		br.close();
-		
+
 		GameSetting gameSetting = GameSetting.getDefaultGame(agentRoleMap.size());
 		gameData = new LogGameData(gameSetting, agentRoleMap);
 		game = new ExGame(gameSetting, gameData);
@@ -91,10 +91,9 @@ public class GUILogViewer {
 
 	private BufferedReader getBufferedReader() throws IOException, FileNotFoundException, UnsupportedEncodingException {
 		InputStream is;
-		if(logFile.getName().endsWith("gz")){
-			is = new GZIPInputStream(new FileInputStream(logFile)); 
-		}
-		else{
+		if (logFile.getName().endsWith("gz")) {
+			is = new GZIPInputStream(new FileInputStream(logFile));
+		} else {
 			is = new FileInputStream(logFile);
 		}
 		InputStreamReader in = new InputStreamReader(is, "UTF-8");
@@ -102,24 +101,24 @@ public class GUILogViewer {
 		return br;
 	}
 
-	public void setResource(AIWolfResource resource){
+	public void setResource(AIWolfResource resource) {
 		gameLogger = new GameViewer(resource, game);
 	}
-	
-	public AIWolfResource getResource(){
+
+	public AIWolfResource getResource() {
 		return gameLogger.getResource();
 	}
-	
-	public void start() throws NumberFormatException, IOException{
 
-//		BufferedReader br = new BufferedReader(new FileReader(logFile));
+	public void start() throws NumberFormatException, IOException {
+
+		// BufferedReader br = new BufferedReader(new FileReader(logFile));
 		BufferedReader br = getBufferedReader();
 		String line;
-		while((line = br.readLine()) != null){
+		while ((line = br.readLine()) != null) {
 			gameData.addMessage(line);
 			String[] data = line.split(",");
-			if(data[1].equals("result")){
-//				gameLogger.log(line);
+			if (data[1].equals("result")) {
+				// gameLogger.log(line);
 				gameLogger.close();
 				break;
 			}
@@ -130,10 +129,9 @@ public class GUILogViewer {
 	}
 
 	public void setCloseOnExist(boolean b) {
-		if(b){
+		if (b) {
 			gameLogger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		}
-		else{
+		} else {
 			gameLogger.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
 	}
@@ -145,5 +143,4 @@ public class GUILogViewer {
 		return gameLogger;
 	}
 
-	
 }
