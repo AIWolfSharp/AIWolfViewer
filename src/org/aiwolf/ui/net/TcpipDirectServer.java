@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.aiwolf.common.AIWolfAgentException;
 import org.aiwolf.common.AIWolfRuntimeException;
@@ -51,7 +52,7 @@ public class TcpipDirectServer extends TcpipServer {
 	    for(int i = 1; i <= limit; i++) {
 	    	shuffledAgentList.add(Agent.getAgent(i));
 	    }
-	    Collections.shuffle(shuffledAgentList);
+	    Collections.shuffle(shuffledAgentList, new Random(gameSetting.getRandomSeed()));
 	    shuffledAgentQueue = new LinkedList<>(shuffledAgentList);
 	}
 
