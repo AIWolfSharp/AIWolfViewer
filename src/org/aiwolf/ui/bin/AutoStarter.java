@@ -369,10 +369,11 @@ public class AutoStarter {
 					initServer = false;
 					winCounterMap = new HashMap<>();
 					roleCounterMap = new HashMap<>();
+					Random rand = new Random(gameSetting.getRandomSeed());
 					for(int i = 0; i < gameNum; i++){
 						AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
 
-						game.setRand(new Random(i));
+						game.setRand(new Random(rand.nextLong()));
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i));
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
