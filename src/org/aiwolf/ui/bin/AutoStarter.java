@@ -95,12 +95,21 @@ public class AutoStarter {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-		if(args.length == 0){
-			System.err.println("Usage:"+AutoStarter.class.getName()+" initFileName");
+		String initFileName = "";
+		Boolean useJapneseResource = false;
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].equals("-j")) {
+				useJapneseResource = true;
+			} else {
+				initFileName = args[i];
+			}
+		}
+		if(initFileName.isEmpty()){
+			System.err.println("Usage:"+AutoStarter.class.getName()+" initFileName [-j]");
 			return;
 		}
-
-		AutoStarter ssbi = new AutoStarter(args[0]);
+		
+		AutoStarter ssbi = new AutoStarter(initFileName, useJapneseResource);
 		ssbi.start();
 		ssbi.result();
 		System.exit(1);
@@ -111,7 +120,7 @@ public class AutoStarter {
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public AutoStarter(String fileName) throws IOException{
+	public AutoStarter(String fileName, Boolean useJapaneseResource) throws IOException{
 
 		libraryDir = new File("./");
 		roleAgentMap = new HashMap<>();
@@ -119,7 +128,7 @@ public class AutoStarter {
 
 		File initFile = new File(fileName);
 		Path src = initFile.toPath();
-		resource = new DefaultResource();
+		resource = useJapaneseResource ? new JapaneseResource() : new DefaultResource();
 		for(String line:Files.readAllLines(src, Charset.forName("UTF8"))){
 			if(line.startsWith("#")) {
 				continue;
@@ -369,15 +378,14 @@ public class AutoStarter {
 					initServer = false;
 					winCounterMap = new HashMap<>();
 					roleCounterMap = new HashMap<>();
+					Random rand = new Random(gameSetting.getRandomSeed());
 					for(int i = 0; i < gameNum; i++){
 						AIWolfGame game = new AIWolfGame(gameSetting, gameServer);
 
-						game.setRand(new Random(i));
+						game.setRand(new Random(rand.nextLong()));
 						File logFile = new File(String.format("%s/%03d.log", logDirName, i));
 						GameLogger logger = new FileGameLogger(logFile);
 						if(isVisualize){
-							DefaultResource resource = new DefaultResource();
-//							JapaneseResource resource = new JapaneseResource();
 							for(Agent agent:gameServer.getConnectedAgentList()){
 								resource.setName(agent.getAgentIdx(), gameServer.getName(agent));
 							}

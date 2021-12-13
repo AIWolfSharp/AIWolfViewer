@@ -15,6 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
 
+import org.aiwolf.ui.res.AIWolfResource;
+import org.aiwolf.ui.res.DefaultResource;
+import org.aiwolf.ui.res.JapaneseResource;
+
 /**
  * Open window to drop AIWolf game logs to start GUILogViewer
  * 
@@ -30,6 +34,8 @@ public class GUILogViewerStarter extends JFrame {
 
 	private JFrame frame;
 	private JPanel mainPanel;
+	
+	private AIWolfResource resource;
 
 	/**
 	 * Launch the application.
@@ -37,8 +43,14 @@ public class GUILogViewerStarter extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				Boolean useJapaneseResouce = false;
+				for(int i = 0; i < args.length; i++) {
+					if(args[i].equals("-j")) {
+						useJapaneseResouce = true;
+					}
+				}
 				try {
-					GUILogViewerStarter window = new GUILogViewerStarter();
+					GUILogViewerStarter window = new GUILogViewerStarter(useJapaneseResouce == true	 ? new JapaneseResource() : new DefaultResource());
 					window.start();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,7 +62,8 @@ public class GUILogViewerStarter extends JFrame {
 	/**
 	 * Create the application.
 	 */
-	public GUILogViewerStarter() {
+	public GUILogViewerStarter(AIWolfResource resource) {
+		this.resource = resource;
 		initialize();
 	}
 
@@ -140,7 +153,7 @@ public class GUILogViewerStarter extends JFrame {
 						@Override
 						public void run() {
 							try {
-								GUILogViewer guiLogViewer = new GUILogViewer(file, null);
+								GUILogViewer guiLogViewer = new GUILogViewer(file, resource);
 								System.out.println(file);
 								guiLogViewer.setCloseOnExist(false);
 								guiLogViewer.start();
